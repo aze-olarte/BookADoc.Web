@@ -37,3 +37,43 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+// TOAST
+
+.toast-base .mdc-snackbar__surface {
+  min-width: 300px;
+  max-width: 480px;
+  border-radius: 8px !important;
+}
+
+.toast-success .mdc-snackbar__surface {
+  background-color: #0f6e56 !important;
+  color: #e1f5ee !important;
+  .mdc-button__label {
+    color: #9fe1cb !important;
+  }
+}
+
+.toast-error .mdc-snackbar__surface {
+  background-color: #a32d2d !important;
+  color: #fcebeb !important;
+  .mdc-button__label {
+    color: #f7c1c1 !important;
+  }
+}
+
+.toast-info .mdc-snackbar__surface {
+  background-color: #185fa5 !important;
+  color: #e6f1fb !important;
+  .mdc-button__label {
+    color: #b5d4f4 !important;
+  }
+}
+
+.toast-warning .mdc-snackbar__surface {
+  background-color: #854f0b !important;
+  color: #faeeda !important;
+  .mdc-button__label {
+    color: #fac775 !important;
+  }
+}
