@@ -9,7 +9,7 @@ export const routes: Routes = [
     title: 'Book a Doc | Login',
   },
   {
-    path: '',
+    path: '/register',
     component: RegisterComponent,
     title: 'Book a Doc | Register',
   },

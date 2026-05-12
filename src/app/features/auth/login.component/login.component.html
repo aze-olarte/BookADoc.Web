@@ -1,1 +1,28 @@
-<p>login.component works!</p>
+<form [formGroup]="fg" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" required />
+    @if (f.email.invalid && (f.email.dirty || f.email.touched)) {
+      @if (f.email.hasError('required')) {
+        <mat-error>Email is required.</mat-error>
+      }
+      @if (f.email.hasError('serverError')) {
+        <mat-error>{{ f.email.errors?.['serverError'] }}</mat-error>
+      }
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" required />
+    @if (f.password.invalid && (f.password.dirty || f.password.touched)) {
+      @if (f.password.hasError('required')) {
+        <mat-error>Password is required.</mat-error>
+      }
+      @if (f.password.hasError('serverError')) {
+        <mat-error>{{ f.password.errors?.['serverError'] }}</mat-error>
+      }
+    }
+  </mat-form-field>
+
+  <button matButton type="submit">Login</button>
+</form>
