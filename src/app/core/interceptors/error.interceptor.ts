@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { ErrorResponse } from '../models/shared/error';
+import { ErrorResponse } from '../models/error.model';
 import { ToastService } from '../services/toast.service';
 import { Router } from '@angular/router';
 

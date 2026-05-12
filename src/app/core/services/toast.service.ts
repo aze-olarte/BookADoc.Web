@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { ToastType } from '../models/shared/toast.model';
+import { ToastType } from '../models/toast.model';
 
 const DEFAULT_DURATION = 3000;
 const TOAST_CONFIG: Record<ToastType, { panelClass: string; action: string }> = {

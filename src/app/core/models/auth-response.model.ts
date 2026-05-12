@@ -1,4 +1,4 @@
-import { UserRole } from '../shared/user-role.enum';
+import { UserRole } from './user-role.enum';
 
 export interface AuthResponse {
   token: string;

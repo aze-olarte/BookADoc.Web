@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ErrorResponse } from '../models/shared/error';
+import { ErrorResponse } from '../models/error.model';
 
 @Injectable({
   providedIn: 'root',

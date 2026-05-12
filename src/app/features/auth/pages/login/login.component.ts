@@ -1,15 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { LoginRequest } from '../../../core/models/auth/login-request.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { ErrorResponse } from '../../../core/models/shared/error';
-import { ErrorHandlerService } from '../../../core/services/error-handler.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ToastService } from '../../../core/services/toast.service';
 import { Router } from '@angular/router';
+import { ErrorResponse } from '../../../../core/models/error.model';
+import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { LoginRequest } from '../../../../core/models/login-request.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login.component',
