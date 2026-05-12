@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Register } from '../models/auth/register.model';
+import { RegisterRequest } from '../models/auth/register-request.model';
 import { AuthResponse } from '../models/auth/auth-response.model';
 import { Observable } from 'rxjs';
 import { LoginRequest } from '../models/auth/login-request.model';
@@ -15,7 +15,7 @@ export class AuthService {
   private key = 'authData';
   private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  register(payload: Register): Observable<AuthResponse> {
+  register(payload: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload);
   }
 
