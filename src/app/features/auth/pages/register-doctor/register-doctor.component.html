@@ -1,0 +1,124 @@
+<mat-card>
+  <mat-card-header> Create an Account </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="fg" (ngSubmit)="submit()" class="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required />
+        @if (f.name.hasError('required') && (f.name.dirty || f.name.touched)) {
+          <mat-error>Name is required.</mat-error>
+        }
+
+        @if (f.name.hasError('serverError')) {
+          <mat-error>{{ f.name.errors?.['serverError'] }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required />
+        @if (f.email.hasError('required') && (f.email.dirty || f.email.touched)) {
+          <mat-error>Email is required.</mat-error>
+        }
+        @if (f.email.hasError('email') && (f.email.dirty || f.email.touched)) {
+          <mat-error>Invalid email format.</mat-error>
+        }
+
+        @if (f.email.hasError('serverError')) {
+          <mat-error>
+            @for (error of f.email.errors?.['serverError']; track error) {
+              <div>{{ error }}</div>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required />
+        @if (f.password.hasError('required') && (f.password.dirty || f.password.touched)) {
+          <mat-error>Password is required.</mat-error>
+        }
+
+        @if (f.password.hasError('serverError')) {
+          <mat-error>
+            @for (error of f.password.errors?.['serverError']; track error) {
+              <div>{{ error }}</div>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput formControlName="confirmPassword" type="password" required />
+        @if (
+          f.confirmPassword.hasError('required') &&
+          (f.confirmPassword.dirty || f.confirmPassword.touched)
+        ) {
+          <mat-error>Confirm Password is required.</mat-error>
+        }
+        @if (
+          f.confirmPassword.hasError('passwordMismatch') &&
+          (f.confirmPassword.touched || f.confirmPassword.value)
+        ) {
+          <mat-error>Passwords do not match.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>License Number</mat-label>
+        <input matInput formControlName="licenseNumber" required />
+        @if (
+          f.licenseNumber.hasError('required') && (f.licenseNumber.dirty || f.licenseNumber.touched)
+        ) {
+          <mat-error>License Number is required.</mat-error>
+        }
+        @if (f.licenseNumber.hasError('serverError')) {
+          <mat-error>
+            @for (error of f.licenseNumber.errors?.['serverError']; track error) {
+              <div>{{ error }}</div>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Specialization</mat-label>
+        <mat-select formControlName="specializationId" name="specializationId">
+          @for (option of specializationOptions(); track option) {
+            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+          }
+        </mat-select>
+        @if (
+          f.specializationId.hasError('required') &&
+          (f.specializationId.dirty || f.specializationId.touched)
+        ) {
+          <mat-error>Specialization is required.</mat-error>
+        }
+        @if (f.specializationId.hasError('serverError')) {
+          <mat-error>
+            @for (error of f.specializationId.errors?.['serverError']; track error) {
+              <div>{{ error }}</div>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Consultation Fee</mat-label>
+        <input matInput formControlName="consultationFee" required type="number" min="0" />
+        @if (
+          f.consultationFee.hasError('min') &&
+          (f.consultationFee.dirty || f.consultationFee.touched)
+        ) {
+          <mat-error>Consultation Fee should be greater than 0.</mat-error>
+        }
+        @if (f.consultationFee.hasError('serverError')) {
+          <mat-error>
+            @for (error of f.consultationFee.errors?.['serverError']; track error) {
+              <div>{{ error }}</div>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <button matButton="filled" type="submit">Register</button>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,17 @@
+<mat-radio-group [ngModel]="selectedOption()" (ngModelChange)="selectedOption.set($event)">
+  <div class="card-container">
+    @for (option of options(); track option) {
+      <mat-card
+        class="role-card"
+        [class.selected]="selectedOption() === option"
+        (click)="selectedOption.set(option)"
+      >
+        <mat-radio-button [value]="option">
+          <strong>{{ option }}</strong>
+        </mat-radio-button>
+      </mat-card>
+    }
+  </div>
+</mat-radio-group>
+
+<a [routerLink]="redirectLink()">Proceed</a>
