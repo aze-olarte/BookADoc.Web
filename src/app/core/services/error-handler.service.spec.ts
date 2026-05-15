@@ -43,8 +43,8 @@ describe('ErrorHandlerService', () => {
     };
 
     service.applyFormErrors(form, error);
-    expect(form.get('email')?.errors).toEqual({ serverError: 'Invalid email format' });
-    expect(form.get('password')?.errors).toEqual({ serverError: 'Password too short' });
+    expect(form.get('email')?.errors).toEqual({ serverError: ['Invalid email format'] });
+    expect(form.get('password')?.errors).toEqual({ serverError: ['Password too short'] });
   });
 
   it('should skip errors where target does not match any control', () => {

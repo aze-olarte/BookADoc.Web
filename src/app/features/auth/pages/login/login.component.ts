@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +8,6 @@ import { Router, RouterLink } from '@angular/router';
 import { ErrorResponse } from '../../../../core/models/error.model';
 import { LoginRequest } from '../../../../core/models/login-request.model';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
-import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -29,7 +27,6 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
   private authService = inject(AuthService);
   private errorHandlerService = inject(ErrorHandlerService);
-  private toastService = inject(ToastService);
   private router = inject(Router);
 
   get f() {
@@ -37,7 +34,10 @@ export class LoginComponent {
   }
 
   fg = new FormGroup({
-    email: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
     password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
 
@@ -53,13 +53,9 @@ export class LoginComponent {
         this.authService.storeAuth(response);
         this.router.navigate(['/dashboard']);
       },
-      error: (httpError: HttpErrorResponse) => {
-        const apiError: ErrorResponse = httpError.error;
+      error: (apiError: ErrorResponse) => {
         if (apiError.statusCode === 422) {
           this.errorHandlerService.applyFormErrors(this.fg, apiError);
-        }
-        if (apiError.statusCode === 401) {
-          this.toastService.error(apiError.errors[0].message);
         }
       },
     });

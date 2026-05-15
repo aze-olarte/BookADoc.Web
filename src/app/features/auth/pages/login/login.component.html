@@ -4,26 +4,27 @@
     <form [formGroup]="fg" (ngSubmit)="submit()" class="form">
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email" required />
-        @if (f.email.invalid && (f.email.dirty || f.email.touched)) {
-          @if (f.email.hasError('required')) {
-            <mat-error>Email is required.</mat-error>
-          }
-          @if (f.email.hasError('serverError')) {
-            <mat-error>{{ f.email.errors?.['serverError'] }}</mat-error>
-          }
+        <input matInput formControlName="email" type="email" required />
+        @if (f.email.hasError('required') && (f.email.dirty || f.email.touched)) {
+          <mat-error>Email is required.</mat-error>
+        }
+        @if (f.email.hasError('email') && (f.email.dirty || f.email.touched)) {
+          <mat-error>Invalid email format.</mat-error>
+        }
+
+        @if (f.email.hasError('serverError')) {
+          <mat-error>{{ f.email.errors?.['serverError'] }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input matInput formControlName="password" required />
-        @if (f.password.invalid && (f.password.dirty || f.password.touched)) {
-          @if (f.password.hasError('required')) {
-            <mat-error>Password is required.</mat-error>
-          }
-          @if (f.password.hasError('serverError')) {
-            <mat-error>{{ f.password.errors?.['serverError'] }}</mat-error>
-          }
+        <input matInput formControlName="password" type="password" required />
+        @if (f.password.hasError('required') && (f.password.dirty || f.password.touched)) {
+          <mat-error>Password is required.</mat-error>
+        }
+
+        @if (f.password.hasError('serverError')) {
+          <mat-error>{{ f.password.errors?.['serverError'] }}</mat-error>
         }
       </mat-form-field>
 

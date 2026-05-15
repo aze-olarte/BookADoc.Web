@@ -11,7 +11,10 @@ export class ErrorHandlerService {
       if (e.target) {
         const control = form.get(e.target);
         if (control) {
-          control.setErrors({ serverError: e.message });
+          control.setErrors({
+            ...control.errors,
+            serverError: [...(control.errors?.['serverError'] ?? []), e.message],
+          });
           control.markAsTouched();
         }
       }

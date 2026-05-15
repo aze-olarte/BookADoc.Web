@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoginComponent } from './login.component';
 import { provideRouter, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
-import { ToastService } from '../../../../core/services/toast.service';
 import { of, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
+import { AuthService } from '../../services/auth.service';
+import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -22,18 +20,6 @@ describe('LoginComponent', () => {
     applyFormErrors: vi.fn(),
   };
 
-  const toastServiceMock = {
-    error: vi.fn(),
-  };
-
-  const makeHttpError = (statusCode: number, message: string) =>
-    new HttpErrorResponse({
-      error: {
-        statusCode,
-        errors: [{ message }],
-      },
-    });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
@@ -46,10 +32,6 @@ describe('LoginComponent', () => {
         {
           provide: ErrorHandlerService,
           useValue: errorHandlerServiceMock,
-        },
-        {
-          provide: ToastService,
-          useValue: toastServiceMock,
         },
       ],
     }).compileComponents();
@@ -97,24 +79,13 @@ describe('LoginComponent', () => {
     });
 
     authServiceMock.login.mockReturnValue(
-      throwError(() => makeHttpError(422, 'Validation Failed')),
+      throwError(() => ({
+        statusCode: 422,
+        message: 'Validation Failed.',
+      })),
     );
     component.submit();
 
     expect(errorHandlerServiceMock.applyFormErrors).toHaveBeenCalled();
-  });
-
-  it('should show toast error on 401', () => {
-    component.fg.setValue({
-      email: 'johndoe@example.com',
-      password: 'johnDo321',
-    });
-
-    authServiceMock.login.mockReturnValue(
-      throwError(() => makeHttpError(401, 'Invalid email or password.')),
-    );
-    component.submit();
-
-    expect(toastServiceMock.error).toHaveBeenCalled();
   });
 });
