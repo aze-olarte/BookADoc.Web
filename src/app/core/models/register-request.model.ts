@@ -8,4 +8,5 @@ export interface RegisterRequest {
   licenseNumber?: string;
   specializationId?: number;
   consultationFee?: number;
+  bio?: string;
 }

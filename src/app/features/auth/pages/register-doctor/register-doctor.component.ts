@@ -68,6 +68,7 @@ export class RegisterDoctorComponent implements OnInit {
         validators: [Validators.required, Validators.min(0.01)],
         nonNullable: true,
       }),
+      bio: new FormControl<string>('', { nonNullable: true }),
     },
     {
       validators: passwordMatchValidator('password', 'confirmPassword'),
