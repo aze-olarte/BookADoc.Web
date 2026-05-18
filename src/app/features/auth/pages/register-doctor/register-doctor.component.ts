@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +28,7 @@ import { SpecializationService } from '../../../../core/services/specialization.
   ],
   templateUrl: './register-doctor.component.html',
   styleUrl: './register-doctor.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterDoctorComponent implements OnInit {
   private authService = inject(AuthService);

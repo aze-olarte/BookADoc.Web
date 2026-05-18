@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
   imports: [MatRadioModule, MatCardModule, FormsModule, RouterLink],
   templateUrl: './register-role.component.html',
   styleUrl: './register-role.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterRoleComponent {
   selectedOption = signal<UserRole>(UserRole.Patient);
