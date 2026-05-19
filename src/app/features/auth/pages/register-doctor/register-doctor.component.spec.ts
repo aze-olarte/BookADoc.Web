@@ -1,12 +1,12 @@
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterDoctorComponent } from './register-doctor.component';
 import { provideRouter, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { ToastService } from '../../../../core/services/toast.service';
-import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
 import { of, throwError } from 'rxjs';
+import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
 import { SpecializationService } from '../../../../core/services/specialization.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { RegisterDoctorComponent } from './register-doctor.component';
 
 describe('RegisterDoctorComponent', () => {
   let component: RegisterDoctorComponent;
@@ -26,7 +26,7 @@ describe('RegisterDoctorComponent', () => {
   };
 
   let specializationServiceMock = {
-    getAll: vi.fn().mockReturnValue(of([])),
+    getAll: vi.fn().mockReturnValue(of([{ id: 1, name: 'Pediatrics' }])),
   };
 
   beforeEach(async () => {
@@ -65,10 +65,7 @@ describe('RegisterDoctorComponent', () => {
   });
 
   it('should set specializationOptions', () => {
-    specializationServiceMock.getAll.mockReturnValue(of([{ id: 1, name: 'Pediatrics' }]));
-    component.getSpecializationOptions();
-    fixture.detectChanges();
-    expect(component.specializationOptions().length).not.toBe(0);
+    expect(component.specializationOptions().length).toBe(1);
   });
 
   it('should call register endpoint', async () => {
@@ -82,6 +79,7 @@ describe('RegisterDoctorComponent', () => {
       licenseNumber: '123-ABC',
       consultationFee: 10.2,
       specializationId: 1,
+      bio: '',
     });
     component.submit();
     await fixture.whenStable();
@@ -100,6 +98,7 @@ describe('RegisterDoctorComponent', () => {
       licenseNumber: '',
       consultationFee: 10.2,
       specializationId: 1,
+      bio: '',
     });
     component.submit();
     await fixture.whenStable();
@@ -115,6 +114,7 @@ describe('RegisterDoctorComponent', () => {
       licenseNumber: '123-AB',
       consultationFee: 10.2,
       specializationId: 1,
+      bio: '',
     });
 
     authServiceMock.register.mockReturnValue(

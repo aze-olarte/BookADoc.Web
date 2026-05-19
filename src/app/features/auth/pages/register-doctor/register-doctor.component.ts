@@ -1,20 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { ErrorResponse } from '../../../../core/models/error.model';
 import { RegisterRequest } from '../../../../core/models/register-request.model';
 import { UserRole } from '../../../../core/models/user-role.enum';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
+import { SpecializationService } from '../../../../core/services/specialization.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { passwordMatchValidator } from '../../../../shared/validators/password-match.validator';
 import { AuthService } from '../../services/auth.service';
-import { MatSelectModule } from '@angular/material/select';
-import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
-import { SpecializationService } from '../../../../core/services/specialization.service';
 
 @Component({
   selector: 'app-register-doctor',
@@ -30,13 +30,13 @@ import { SpecializationService } from '../../../../core/services/specialization.
   styleUrl: './register-doctor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterDoctorComponent implements OnInit {
+export class RegisterDoctorComponent {
   private authService = inject(AuthService);
   private errorHandlerService = inject(ErrorHandlerService);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private specializationService = inject(SpecializationService);
-  specializationOptions = signal<SpecializationResponse[]>([]);
+  specializationOptions = toSignal(this.specializationService.getAll(), { initialValue: [] });
 
   get f() {
     return this.fg.controls;
@@ -74,18 +74,6 @@ export class RegisterDoctorComponent implements OnInit {
       validators: passwordMatchValidator('password', 'confirmPassword'),
     },
   );
-
-  ngOnInit(): void {
-    this.getSpecializationOptions();
-  }
-
-  getSpecializationOptions(): void {
-    this.specializationService.getAll().subscribe({
-      next: (res) => {
-        this.specializationOptions.update(() => [...res]);
-      },
-    });
-  }
 
   submit() {
     if (this.fg.invalid) {
