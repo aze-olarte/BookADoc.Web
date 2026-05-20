@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-content>
+    @if (doctor(); as doctor) {
+      <h1>{{ doctor.name }}</h1>
+      <b>Specialization</b>
+      <p>{{ doctor.specialization.name }}</p>
+
+      <b>Consultation Fee</b>
+      <p>{{ doctor.consultationFee }}</p>
+
+      <b>Bio</b>
+      <p>{{ doctor.bio }}</p>
+    } @else {
+      <mat-progress-spinner />
+    }
+  </mat-card-content>
+</mat-card>

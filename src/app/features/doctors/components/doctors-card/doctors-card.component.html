@@ -7,4 +7,7 @@
       {{ doctor().specialization.name }}
     </p>
   </mat-card-content>
+  <mat-card-footer>
+    <a [routerLink]="['/doctors', doctor().id]">View Doctor</a>
+  </mat-card-footer>
 </mat-card>

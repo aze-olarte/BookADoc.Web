@@ -4,6 +4,7 @@ import { RegisterPatientComponent } from './features/auth/pages/register-patient
 import { RegisterRoleComponent } from './features/auth/pages/register-role/register-role.component';
 import { RegisterDoctorComponent } from './features/auth/pages/register-doctor/register-doctor.component';
 import { DoctorsListComponent } from './features/doctors/components/doctors-list/doctors-list.component';
+import { DoctorsProfileComponent } from './features/doctors/components/doctors-profile/doctors-profile.component';
 
 export const routes: Routes = [
   {
@@ -30,5 +31,10 @@ export const routes: Routes = [
     path: 'doctors',
     component: DoctorsListComponent,
     title: 'Book a Doc | List of Doctors',
+  },
+  {
+    path: 'doctors/:id',
+    component: DoctorsProfileComponent,
+    title: 'Book a Doc | Doctor Profile',
   },
 ];
