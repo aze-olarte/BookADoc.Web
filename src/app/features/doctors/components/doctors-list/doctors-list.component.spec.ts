@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoctorsListComponent } from './doctors-list.component';
-import { DoctorService } from '../../services/doctor.service';
-import { SpecializationService } from '../../../../core/services/specialization.service';
-import { filter, of } from 'rxjs';
-import { DoctorResponse } from '../../../../core/models/doctor-response.model';
+import { of } from 'rxjs';
+import { DoctorSummaryResponse } from '../../../../core/models/doctor-summary-response.model';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
+import { SpecializationService } from '../../../../core/services/specialization.service';
+import { DoctorService } from '../../services/doctor.service';
+import { DoctorsListComponent } from './doctors-list.component';
+import { provideRouter } from '@angular/router';
 
 describe('DoctorsListComponent', () => {
   let component: DoctorsListComponent;
@@ -20,23 +21,15 @@ describe('DoctorsListComponent', () => {
       name: 'Hematology',
     },
   ];
-  let mockDoctorResponse: DoctorResponse[] = [
+  let mockDoctorResponse: DoctorSummaryResponse[] = [
     {
       id: 1,
       name: 'Doctor 1',
-      email: 'doctor1@example.com',
-      userId: 1,
-      consultationFee: 1,
-      licenseNumber: '123-ABC',
       specialization: mockSpecialization[0],
     },
     {
       id: 2,
       name: 'Doctor 2',
-      email: 'doctor2@example.com',
-      userId: 2,
-      consultationFee: 1,
-      licenseNumber: '123-DEF',
       specialization: mockSpecialization[1],
     },
   ];
@@ -51,6 +44,7 @@ describe('DoctorsListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DoctorsListComponent],
       providers: [
+        provideRouter([]),
         {
           provide: DoctorService,
           useValue: doctorServiceMock,

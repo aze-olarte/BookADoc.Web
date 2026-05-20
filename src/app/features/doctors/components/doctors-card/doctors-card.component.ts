@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { DoctorResponse } from '../../../../core/models/doctor-response.model';
+import { DoctorSummaryResponse } from '../../../../core/models/doctor-summary-response.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-doctors-card',
-  imports: [MatCardModule],
+  imports: [MatCardModule, RouterLink],
   templateUrl: './doctors-card.component.html',
   styleUrl: './doctors-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoctorsCardComponent {
-  doctor = input.required<DoctorResponse>();
+  doctor = input.required<DoctorSummaryResponse>();
 }
