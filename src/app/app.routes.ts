@@ -1,40 +1,55 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/pages/login/login.component';
-import { RegisterPatientComponent } from './features/auth/pages/register-patient/register-patient.component';
-import { RegisterRoleComponent } from './features/auth/pages/register-role/register-role.component';
-import { RegisterDoctorComponent } from './features/auth/pages/register-doctor/register-doctor.component';
-import { DoctorsListComponent } from './features/doctors/components/doctors-list/doctors-list.component';
-import { DoctorsProfileComponent } from './features/doctors/components/doctors-profile/doctors-profile.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: LoginComponent,
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/pages/login/login.component').then((m) => m.LoginComponent),
     title: 'Book a Doc | Login',
   },
   {
     path: 'register',
-    component: RegisterRoleComponent,
+    loadComponent: () =>
+      import('./features/auth/pages/register-role/register-role.component').then(
+        (m) => m.RegisterRoleComponent,
+      ),
     title: 'Book a Doc | Register',
   },
   {
     path: 'register/patient',
-    component: RegisterPatientComponent,
+    loadComponent: () =>
+      import('./features/auth/pages/register-patient/register-patient.component').then(
+        (m) => m.RegisterPatientComponent,
+      ),
     title: 'Book a Doc | Register as a Patient',
   },
   {
     path: 'register/doctor',
-    component: RegisterDoctorComponent,
+    loadComponent: () =>
+      import('./features/auth/pages/register-doctor/register-doctor.component').then(
+        (m) => m.RegisterDoctorComponent,
+      ),
     title: 'Book a Doc | Register as a Doctor',
   },
   {
     path: 'doctors',
-    component: DoctorsListComponent,
+    loadComponent: () =>
+      import('./features/doctors/components/doctors-list/doctors-list.component').then(
+        (m) => m.DoctorsListComponent,
+      ),
     title: 'Book a Doc | List of Doctors',
   },
   {
     path: 'doctors/:id',
-    component: DoctorsProfileComponent,
+    loadComponent: () =>
+      import('./features/doctors/components/doctors-profile/doctors-profile.component').then(
+        (m) => m.DoctorsProfileComponent,
+      ),
     title: 'Book a Doc | Doctor Profile',
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
 ];
