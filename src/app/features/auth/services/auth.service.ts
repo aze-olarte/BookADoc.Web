@@ -39,4 +39,31 @@ export class AuthService {
   clearAuth(): void {
     localStorage.removeItem(this.key);
   }
+
+  isLoggedIn(): boolean {
+    const token = this.getAuth()?.token;
+    if (!token) return false;
+
+    const decodedToken = this.decodeToken(token);
+    if (!decodedToken) return false;
+
+    const now = Math.floor(Date.now() / 1000);
+    return decodedToken.exp > now;
+  }
+
+  getRole(): string {
+    const userData = this.getAuth();
+    if (!userData) return '';
+
+    return userData.role;
+  }
+
+  private decodeToken(token: string) {
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch {
+      return null;
+    }
+  }
 }
