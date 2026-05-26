@@ -70,7 +70,7 @@ describe('RegisterPatientComponent', () => {
     expect(authServiceMock.register).toHaveBeenCalled();
     expect(authServiceMock.storeAuth).toHaveBeenCalled();
     expect(toastServiceMock.success).toHaveBeenCalled();
-    expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);
+    expect(routerSpy).toHaveBeenCalledWith(['/portal/dashboard']);
   });
 
   it('should not call register when the form is invalid', async () => {

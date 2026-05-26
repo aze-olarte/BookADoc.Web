@@ -58,7 +58,7 @@ describe('LoginComponent', () => {
     await fixture.whenStable();
     expect(authServiceMock.login).toHaveBeenCalled();
     expect(authServiceMock.storeAuth).toHaveBeenCalled();
-    expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);
+    expect(routerSpy).toHaveBeenCalledWith(['/portal/dashboard']);
   });
 
   it('should not call login when the form is invalid', async () => {

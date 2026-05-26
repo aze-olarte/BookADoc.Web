@@ -22,6 +22,6 @@ export const roleGuard: CanActivateFn = (
 
   if (requiredRoles.includes(userRole)) return true;
 
-  router.navigate(['/dashboard']);
+  router.navigate(['/portal/dashboard']);
   return false;
 };

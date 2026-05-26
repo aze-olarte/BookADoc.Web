@@ -91,7 +91,7 @@ export class RegisterDoctorComponent {
       next: (response) => {
         this.toastService.success('You have successfully registered!');
         this.authService.storeAuth(response);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/portal/dashboard']);
       },
       error: (apiError: ErrorResponse) => {
         if (apiError.statusCode === 422) {

@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth-guard';
+import { LayoutComponent } from './layout/layout/layout.component';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
   {
@@ -47,9 +50,42 @@ export const routes: Routes = [
       ),
     title: 'Book a Doc | Doctor Profile',
   },
+
+  //
   {
-    path: '',
+    path: 'portal',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/pages/dashboard-container/dashboard-container.component').then(
+            (m) => m.DashboardContainerComponent,
+          ),
+        title: 'Book A Doc | Dashboard',
+      },
+      {
+        path: 'doctors',
+        loadComponent: () =>
+          import('./features/doctors/components/doctors-list/doctors-list.component').then(
+            (m) => m.DoctorsListComponent,
+          ),
+        title: 'Book A Doc | Doctors',
+        canActivate: [roleGuard],
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
+  },
+
+  //
+
+  {
+    path: '**',
     redirectTo: 'login',
-    pathMatch: 'full',
   },
 ];

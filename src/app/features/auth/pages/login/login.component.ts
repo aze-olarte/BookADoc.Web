@@ -51,7 +51,7 @@ export class LoginComponent {
     this.authService.login(payload).subscribe({
       next: (response) => {
         this.authService.storeAuth(response);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/portal/dashboard']);
       },
       error: (apiError: ErrorResponse) => {
         if (apiError.statusCode === 422) {
