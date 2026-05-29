@@ -1,0 +1,37 @@
+<h1>Specializations</h1>
+
+<button matButton="outline" (click)="onAdd()">Add</button>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" matSort>
+  @for (column of columns; track column) {
+    <ng-container [matColumnDef]="column.columnDef">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ column.header }}
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ column.cell(row) }}
+      </td>
+    </ng-container>
+  }
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let row">
+      <button matIconButton [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onDelete(row)">
+          <mat-icon>delete_outline</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons>
+</mat-paginator>

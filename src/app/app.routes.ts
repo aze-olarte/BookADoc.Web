@@ -75,6 +75,15 @@ export const routes: Routes = [
         canActivate: [roleGuard],
       },
       {
+        path: 'specializations',
+        loadComponent: () =>
+          import('./features/specializations/components/specializations-list/specializations-list.component').then(
+            (m) => m.SpecializationsListComponent,
+          ),
+        title: 'Book A Doc | Specializations',
+        canActivate: [roleGuard],
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',

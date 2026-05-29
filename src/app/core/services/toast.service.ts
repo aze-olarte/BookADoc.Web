@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastType } from '../models/toast.model';
 
@@ -14,7 +14,7 @@ const TOAST_CONFIG: Record<ToastType, { panelClass: string; action: string }> = 
   providedIn: 'root',
 })
 export class ToastService {
-  constructor(private snackBar: MatSnackBar) {}
+  private snackBar = inject(MatSnackBar);
 
   private show(type: ToastType, message: string) {
     const { panelClass, action: defaultAction } = TOAST_CONFIG[type];
