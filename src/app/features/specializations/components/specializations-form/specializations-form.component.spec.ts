@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ToastService } from '../../../../core/services/toast.service';
-import { SpecializationService } from '../../services/specialization.service';
+import { SpecializationService } from '../../../../core/services/specialization.service';
 import { SpecializationsFormComponent } from './specializations-form.component';
 
 describe('SpecializationsFormComponent', () => {

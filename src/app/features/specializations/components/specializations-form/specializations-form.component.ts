@@ -4,7 +4,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SpecializationRequest } from '../../../../core/models/specialization-request.model';
 import { ToastService } from '../../../../core/services/toast.service';
-import { SpecializationService } from '../../services/specialization.service';
+import { SpecializationService } from '../../../../core/services/specialization.service';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({

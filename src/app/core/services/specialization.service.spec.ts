@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SpecializationService } from './specialization.service';
-import { AuthService } from '../../features/auth/services/auth.service';
-import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SpecializationService', () => {
   let service: SpecializationService;
@@ -33,5 +32,30 @@ describe('SpecializationService', () => {
     });
     const req = httpMock.expectOne(`${apiUrl}`);
     expect(req.request.method).toBe('GET');
+  });
+
+  it('should create specialization', () => {
+    const payload = {
+      name: 'OB Gyne',
+    };
+
+    service.add(payload).subscribe((res) => {
+      expect(res.id).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(payload);
+  });
+
+  it('should delete specialization', () => {
+    const id = 1;
+    service.delete(id).subscribe((res) => {
+      expect(res).toBeNull();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/${id}`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
   });
 });
