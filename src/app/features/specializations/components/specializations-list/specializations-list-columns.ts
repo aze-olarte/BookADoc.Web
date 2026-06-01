@@ -1,6 +1,7 @@
+import { Column } from '../../../../core/models/columns';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
 
-export const columns = [
+export const columns: Column<SpecializationResponse>[] = [
   {
     columnDef: 'id',
     header: 'ID',

@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { By } from '@angular/platform-browser';
-import { of, Subject, throwError } from 'rxjs';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { MatDialog } from '@angular/material/dialog';
+import { of, throwError } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SpecializationsListComponent } from './specializations-list.component';
-import { SpecializationService } from '../../services/specialization.service';
-import { ToastService } from '../../../../core/services/toast.service';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
+import { ToastService } from '../../../../core/services/toast.service';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { SpecializationService } from '../../services/specialization.service';
 import { SpecializationsFormComponent } from '../specializations-form/specializations-form.component';
+import { SpecializationsListComponent } from './specializations-list.component';
 
 const mockSpecializations: SpecializationResponse[] = [
   { id: 1, name: 'Cardiology' },
@@ -60,24 +59,10 @@ describe('SpecializationsListComponent', () => {
     fixture.detectChanges();
   });
 
-  // ── Initialisation ────────────────────────────────────────────────────────
-
   it('loads data on init', () => {
     expect(specializationService.getAll).toHaveBeenCalledOnce();
-    expect(component.dataSource.data).toEqual(mockSpecializations);
+    expect(component.data()).toEqual(mockSpecializations);
   });
-
-  it('sets paginator and sort on the dataSource after view init', () => {
-    expect(component.dataSource.paginator).toBe(component.paginator);
-    expect(component.dataSource.sort).toBe(component.sort);
-  });
-
-  it('includes "actions" as the last displayed column', () => {
-    const last = component.displayedColumns.at(-1);
-    expect(last).toBe('actions');
-  });
-
-  // ── loadData ──────────────────────────────────────────────────────────────
 
   it('shows a toast error when getAll fails', () => {
     const err = new Error('network error');
@@ -85,8 +70,6 @@ describe('SpecializationsListComponent', () => {
     component.loadData();
     expect(toastService.error).toHaveBeenCalledWith(err);
   });
-
-  // ── onDelete ──────────────────────────────────────────────────────────────
 
   it('opens ConfirmDialogComponent with the correct data on delete', () => {
     dialog.open.mockReturnValue(makeDialogRef(false));
@@ -128,8 +111,6 @@ describe('SpecializationsListComponent', () => {
 
     expect(toastService.error).toHaveBeenCalledWith(err);
   });
-
-  // ── onAdd ─────────────────────────────────────────────────────────────────
 
   it('opens SpecializationsFormComponent on add', () => {
     dialog.open.mockReturnValue(makeDialogRef(false));

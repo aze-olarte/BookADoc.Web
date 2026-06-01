@@ -4,56 +4,56 @@ import {
   Component,
   inject,
   OnInit,
-  ViewChild,
+  signal,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Action } from '../../../../core/models/action';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
 import { ToastService } from '../../../../core/services/toast.service';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData,
 } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { SpecializationService } from '../../services/specialization.service';
-import { columns } from './specializations-list-columns';
 import { SpecializationsFormComponent } from '../specializations-form/specializations-form.component';
+import { columns } from './specializations-list-columns';
+import { Column } from '../../../../core/models/columns';
 
 @Component({
   selector: 'app-specializations-list',
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatMenuModule],
+  imports: [GridComponent],
   templateUrl: './specializations-list.component.html',
   styleUrl: './specializations-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpecializationsListComponent implements OnInit, AfterViewInit {
+export class SpecializationsListComponent implements OnInit {
   private specializationService = inject(SpecializationService);
   private dialog = inject(MatDialog);
   private toastService = inject(ToastService);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  data = signal<SpecializationResponse[]>([]);
+  readonly columnDefs: Column<SpecializationResponse>[] = columns;
 
-  dataSource = new MatTableDataSource<SpecializationResponse>([]);
-  readonly columns = columns;
-  displayedColumns = [...columns.map((c) => c.columnDef), 'actions'];
+  // Define actions
+  actions: Action[] = [{ type: 'delete', label: 'Delete', icon: 'delete_outline' }];
+
+  // Handle the output
+  onActionTriggered({ action, row }: { action: string; row: SpecializationResponse }) {
+    console.log(action);
+    if (action === 'delete') {
+      this.onDelete(row);
+    }
+  }
 
   ngOnInit() {
     this.loadData();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   loadData() {
     this.specializationService.getAll().subscribe({
       next: (data) => {
-        this.dataSource.data = data;
+        this.data.set(data);
       },
       error: (error) => this.toastService.error(error),
     });
