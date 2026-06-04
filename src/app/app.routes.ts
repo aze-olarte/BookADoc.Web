@@ -93,6 +93,15 @@ export const routes: Routes = [
         canActivate: [roleGuard],
       },
       {
+        path: 'appointments',
+        loadComponent: () =>
+          import('./features/appointments/components/appointments-list/appointments-list.component').then(
+            (m) => m.AppointmentsListComponent,
+          ),
+        title: 'Book A Doc | Patients',
+        canActivate: [roleGuard],
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
