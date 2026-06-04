@@ -86,7 +86,7 @@ export const routes: Routes = [
       {
         path: 'patients',
         loadComponent: () =>
-          import('./features/patients/components/patients-list.component/patients-list.component').then(
+          import('./features/patients/components/patients-list/patients-list.component').then(
             (m) => m.PatientsListComponent,
           ),
         title: 'Book A Doc | Patients',
