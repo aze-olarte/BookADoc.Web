@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AppointmentResponse } from '../../../../core/models/appointment-response.model';
 import { Column } from '../../../../core/models/columns';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -6,17 +6,22 @@ import { GridComponent } from '../../../../shared/components/grid/grid.component
 import { AuthService } from '../../../auth/services/auth.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { columns } from './appointments-list-columns';
+import { Action } from '../../../../core/models/action';
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentsStatusFormComponent } from '../appointments-status-form/appointments-status-form.component';
 
 @Component({
   selector: 'app-appointments-list',
   imports: [GridComponent],
   templateUrl: './appointments-list.component.html',
   styleUrl: './appointments-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppointmentsListComponent {
   private appointmentService = inject(AppointmentService);
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private dialog = inject(MatDialog);
   data = signal<AppointmentResponse[]>([]);
   columnDefs: Column<AppointmentResponse>[] = columns;
   role: string = this.authService.getRole();
@@ -50,5 +55,51 @@ export class AppointmentsListComponent {
       },
       error: (error) => this.toastService.error(error),
     });
+  }
+
+  actions: Action<AppointmentResponse>[] = [
+    { type: 'view', label: 'View', icon: 'visibility' },
+    {
+      type: 'changeStatus',
+      label: 'Change Status',
+      icon: 'edit',
+      visible: (item) => this.isChangeStatusVisible(item),
+    },
+  ];
+
+  onActionTriggered({ action, row }: { action: string; row: AppointmentResponse }) {
+    if (action === 'view') {
+      this.onView(row.id);
+    } else if (action === 'changeStatus') {
+      this.onChangeStatus(row);
+    }
+  }
+
+  onView(id: number) {}
+
+  onChangeStatus(data: AppointmentResponse) {
+    const dialogRef = this.dialog.open(AppointmentsStatusFormComponent, {
+      data: {
+        id: data.id,
+        role: this.role,
+        status: data.status,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.loadData();
+      }
+    });
+  }
+
+  private isChangeStatusVisible(data: AppointmentResponse): boolean {
+    switch (data.status) {
+      case 'Cancelled':
+      case 'Completed':
+        return false;
+      default:
+        return true;
+    }
   }
 }

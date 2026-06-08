@@ -22,12 +22,12 @@ import { Action } from '../../../core/models/action';
   styleUrl: './grid.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GridComponent {
-  data = input.required<unknown[]>();
+export class GridComponent<T> {
+  data = input.required<T[]>();
   columns = input.required<Column<any>[]>();
-  actions = input<Action[]>([]);
+  actions = input<Action<T>[]>([]);
 
-  dataSource = new MatTableDataSource<unknown>([]);
+  dataSource = new MatTableDataSource<T>([]);
   displayedColumns = computed(() => {
     const cols = this.columns().map((c) => c.columnDef);
     return this.actions().length ? [...cols, 'actions'] : cols;
@@ -51,4 +51,15 @@ export class GridComponent {
   onActionClick(action: string, row: unknown) {
     this.actionTriggered.emit({ action, row });
   }
+
+  rowActions = computed(() => {
+    const map = new Map<T, Action<T>[]>();
+    for (const row of this.dataSource.data) {
+      map.set(
+        row,
+        this.actions().filter((action) => (action.visible ? action.visible(row) : true)),
+      );
+    }
+    return map;
+  });
 }

@@ -1,3 +1,9 @@
 <h1>Appointments</h1>
 
-<app-grid [data]="data()" [columns]="columnDefs"> </app-grid>
+<app-grid
+  [data]="data()"
+  [columns]="columnDefs"
+  [actions]="actions"
+  (actionTriggered)="onActionTriggered($event)"
+>
+</app-grid>

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Change Status</h2>
+<mat-dialog-content>
+  <form [formGroup]="fg" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>New Status</mat-label>
+      <mat-select formControlName="status" name="status">
+        @for (option of dropdownOptions(); track option) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-select>
+      @if (f.status.hasError('required') && (f.status.dirty || f.status.touched)) {
+        <mat-error>Status is required.</mat-error>
+      }
+      @if (f.status.hasError('serverError')) {
+        <mat-error>
+          @for (error of f.status.errors?.['serverError']; track error) {
+            <div>{{ error }}</div>
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button (click)="save()">Save</button>
+</mat-dialog-actions>
