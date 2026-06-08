@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AppointmentResponse } from '../../../core/models/appointment-response.model';
 import { UserRole } from '../../../core/models/user-role.enum';
+import { AppointmentRequest } from '../../../core/models/appointment-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,10 @@ export class AppointmentService {
 
   get(id: number): Observable<AppointmentResponse> {
     return this.http.get<AppointmentResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  addAppointment(payload: AppointmentRequest): Observable<AppointmentResponse> {
+    return this.http.post<AppointmentResponse>(`${this.apiUrl}`, payload);
   }
 
   patchAppointmentStatus(id: number, payload: { status: string }): Observable<void> {

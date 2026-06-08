@@ -11,6 +11,7 @@ import { AppointmentService } from '../../services/appointment.service';
 import { AppointmentsNotesFormComponent } from '../appointments-notes-form/appointments-notes-form.component';
 import { AppointmentsStatusFormComponent } from '../appointments-status-form/appointments-status-form.component';
 import { columns } from './appointments-list-columns';
+import { AppointmentsAddFormComponent } from '../appointments-add-form/appointments-add-form.component';
 
 @Component({
   selector: 'app-appointments-list',
@@ -112,6 +113,16 @@ export class AppointmentsListComponent {
         id: data.id,
       },
     });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.loadData();
+      }
+    });
+  }
+
+  onAddAppointment() {
+    const dialogRef = this.dialog.open(AppointmentsAddFormComponent);
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {

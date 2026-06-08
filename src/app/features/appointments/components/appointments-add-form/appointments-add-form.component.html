@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>Book an Appointment</h2>
+<mat-dialog-content>
+  <form [formGroup]="fg" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Specialization</mat-label>
+      <mat-select formControlName="specialization" name="specialization">
+        @for (option of specializationOptions(); track option.id) {
+          <mat-option [value]="option.id">{{ option.name }}</mat-option>
+        }
+      </mat-select>
+      @if (
+        f.specialization.hasError('required') &&
+        (f.specialization.dirty || f.specialization.touched)
+      ) {
+        <mat-error>Specialization is required.</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Doctor</mat-label>
+      <mat-select formControlName="doctor" name="doctor">
+        @if (doctorOptions().length) {
+          @for (option of doctorOptions(); track option.id) {
+            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+          }
+        } @else {
+          <mat-option disabled> No results found </mat-option>
+        }
+      </mat-select>
+      @if (f.doctor.hasError('required') && (f.doctor.dirty || f.doctor.touched)) {
+        <mat-error>Doctor is required.</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" name="date" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (f.date.hasError('required') && (f.date.dirty || f.date.touched)) {
+        <mat-error>Date is required.</mat-error>
+      }
+    </mat-form-field>
+    <div>
+      <mat-label>Slot</mat-label>
+      <mat-selection-list formControlName="slotId" name="slotId" [multiple]="false">
+        @for (slot of slotOptions(); track slot.id) {
+          <mat-list-option [value]="slot.id" [disabled]="slot.isBooked">{{
+            slot.startTime
+          }}</mat-list-option>
+        }
+      </mat-selection-list>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Reason</mat-label>
+      <textarea matInput formControlName="reason" rows="5"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button (click)="save()">Save</button>
+</mat-dialog-actions>

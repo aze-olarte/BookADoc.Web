@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { DoctorResponse } from '../../../core/models/doctor-response.model';
 import { DoctorSummaryResponse } from '../../../core/models/doctor-summary-response.model';
+import { SlotResponse } from '../../../core/models/slot-response.model';
+import { format, startOfDay } from 'date-fns';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +24,10 @@ export class DoctorService {
 
   get(id: number): Observable<DoctorResponse> {
     return this.http.get<DoctorResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  getSlots(id: number, date: Date): Observable<SlotResponse[]> {
+    const formattedDate = format(date, 'yyyy-MM-dd');
+    return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots?date=${formattedDate}`);
   }
 }
