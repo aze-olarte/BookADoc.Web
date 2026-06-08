@@ -36,7 +36,9 @@ export class SpecializationsListComponent implements OnInit {
   readonly columnDefs: Column<SpecializationResponse>[] = columns;
 
   // Define actions
-  actions: Action[] = [{ type: 'delete', label: 'Delete', icon: 'delete_outline' }];
+  actions: Action<SpecializationResponse>[] = [
+    { type: 'delete', label: 'Delete', icon: 'delete_outline' },
+  ];
 
   // Handle the output
   onActionTriggered({ action, row }: { action: string; row: SpecializationResponse }) {
