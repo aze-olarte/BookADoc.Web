@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Action } from '../../../../core/models/action';
 import { AppointmentResponse } from '../../../../core/models/appointment-response.model';
 import { Column } from '../../../../core/models/columns';
 import { ToastService } from '../../../../core/services/toast.service';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { AppointmentService } from '../../services/appointment.service';
-import { columns } from './appointments-list-columns';
-import { Action } from '../../../../core/models/action';
-import { MatDialog } from '@angular/material/dialog';
+import { AppointmentsNotesFormComponent } from '../appointments-notes-form/appointments-notes-form.component';
 import { AppointmentsStatusFormComponent } from '../appointments-status-form/appointments-status-form.component';
-import { Router } from '@angular/router';
+import { columns } from './appointments-list-columns';
 
 @Component({
   selector: 'app-appointments-list',
@@ -67,6 +68,12 @@ export class AppointmentsListComponent {
       icon: 'edit',
       visible: (item) => this.isChangeStatusVisible(item),
     },
+    {
+      type: 'addNotes',
+      label: 'Add Notes',
+      icon: 'edit',
+      visible: (item) => this.isAddNotesVisible(item),
+    },
   ];
 
   onActionTriggered({ action, row }: { action: string; row: AppointmentResponse }) {
@@ -74,6 +81,8 @@ export class AppointmentsListComponent {
       this.onView(row.id);
     } else if (action === 'changeStatus') {
       this.onChangeStatus(row);
+    } else if (action === 'addNotes') {
+      this.onAddNotes(row);
     }
   }
 
@@ -97,6 +106,20 @@ export class AppointmentsListComponent {
     });
   }
 
+  onAddNotes(data: AppointmentResponse) {
+    const dialogRef = this.dialog.open(AppointmentsNotesFormComponent, {
+      data: {
+        id: data.id,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.loadData();
+      }
+    });
+  }
+
   private isChangeStatusVisible(data: AppointmentResponse): boolean {
     switch (data.status) {
       case 'Cancelled':
@@ -105,5 +128,12 @@ export class AppointmentsListComponent {
       default:
         return true;
     }
+  }
+
+  private isAddNotesVisible(data: AppointmentResponse): boolean {
+    if (this.role === 'Doctor' && data.status === 'Completed') {
+      return true;
+    }
+    return false;
   }
 }

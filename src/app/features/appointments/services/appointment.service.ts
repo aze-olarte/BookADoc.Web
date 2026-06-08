@@ -28,8 +28,8 @@ export class AppointmentService {
     return this.http.patch<void>(`${this.apiUrl}/${id}/status`, payload);
   }
 
-  addNotes(id: number, notes: string): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/${id}/notes`, notes);
+  addNotes(id: number, payload: { notes: string }): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/notes`, payload);
   }
 
   getStatusDropdownOptions(role: string, status: string): string[] {

@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Update Notes</h2>
+<mat-dialog-content>
+  <form [formGroup]="fg" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" rows="5"></textarea>
+      @if (f.notes.hasError('required') && (f.notes.dirty || f.notes.touched)) {
+        <mat-error>Notes is required.</mat-error>
+      }
+      @if (f.notes.hasError('serverError')) {
+        <mat-error>
+          @for (error of f.notes.errors?.['serverError']; track error) {
+            <div>{{ error }}</div>
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button (click)="save()">Save</button>
+</mat-dialog-actions>
