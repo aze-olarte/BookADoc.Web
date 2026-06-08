@@ -98,7 +98,16 @@ export const routes: Routes = [
           import('./features/appointments/components/appointments-list/appointments-list.component').then(
             (m) => m.AppointmentsListComponent,
           ),
-        title: 'Book A Doc | Patients',
+        title: 'Book A Doc | Appointments',
+        canActivate: [roleGuard],
+      },
+      {
+        path: 'appointments/:id',
+        loadComponent: () =>
+          import('./features/appointments/components/appointments-details/appointments-details.component').then(
+            (m) => m.AppointmentsDetailsComponent,
+          ),
+        title: 'Book A Doc | Appointments',
         canActivate: [roleGuard],
       },
       {

@@ -1,0 +1,21 @@
+<h1>Appointment Details</h1>
+
+@if (appointment(); as appointment) {
+  <p>Status: {{ appointment.status }}</p>
+  <p>Date: {{ appointment.date | date: 'EEEE, MMMM d, y' }}</p>
+  <p>Slot: {{ appointment.startTime }} - {{ appointment.endTime }}</p>
+  <p>Booked On: {{ appointment.bookedAt | date: 'EEEE,MMMM d, y' }}</p>
+
+  <hr />
+  <p>Doctor: {{ appointment.doctorName }} - {{ appointment.specialization }}</p>
+  <p>Patient: {{ appointment.patientName }}</p>
+
+  <p>Reason: {{ appointment.reason }}</p>
+
+  <hr />
+
+  <h3>Doctor's Notes</h3>
+  <p>{{ appointment.notes || 'N/A' }}</p>
+} @else {
+  <mat-progress-spinner />
+}

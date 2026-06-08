@@ -9,6 +9,7 @@ import { columns } from './appointments-list-columns';
 import { Action } from '../../../../core/models/action';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentsStatusFormComponent } from '../appointments-status-form/appointments-status-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appointments-list',
@@ -22,6 +23,7 @@ export class AppointmentsListComponent {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
   data = signal<AppointmentResponse[]>([]);
   columnDefs: Column<AppointmentResponse>[] = columns;
   role: string = this.authService.getRole();
@@ -75,7 +77,9 @@ export class AppointmentsListComponent {
     }
   }
 
-  onView(id: number) {}
+  onView(id: number) {
+    this.router.navigate(['/portal/appointments', id]);
+  }
 
   onChangeStatus(data: AppointmentResponse) {
     const dialogRef = this.dialog.open(AppointmentsStatusFormComponent, {

@@ -1,9 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AppointmentResponse } from '../../../core/models/appointment-response.model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AppointmentStatus } from '../../../core/models/appointment-status.enum';
 import { UserRole } from '../../../core/models/user-role.enum';
 
 @Injectable({
@@ -19,6 +18,10 @@ export class AppointmentService {
 
   getUserAppointments(): Observable<AppointmentResponse[]> {
     return this.http.get<AppointmentResponse[]>(`${this.apiUrl}/mine`);
+  }
+
+  get(id: number): Observable<AppointmentResponse> {
+    return this.http.get<AppointmentResponse>(`${this.apiUrl}/${id}`);
   }
 
   patchAppointmentStatus(id: number, payload: { status: string }): Observable<void> {
