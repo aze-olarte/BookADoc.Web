@@ -8,10 +8,10 @@ import { ToastService } from '../../../../core/services/toast.service';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { AppointmentService } from '../../services/appointment.service';
-import { AppointmentsNotesFormComponent } from '../appointments-notes-form/appointments-notes-form.component';
-import { AppointmentsStatusFormComponent } from '../appointments-status-form/appointments-status-form.component';
+import { AppointmentsNotesFormComponent } from '../../components/appointments-notes-form/appointments-notes-form.component';
+import { AppointmentsStatusFormComponent } from '../../components/appointments-status-form/appointments-status-form.component';
 import { columns } from './appointments-list-columns';
-import { AppointmentsAddFormComponent } from '../appointments-add-form/appointments-add-form.component';
+import { AppointmentsAddFormComponent } from '../../components/appointments-add-form/appointments-add-form.component';
 
 @Component({
   selector: 'app-appointments-list',

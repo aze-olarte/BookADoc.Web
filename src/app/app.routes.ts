@@ -37,7 +37,7 @@ export const routes: Routes = [
   {
     path: 'doctors',
     loadComponent: () =>
-      import('./features/doctors/components/doctors-list/doctors-list.component').then(
+      import('./features/doctors/pages/doctors-list/doctors-list.component').then(
         (m) => m.DoctorsListComponent,
       ),
     title: 'Book a Doc | List of Doctors',
@@ -45,7 +45,7 @@ export const routes: Routes = [
   {
     path: 'doctors/:id',
     loadComponent: () =>
-      import('./features/doctors/components/doctors-profile/doctors-profile.component').then(
+      import('./features/doctors/pages/doctors-profile/doctors-profile.component').then(
         (m) => m.DoctorsProfileComponent,
       ),
     title: 'Book a Doc | Doctor Profile',
@@ -68,7 +68,7 @@ export const routes: Routes = [
       {
         path: 'doctors',
         loadComponent: () =>
-          import('./features/doctors/components/doctors-list/doctors-list.component').then(
+          import('./features/doctors/pages/doctors-list/doctors-list.component').then(
             (m) => m.DoctorsListComponent,
           ),
         title: 'Book A Doc | Doctors',
@@ -77,7 +77,7 @@ export const routes: Routes = [
       {
         path: 'specializations',
         loadComponent: () =>
-          import('./features/specializations/components/specializations-list/specializations-list.component').then(
+          import('./features/specializations/pages/specializations-list/specializations-list.component').then(
             (m) => m.SpecializationsListComponent,
           ),
         title: 'Book A Doc | Specializations',
@@ -86,7 +86,7 @@ export const routes: Routes = [
       {
         path: 'patients',
         loadComponent: () =>
-          import('./features/patients/components/patients-list/patients-list.component').then(
+          import('./features/patients/pages/patients-list/patients-list.component').then(
             (m) => m.PatientsListComponent,
           ),
         title: 'Book A Doc | Patients',
@@ -95,7 +95,7 @@ export const routes: Routes = [
       {
         path: 'appointments',
         loadComponent: () =>
-          import('./features/appointments/components/appointments-list/appointments-list.component').then(
+          import('./features/appointments/pages/appointments-list/appointments-list.component').then(
             (m) => m.AppointmentsListComponent,
           ),
         title: 'Book A Doc | Appointments',
@@ -104,7 +104,7 @@ export const routes: Routes = [
       {
         path: 'appointments/:id',
         loadComponent: () =>
-          import('./features/appointments/components/appointments-details/appointments-details.component').then(
+          import('./features/appointments/pages/appointments-details/appointments-details.component').then(
             (m) => m.AppointmentsDetailsComponent,
           ),
         title: 'Book A Doc | Appointments',

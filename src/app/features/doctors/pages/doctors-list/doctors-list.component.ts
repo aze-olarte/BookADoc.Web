@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { switchMap } from 'rxjs';
 import { SpecializationService } from '../../../../core/services/specialization.service';
 import { DoctorService } from '../../services/doctor.service';
-import { DoctorsCardComponent } from '../doctors-card/doctors-card.component';
+import { DoctorsCardComponent } from '../../components/doctors-card/doctors-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({

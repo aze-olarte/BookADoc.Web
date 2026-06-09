@@ -16,7 +16,7 @@ import {
 } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { SpecializationService } from '../../../../core/services/specialization.service';
-import { SpecializationsFormComponent } from '../specializations-form/specializations-form.component';
+import { SpecializationsFormComponent } from '../../components/specializations-form/specializations-form.component';
 import { columns } from './specializations-list-columns';
 import { Column } from '../../../../core/models/columns';
 
