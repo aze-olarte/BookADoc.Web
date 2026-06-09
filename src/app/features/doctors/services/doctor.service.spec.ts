@@ -49,4 +49,12 @@ describe('DoctorService', () => {
     const req = httpMock.expectOne(`${apiUrl}/1`);
     expect(req.request.method).toBe('GET');
   });
+
+  it('should get doctor slots with the date formatted as yyyy-MM-dd', () => {
+    const date = new Date('2024-01-15');
+    service.getSlots(10, date).subscribe();
+    const req = httpMock.expectOne(`${apiUrl}/10/slots?date=2024-01-15`);
+    expect(req.request.method).toBe('GET');
+    req.flush([]);
+  });
 });
