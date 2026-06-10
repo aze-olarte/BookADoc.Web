@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
 import { ToastService } from '../../../../core/services/toast.service';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../services/specialization.service';
 import { SpecializationsFormComponent } from '../specializations-form/specializations-form.component';
 import { SpecializationsListComponent } from './specializations-list.component';
 

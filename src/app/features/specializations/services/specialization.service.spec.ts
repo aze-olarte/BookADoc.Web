@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SpecializationService } from './specialization.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('SpecializationService', () => {

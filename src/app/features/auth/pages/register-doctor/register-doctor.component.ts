@@ -11,7 +11,7 @@ import { ErrorResponse } from '../../../../core/models/error.model';
 import { RegisterRequest } from '../../../../core/models/register-request.model';
 import { UserRole } from '../../../../core/models/user-role.enum';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { passwordMatchValidator } from '../../../../shared/validators/password-match.validator';
 import { AuthService } from '../../services/auth.service';

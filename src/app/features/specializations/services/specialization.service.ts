@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { SpecializationResponse } from '../models/specialization-response.model';
-import { SpecializationRequest } from '../models/specialization-request.model';
+import { environment } from '../../../../environments/environment';
+import { SpecializationResponse } from '../../../core/models/specialization-response.model';
+import { SpecializationRequest } from '../../../core/models/specialization-request.model';
 
 @Injectable({
   providedIn: 'root',

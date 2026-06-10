@@ -9,11 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { distinctUntilChanged, filter, startWith, switchMap } from 'rxjs';
 import { AppointmentRequest } from '../../../../core/models/appointment-request.model';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { DoctorService } from '../../../doctors/services/doctor.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { MatListModule } from '@angular/material/list';
+import { SlotService } from '../../../slots/services/slot.service';
 
 @Component({
   selector: 'app-appointments-add-form.component',
@@ -36,6 +37,7 @@ export class AppointmentsAddFormComponent {
   private appointmentService = inject(AppointmentService);
   private specializationService = inject(SpecializationService);
   private doctorService = inject(DoctorService);
+  private slotService = inject(SlotService);
   private destroyRef = inject(DestroyRef);
 
   get f() {
@@ -74,7 +76,7 @@ export class AppointmentsAddFormComponent {
     this.fg.valueChanges.pipe(
       distinctUntilChanged((a, b) => a.doctor === b.doctor && a.date === b.date),
       filter((value): value is { doctor: number; date: Date } => !!value.doctor && !!value.date),
-      switchMap(({ doctor, date }) => this.doctorService.getSlots(doctor, date, date)),
+      switchMap(({ doctor, date }) => this.slotService.getSlots(doctor, date, date)),
     ),
     { initialValue: [] },
   );

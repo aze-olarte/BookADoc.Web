@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { DoctorSummaryResponse } from '../../../../core/models/doctor-summary-response.model';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { DoctorService } from '../../services/doctor.service';
 import { DoctorsListComponent } from './doctors-list.component';
 import { provideRouter } from '@angular/router';

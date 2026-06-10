@@ -3,7 +3,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { switchMap } from 'rxjs';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { DoctorService } from '../../services/doctor.service';
 import { DoctorsCardComponent } from '../../components/doctors-card/doctors-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';

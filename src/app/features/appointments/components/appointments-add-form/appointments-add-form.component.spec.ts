@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ToastService } from '../../../../core/services/toast.service';
 import { AppointmentService } from '../../services/appointment.service';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { DoctorService } from '../../../doctors/services/doctor.service';
 import { AppointmentsAddFormComponent } from './appointments-add-form.component';
 
@@ -19,7 +19,8 @@ describe('AppointmentsAddFormComponent', () => {
 
   let appointmentServiceMock = { addAppointment: vi.fn() };
   let specializationServiceMock = { getAll: vi.fn() };
-  let doctorServiceMock = { getAll: vi.fn(), getSlots: vi.fn() };
+  let doctorServiceMock = { getAll: vi.fn() };
+  let slotServiceMock = { getSlots: vi.fn() };
   let toastServiceMock = { success: vi.fn(), error: vi.fn() };
   let dialogRefMock = { close: vi.fn() };
 
@@ -28,7 +29,7 @@ describe('AppointmentsAddFormComponent', () => {
     TestBed.resetTestingModule();
     specializationServiceMock.getAll.mockReturnValue(of(mockSpecializations));
     doctorServiceMock.getAll.mockReturnValue(of(mockDoctors));
-    doctorServiceMock.getSlots.mockReturnValue(of(mockSlots));
+    slotServiceMock.getSlots.mockReturnValue(of(mockSlots));
 
     await TestBed.configureTestingModule({
       imports: [AppointmentsAddFormComponent],
@@ -81,7 +82,7 @@ describe('AppointmentsAddFormComponent', () => {
     const date = new Date('2024-01-01');
     component.f.date.setValue(date);
     fixture.detectChanges();
-    expect(doctorServiceMock.getSlots).toHaveBeenCalledWith(10, date, date);
+    expect(slotServiceMock.getSlots).toHaveBeenCalledWith(10, date, date);
     expect(component.slotOptions()).toEqual(mockSlots);
   });
 

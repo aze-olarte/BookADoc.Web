@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
-import { SpecializationService } from '../../../../core/services/specialization.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../services/auth.service';
 import { RegisterDoctorComponent } from './register-doctor.component';
