@@ -81,7 +81,7 @@ describe('AppointmentsAddFormComponent', () => {
     const date = new Date('2024-01-01');
     component.f.date.setValue(date);
     fixture.detectChanges();
-    expect(doctorServiceMock.getSlots).toHaveBeenCalledWith(10, date);
+    expect(doctorServiceMock.getSlots).toHaveBeenCalledWith(10, date, date);
     expect(component.slotOptions()).toEqual(mockSlots);
   });
 

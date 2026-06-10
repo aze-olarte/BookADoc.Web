@@ -26,8 +26,11 @@ export class DoctorService {
     return this.http.get<DoctorResponse>(`${this.apiUrl}/${id}`);
   }
 
-  getSlots(id: number, date: Date): Observable<SlotResponse[]> {
-    const formattedDate = format(date, 'yyyy-MM-dd');
-    return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots?date=${formattedDate}`);
+  getSlots(id: number, fromDate: Date, toDate: Date): Observable<SlotResponse[]> {
+    const params = new HttpParams()
+      .set('fromDate', format(fromDate, 'yyyy-MM-dd'))
+      .set('toDate', format(toDate, 'yyyy-MM-dd'));
+
+    return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots`, { params });
   }
 }

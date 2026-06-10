@@ -74,7 +74,7 @@ export class AppointmentsAddFormComponent {
     this.fg.valueChanges.pipe(
       distinctUntilChanged((a, b) => a.doctor === b.doctor && a.date === b.date),
       filter((value): value is { doctor: number; date: Date } => !!value.doctor && !!value.date),
-      switchMap(({ doctor, date }) => this.doctorService.getSlots(doctor, date)),
+      switchMap(({ doctor, date }) => this.doctorService.getSlots(doctor, date, date)),
     ),
     { initialValue: [] },
   );
