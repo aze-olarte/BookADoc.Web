@@ -12,11 +12,14 @@ export class SlotService {
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/doctor`;
 
-  getSlots(id: number, fromDate: Date, toDate: Date): Observable<SlotResponse[]> {
-    const params = new HttpParams()
-      .set('fromDate', format(fromDate, 'yyyy-MM-dd'))
-      .set('toDate', format(toDate, 'yyyy-MM-dd'));
-
+  getSlots(id: number, fromDate?: Date, toDate?: Date): Observable<SlotResponse[]> {
+    let params = new HttpParams();
+    if (fromDate) {
+      params = params.set('fromDate', format(fromDate, 'yyyy-MM-dd'));
+    }
+    if (toDate) {
+      params = params.set('toDate', format(toDate, 'yyyy-MM-dd'));
+    }
     return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots`, { params });
   }
 }

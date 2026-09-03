@@ -111,6 +111,15 @@ export const routes: Routes = [
         canActivate: [roleGuard],
       },
       {
+        path: 'slots',
+        loadComponent: () =>
+          import('./features/slots/pages/slot-views/slot-views.component').then(
+            (m) => m.SlotViewsComponent,
+          ),
+        title: 'Book A Doc | Slots',
+        canActivate: [roleGuard],
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',

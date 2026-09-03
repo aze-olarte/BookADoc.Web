@@ -46,6 +46,11 @@ export class NavbarComponent {
       url: 'my-account',
       canAccess: ['Admin', 'Patient', 'Doctor'],
     },
+    {
+      name: 'Slots',
+      url: 'slots',
+      canAccess: ['Doctor'],
+    },
   ];
 
   navItemsByRole = computed(() =>
