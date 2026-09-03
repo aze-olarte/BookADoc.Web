@@ -1,1 +1,15 @@
-<app-slot-list></app-slot-list>
+<h1>Slots</h1>
+
+<mat-button-toggle-group
+  name="viewType"
+  aria-label="View Type"
+  [value]="currentView()"
+  (change)="onViewChange($event)"
+>
+  <mat-button-toggle value="list">List</mat-button-toggle>
+  <mat-button-toggle value="calendar">Calendar</mat-button-toggle>
+</mat-button-toggle-group>
+
+@if (currentView() === 'list') {
+  <app-slot-list></app-slot-list>
+} @else {}
