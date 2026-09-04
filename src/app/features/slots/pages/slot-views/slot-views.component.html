@@ -11,5 +11,5 @@
 </mat-button-toggle-group>
 
 @if (currentView() === 'list') {
-  <app-slot-list></app-slot-list>
+  <app-slot-list #slotList [id]="doctorId()" (emitUpdate)="onUpdate()"> </app-slot-list>
 } @else {}

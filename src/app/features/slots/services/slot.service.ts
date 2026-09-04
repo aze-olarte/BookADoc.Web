@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { format } from 'date-fns';
 import { SlotResponse } from '../../../core/models/slot-response.model';
+import { SlotRequest } from '../../../core/models/slot-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,9 @@ export class SlotService {
       params = params.set('toDate', format(toDate, 'yyyy-MM-dd'));
     }
     return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots`, { params });
+  }
+
+  addSlots(doctorId: number, payload: SlotRequest) {
+    return this.http.post<SlotRequest>(`${this.apiUrl}/${doctorId}/slots`, payload);
   }
 }
