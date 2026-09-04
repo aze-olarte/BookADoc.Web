@@ -84,7 +84,7 @@ export class RegisterDoctorComponent {
     const formValues = this.fg.getRawValue();
     const payload: RegisterRequest = {
       ...formValues,
-      role: UserRole.Patient,
+      role: UserRole.Doctor,
       specializationId: formValues.specializationId as number,
     };
     this.authService.register(payload).subscribe({
