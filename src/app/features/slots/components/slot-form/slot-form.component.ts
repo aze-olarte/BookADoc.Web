@@ -11,8 +11,9 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { minDateValidator } from '../../../../shared/validators/mindate.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { toDateOnly } from '../../../../shared/utils/date-time.utils';
+import { toDateOnly, toDateTime } from '../../../../shared/utils/date-time.utils';
 import { toTimeOnly } from '../../../../shared/utils/date-time.utils';
+import { SlotResponse } from '../../../../core/models/slot-response.model';
 
 @Component({
   selector: 'app-slot-form',
@@ -36,7 +37,7 @@ export class SlotFormComponent implements OnInit {
   readonly minDate: Date = new Date();
   minEndTime = signal<Date>(new Date());
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { doctorId: number }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { doctorId: number; event?: SlotResponse }) {}
 
   get f() {
     return this.fg.controls;
@@ -44,6 +45,7 @@ export class SlotFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.setFormValueChanges();
+    this.setFormValues();
   }
 
   fg = new FormGroup({
@@ -73,6 +75,17 @@ export class SlotFormComponent implements OnInit {
       });
   }
 
+  private setFormValues(): void {
+    const event = this.data.event;
+    if (!event) return;
+
+    this.fg.patchValue({
+      date: new Date(`${event.date}T00:00:00`),
+      startTime: toDateTime(event.date, event.startTime),
+      endTime: toDateTime(event.date, event.endTime),
+    });
+  }
+
   save(): void {
     if (this.fg.invalid) {
       this.fg.markAllAsTouched();
@@ -87,13 +100,17 @@ export class SlotFormComponent implements OnInit {
     }
 
     const payload: SlotRequest = {
-      id: 0,
+      id: this.data.event ? this.data.event.id : 0,
       date: toDateOnly(date),
       startTime: toTimeOnly(startTime),
       endTime: toTimeOnly(endTime),
+      isBooked: this.data.event ? this.data.event.isBooked : false,
     };
 
-    this.slotService.addSlots(this.data.doctorId, payload).subscribe({
+    const observable$ = this.data.event
+      ? this.slotService.updateSlot(this.data.doctorId, payload)
+      : this.slotService.addSlot(this.data.doctorId, payload);
+    observable$.subscribe({
       next: () => {
         this.toastService.success('Slot saved.');
         this.dialogRef.close(true);

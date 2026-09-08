@@ -12,4 +12,10 @@
 
 @if (currentView() === 'list') {
   <app-slot-list #slotList [id]="doctorId()" (emitUpdate)="onUpdate()"> </app-slot-list>
-} @else {}
+} @else {
+  <app-slot-calendar
+    #slotCalendar
+    [id]="doctorId()"
+    (emitClick)="onUpdate($event)"
+  ></app-slot-calendar>
+}

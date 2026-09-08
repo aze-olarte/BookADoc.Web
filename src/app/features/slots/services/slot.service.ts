@@ -24,7 +24,11 @@ export class SlotService {
     return this.http.get<SlotResponse[]>(`${this.apiUrl}/${id}/slots`, { params });
   }
 
-  addSlots(doctorId: number, payload: SlotRequest) {
+  addSlot(doctorId: number, payload: SlotRequest) {
     return this.http.post<SlotRequest>(`${this.apiUrl}/${doctorId}/slots`, payload);
+  }
+
+  updateSlot(doctorId: number, payload: SlotRequest) {
+    return this.http.put<SlotRequest>(`${this.apiUrl}/${doctorId}/slots`, payload);
   }
 }

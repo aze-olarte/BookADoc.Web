@@ -1,8 +1,8 @@
 export interface SlotResponse {
   id: number;
-  date: Date;
-  startTime: Date;
-  endTime: Date;
+  date: string;
+  startTime: string;
+  endTime: string;
   isBooked: boolean;
   doctorProfileId: number;
 }

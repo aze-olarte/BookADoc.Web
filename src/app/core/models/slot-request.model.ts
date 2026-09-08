@@ -3,4 +3,5 @@ export interface SlotRequest {
   date: string;
   startTime: string;
   endTime: string;
+  isBooked: boolean;
 }

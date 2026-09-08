@@ -13,3 +13,7 @@ export function toTimeOnly(time: Date): string {
 
   return `${hours}:${minutes}:${seconds}`;
 }
+
+export function toDateTime(date: string, time: string): Date {
+  return new Date(`${date}T${time}`);
+}
