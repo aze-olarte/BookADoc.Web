@@ -14,7 +14,7 @@
   <app-slot-list
     #slotList
     [id]="doctorId()"
-    (emitUpdate)="onUpdate()"
+    (emitUpdate)="onUpdate($event)"
     (emitDelete)="onDelete($event)"
   >
   </app-slot-list>

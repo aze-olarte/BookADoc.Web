@@ -6,6 +6,7 @@ import { GridComponent } from '../../../../shared/components/grid/grid.component
 import { SlotService } from '../../services/slot.service';
 import { columns } from './slot-list-columns';
 import { Action } from '../../../../core/models/action';
+import { isBefore, startOfDay } from 'date-fns';
 
 @Component({
   selector: 'app-slot-list',
@@ -19,10 +20,16 @@ export class SlotListComponent implements OnInit {
   readonly columnDefs: Column<SlotResponse>[] = columns;
   data = signal<SlotResponse[]>([]);
   id = input.required<number>();
-  emitUpdate = output<void>();
+  emitUpdate = output<SlotResponse | undefined>();
   emitDelete = output<SlotResponse>();
 
   actions: Action<SlotResponse>[] = [
+    {
+      type: 'update',
+      label: 'Edit',
+      icon: 'edit_outline',
+      visible: (item) => this.isEditVisible(item),
+    },
     {
       type: 'delete',
       label: 'Delete',
@@ -44,8 +51,8 @@ export class SlotListComponent implements OnInit {
     });
   }
 
-  update(): void {
-    this.emitUpdate.emit();
+  update(data?: SlotResponse): void {
+    this.emitUpdate.emit(data);
   }
 
   delete(data: SlotResponse): void {
@@ -55,10 +62,16 @@ export class SlotListComponent implements OnInit {
   onActionTriggered({ action, row }: { action: string; row: SlotResponse }) {
     if (action === 'delete') {
       this.delete(row);
+    } else if (action === 'update') {
+      this.update(row);
     }
   }
 
   private isDeleteVisible(data: SlotResponse): boolean {
     return !data.isBooked;
+  }
+
+  private isEditVisible(data: SlotResponse): boolean {
+    return !data.isBooked && !isBefore(data.date, startOfDay(new Date()));
   }
 }
