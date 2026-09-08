@@ -1,3 +1,8 @@
-<app-grid [data]="data()" [columns]="columnDefs">
+<app-grid
+  [data]="data()"
+  [columns]="columnDefs"
+  [actions]="actions"
+  (actionTriggered)="onActionTriggered($event)"
+>
   <button matButton="outline" (click)="update()">Add</button>
 </app-grid>
