@@ -7,7 +7,14 @@
         {{ column.header }}
       </th>
       <td mat-cell *matCellDef="let row">
-        {{ column.cell(row) }}
+        @switch (column.type) {
+          @case ('boolean') {
+            {{ column.cell(row) ? 'True' : 'False' }}
+          }
+          @default {
+            {{ column.cell(row) }}
+          }
+        }
       </td>
     </ng-container>
   }
