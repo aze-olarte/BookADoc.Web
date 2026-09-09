@@ -34,7 +34,12 @@ export class NavbarComponent {
     {
       name: 'Appointments',
       url: 'appointments',
-      canAccess: ['Admin', 'Patient', 'Doctor'],
+      canAccess: ['Admin', 'Patient'],
+    },
+    {
+      name: 'Slots',
+      url: 'slots',
+      canAccess: ['Doctor'],
     },
     {
       name: 'Specializations',
@@ -45,11 +50,6 @@ export class NavbarComponent {
       name: 'My Account',
       url: 'my-account',
       canAccess: ['Admin', 'Patient', 'Doctor'],
-    },
-    {
-      name: 'Slots',
-      url: 'slots',
-      canAccess: ['Doctor'],
     },
   ];
 
