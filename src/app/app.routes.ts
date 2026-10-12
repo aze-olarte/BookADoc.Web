@@ -120,6 +120,15 @@ export const routes: Routes = [
         canActivate: [roleGuard],
       },
       {
+        path: 'my-account',
+        loadComponent: () =>
+          import('./features/auth/pages/my-account/my-account.component').then(
+            (m) => m.MyAccountComponent,
+          ),
+        title: 'Book A Doc | Slots',
+        canActivate: [roleGuard],
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',

@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   getMyDetails(): Observable<UserResponse> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/mine`);
+    return this.http.get<UserResponse>(`${this.apiUrl}/me`);
   }
 
   storeAuth(data: AuthResponse) {

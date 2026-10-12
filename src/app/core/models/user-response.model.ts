@@ -1,3 +1,5 @@
+import { DoctorResponse } from './doctor-response.model';
+import { SpecializationResponse } from './specialization-response.model';
 import { UserRole } from './user-role.enum';
 
 export interface UserResponse {
@@ -6,4 +8,8 @@ export interface UserResponse {
   email: string;
   role: UserRole;
   createdAt: Date;
+  specialization?: SpecializationResponse;
+  consultationFee?: number;
+  bio?: string;
+  licenseNumber?: string;
 }
