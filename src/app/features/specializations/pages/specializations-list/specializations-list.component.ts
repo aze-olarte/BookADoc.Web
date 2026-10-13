@@ -63,6 +63,7 @@ export class SpecializationsListComponent implements OnInit {
 
   onDelete(data: SpecializationResponse) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: true,
       data: {
         title: 'Delete Specialization',
         message: `Are you sure you want to delete ${data.name}?`,
@@ -86,7 +87,9 @@ export class SpecializationsListComponent implements OnInit {
   }
 
   onAdd() {
-    const dialogRef = this.dialog.open(SpecializationsFormComponent);
+    const dialogRef = this.dialog.open(SpecializationsFormComponent, {
+      disableClose: true,
+    });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {

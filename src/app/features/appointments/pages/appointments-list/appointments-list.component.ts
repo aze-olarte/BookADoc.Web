@@ -93,6 +93,7 @@ export class AppointmentsListComponent {
 
   onChangeStatus(data: AppointmentResponse) {
     const dialogRef = this.dialog.open(AppointmentsStatusFormComponent, {
+      disableClose: true,
       data: {
         id: data.id,
         role: this.role,
@@ -109,6 +110,7 @@ export class AppointmentsListComponent {
 
   onAddNotes(data: AppointmentResponse) {
     const dialogRef = this.dialog.open(AppointmentsNotesFormComponent, {
+      disableClose: true,
       data: {
         id: data.id,
       },
@@ -122,7 +124,9 @@ export class AppointmentsListComponent {
   }
 
   onAddAppointment() {
-    const dialogRef = this.dialog.open(AppointmentsAddFormComponent);
+    const dialogRef = this.dialog.open(AppointmentsAddFormComponent, {
+      disableClose: true,
+    });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {

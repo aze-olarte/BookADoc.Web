@@ -49,6 +49,7 @@ export class SlotViewsComponent implements OnInit {
 
   onUpdate(data?: SlotResponse) {
     const dialogRef = this.dialog.open(SlotFormComponent, {
+      disableClose: true,
       data: {
         doctorId: this.doctorId(),
         event: data,
@@ -64,6 +65,7 @@ export class SlotViewsComponent implements OnInit {
 
   onDelete(data: SlotResponse) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: true,
       data: {
         title: 'Delete Slot',
         message: 'Are you sure you want to delete this slot?',
