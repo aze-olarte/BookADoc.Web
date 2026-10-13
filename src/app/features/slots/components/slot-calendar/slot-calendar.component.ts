@@ -68,12 +68,6 @@ export class SlotCalendarComponent implements OnInit {
       this.emitClick.emit(data);
     },
 
-    eventClick: (arg: EventClickArg) => {
-      const data = arg.event.extendedProps['data'];
-      if (data.isBooked || isBefore(data.date, startOfDay(new Date()))) return;
-      this.emitClick.emit(data);
-    },
-
     datesSet: (arg: DatesSetArg) => {
       this.loadData(arg.start, arg.end);
     },

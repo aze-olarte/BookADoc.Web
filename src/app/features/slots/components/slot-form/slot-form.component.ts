@@ -107,10 +107,7 @@ export class SlotFormComponent implements OnInit {
       isBooked: this.data.event ? this.data.event.isBooked : false,
     };
 
-    const observable$ = this.data.event
-      ? this.slotService.updateSlot(this.data.doctorId, payload)
-      : this.slotService.addSlot(this.data.doctorId, payload);
-    observable$.subscribe({
+    this.slotService.addSlot(this.data.doctorId, payload).subscribe({
       next: () => {
         this.toastService.success('Slot saved.');
         this.dialogRef.close(true);

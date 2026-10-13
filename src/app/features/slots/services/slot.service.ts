@@ -28,10 +28,6 @@ export class SlotService {
     return this.http.post<SlotRequest>(`${this.apiUrl}/${doctorId}/slots`, payload);
   }
 
-  updateSlot(doctorId: number, payload: SlotRequest) {
-    return this.http.put<SlotRequest>(`${this.apiUrl}/${doctorId}/slots`, payload);
-  }
-
   deleteSlot(doctorId: number, slotId: number) {
     return this.http.delete<void>(`${this.apiUrl}/${doctorId}/slots/${slotId}`);
   }
