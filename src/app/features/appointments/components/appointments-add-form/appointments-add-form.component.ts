@@ -15,6 +15,7 @@ import { DoctorService } from '../../../doctors/services/doctor.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { MatListModule } from '@angular/material/list';
 import { SlotService } from '../../../slots/services/slot.service';
+import { minDateValidator } from '../../../../shared/validators/mindate.validator';
 
 @Component({
   selector: 'app-appointments-add-form.component',
@@ -39,6 +40,7 @@ export class AppointmentsAddFormComponent {
   private doctorService = inject(DoctorService);
   private slotService = inject(SlotService);
   private destroyRef = inject(DestroyRef);
+  readonly minDate: Date = new Date();
 
   get f() {
     return this.fg.controls;
@@ -54,7 +56,7 @@ export class AppointmentsAddFormComponent {
       { validators: [Validators.required], nonNullable: true },
     ),
     date: new FormControl<Date>(new Date(), {
-      validators: [Validators.required],
+      validators: [Validators.required, minDateValidator(new Date())],
       nonNullable: true,
     }),
     slotId: new FormControl<number[]>([], { validators: [Validators.required], nonNullable: true }),
