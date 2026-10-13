@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { toDateOnly, toDateTime } from '../../../../shared/utils/date-time.utils';
 import { toTimeOnly } from '../../../../shared/utils/date-time.utils';
 import { SlotResponse } from '../../../../core/models/slot-response.model';
+import { addMinutes } from 'date-fns';
 
 @Component({
   selector: 'app-slot-form',
@@ -35,7 +36,6 @@ export class SlotFormComponent implements OnInit {
   private slotService = inject(SlotService);
   private destroyRef = inject(DestroyRef);
   readonly minDate: Date = new Date();
-  minEndTime = signal<Date>(new Date());
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { doctorId: number; event?: SlotResponse }) {}
 
@@ -56,11 +56,9 @@ export class SlotFormComponent implements OnInit {
     startTime: new FormControl<Date | null>(null, {
       validators: [Validators.required],
     }),
-    endTime: new FormControl<Date | null>(null, {
-      validators: [
-        Validators.required,
-        (control) => minDateValidator(this.minEndTime(), true)(control),
-      ],
+    endTime: new FormControl<Date | null>({
+      value: null,
+      disabled: true,
     }),
   });
 
@@ -69,8 +67,10 @@ export class SlotFormComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         if (!!data) {
-          this.minEndTime.set(data);
-          this.fg.controls.endTime.updateValueAndValidity();
+          const endTime = addMinutes(data, 30);
+          this.fg.patchValue({
+            endTime,
+          });
         }
       });
   }
