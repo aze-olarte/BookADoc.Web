@@ -42,7 +42,7 @@ export class SpecializationsFormComponent {
         this.toastService.success('Specialization saved.');
         this.dialogRef.close(true);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }

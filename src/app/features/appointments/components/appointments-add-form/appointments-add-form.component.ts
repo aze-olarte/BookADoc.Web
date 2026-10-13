@@ -127,7 +127,7 @@ export class AppointmentsAddFormComponent {
         this.toastService.success('Appointment saved.');
         this.dialogRef.close(true);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }

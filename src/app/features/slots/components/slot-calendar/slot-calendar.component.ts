@@ -98,7 +98,7 @@ export class SlotCalendarComponent implements OnInit {
         });
         this.events.set(eventData);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }

@@ -78,7 +78,7 @@ export class SlotViewsComponent implements OnInit {
             this.toastService.success('Slot deleted');
             this.reloadData();
           },
-          error: (error) => this.toastService.error(error),
+          error: () => {},
         });
       }
     });

@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { ErrorResponse } from '../models/error.model';
+import { Error, ErrorResponse } from '../models/error.model';
 import { ToastService } from '../services/toast.service';
 import { Router } from '@angular/router';
 
@@ -12,12 +12,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((httpError: HttpErrorResponse) => {
       const error: ErrorResponse = httpError.error;
+      const customErrorMessage = error.errors.length ? setCustomErrorMessage(error.errors) : null;
+
       if (httpError.status === 422) {
         return throwError(() => error);
       }
 
       if (httpError.status === 409) {
-        toastService.error(error.errors[0].message ?? 'There is a conflict error.');
+        toastService.error(customErrorMessage ?? 'There is a conflict error.');
         return throwError(() => error);
       }
 
@@ -25,14 +27,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         if (!req.url.includes('')) {
           router.navigate(['/']);
         }
-        toastService.error(
-          error.errors[0].message ?? 'You are unauthorized to perform this action.',
-        );
+        toastService.error(customErrorMessage ?? 'You are unauthorized to perform this action.');
         return throwError(() => error);
       }
 
       if (httpError.status === 403) {
-        toastService.error(error.errors[0].message ?? 'You are not allowed to perform this action');
+        toastService.error(customErrorMessage ?? 'You are not allowed to perform this action');
         return throwError(() => error);
       }
 
@@ -40,4 +40,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       return throwError(() => error);
     }),
   );
+};
+
+const setCustomErrorMessage = (errorArray: Error[]) => {
+  return errorArray.map((err) => err.message).join('\n');
 };

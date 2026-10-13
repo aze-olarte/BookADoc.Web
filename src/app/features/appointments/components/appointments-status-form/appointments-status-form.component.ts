@@ -52,7 +52,7 @@ export class AppointmentsStatusFormComponent {
         this.toastService.success('New Status saved.');
         this.dialogRef.close(true);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }

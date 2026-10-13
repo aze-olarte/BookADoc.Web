@@ -115,7 +115,7 @@ export class SlotFormComponent implements OnInit {
         this.toastService.success('Slot saved.');
         this.dialogRef.close(true);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }

@@ -57,7 +57,7 @@ export class SpecializationsListComponent implements OnInit {
       next: (data) => {
         this.data.set(data);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 

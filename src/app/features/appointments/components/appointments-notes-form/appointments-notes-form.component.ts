@@ -48,7 +48,7 @@ export class AppointmentsNotesFormComponent {
         this.toastService.success('Notes saved.');
         this.dialogRef.close(true);
       },
-      error: (error) => this.toastService.error(error),
+      error: () => {},
     });
   }
 }
