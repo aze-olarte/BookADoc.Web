@@ -29,7 +29,7 @@ export const columns: Column<SlotResponse>[] = [
   {
     columnDef: 'isBooked',
     header: 'Is Booked',
-    cell: (element: SlotResponse) => `${element.isBooked}`,
+    cell: (element: SlotResponse) => `${element.isBooked ? 'Yes' : 'No'}`,
     type: 'boolean',
   },
 ];
