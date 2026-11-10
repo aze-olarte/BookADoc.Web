@@ -136,6 +136,10 @@ export class AppointmentsListComponent {
   }
 
   private isChangeStatusVisible(data: AppointmentResponse): boolean {
+    if (this.role === 'Admin') {
+      return false;
+    }
+
     switch (data.status) {
       case 'Cancelled':
       case 'Completed':

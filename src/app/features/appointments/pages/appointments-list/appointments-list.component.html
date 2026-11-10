@@ -6,5 +6,7 @@
   [actions]="actions"
   (actionTriggered)="onActionTriggered($event)"
 >
-  <button matButton="outline" (click)="onAddAppointment()">Book an Appointment</button>
+  @if (role === 'Patient') {
+    <button matButton="outline" (click)="onAddAppointment()">Book an Appointment</button>
+  }
 </app-grid>
