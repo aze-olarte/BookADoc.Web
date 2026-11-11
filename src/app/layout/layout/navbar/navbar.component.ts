@@ -24,7 +24,7 @@ export class NavbarComponent {
     {
       name: 'Patients',
       url: 'patients',
-      canAccess: ['Admin'],
+      canAccess: ['Admin', 'Doctor'],
     },
     {
       name: 'Doctors',

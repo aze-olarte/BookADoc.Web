@@ -1,3 +1,7 @@
 <h1>Patients</h1>
 
-<app-grid [data]="data()" [columns]="columnDefs"> </app-grid>
+@if (isDoctor) {
+  <app-grid [data]="doctorPatients()" [columns]="doctorPatientColumns" />
+} @else {
+  <app-grid [data]="patients()" [columns]="patientColumns" />
+}
