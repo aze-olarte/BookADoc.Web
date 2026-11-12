@@ -54,10 +54,11 @@ export class GridComponent<T> {
 
   rowActions = computed(() => {
     const map = new Map<T, Action<T>[]>();
-    for (const row of this.dataSource.data) {
+    const actions = this.actions();
+    for (const row of this.data()) {
       map.set(
         row,
-        this.actions().filter((action) => (action.visible ? action.visible(row) : true)),
+        actions.filter((a) => (a.visible ? a.visible(row) : true)),
       );
     }
     return map;
