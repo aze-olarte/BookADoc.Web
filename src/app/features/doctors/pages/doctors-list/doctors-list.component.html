@@ -1,3 +1,5 @@
+<h1>Doctors</h1>
+
 <mat-form-field appearance="outline">
   <mat-select [value]="selectedSpecialization()" (valueChange)="selectedSpecialization.set($event)">
     <mat-option [value]="0">All</mat-option>
@@ -7,10 +9,10 @@
   </mat-select>
 </mat-form-field>
 
-<mat-grid-list cols="4" rowHeight="2:1">
-  @for (doctor of doctors(); track doctor.id) {
-    <mat-grid-tile>
-      <app-doctors-card [doctor]="doctor"></app-doctors-card>
-    </mat-grid-tile>
-  }
-</mat-grid-list>
+<app-grid
+  [data]="doctors()"
+  [columns]="columnDefs"
+  [actions]="actions"
+  (actionTriggered)="onActionTriggered($event)"
+>
+</app-grid>

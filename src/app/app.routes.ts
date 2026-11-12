@@ -75,6 +75,15 @@ export const routes: Routes = [
         canActivate: [roleGuard],
       },
       {
+        path: 'doctors/:id',
+        loadComponent: () =>
+          import('./features/doctors/pages/doctors-profile/doctors-profile.component').then(
+            (m) => m.DoctorsProfileComponent,
+          ),
+        title: 'Book A Doc | Doctors',
+        canActivate: [roleGuard],
+      },
+      {
         path: 'specializations',
         loadComponent: () =>
           import('./features/specializations/pages/specializations-list/specializations-list.component').then(
