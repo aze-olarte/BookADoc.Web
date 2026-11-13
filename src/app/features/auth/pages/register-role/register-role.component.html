@@ -1,17 +1,34 @@
-<mat-radio-group [ngModel]="selectedOption()" (ngModelChange)="selectedOption.set($event)">
-  <div class="card-container">
-    @for (option of options(); track option) {
-      <mat-card
-        class="role-card"
-        [class.selected]="selectedOption() === option"
-        (click)="selectedOption.set(option)"
-      >
-        <mat-radio-button [value]="option">
-          <strong>{{ option }}</strong>
-        </mat-radio-button>
-      </mat-card>
-    }
-  </div>
-</mat-radio-group>
+<div class="auth-page">
+  <mat-card appearance="outlined" class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Join as...</mat-card-title>
+      <mat-card-subtitle>Choose the type of account you want to create</mat-card-subtitle>
+    </mat-card-header>
 
-<a [routerLink]="redirectLink()">Proceed</a>
+    <mat-card-content>
+      <mat-radio-group
+        class="role-group"
+        aria-label="Account type"
+        [ngModel]="selectedOption()"
+        (ngModelChange)="selectedOption.set($event)"
+      >
+        <div class="card-container">
+          @for (option of options(); track option) {
+            <mat-card
+              appearance="outlined"
+              class="role-card"
+              [class.selected]="selectedOption() === option"
+              (click)="selectedOption.set(option)"
+            >
+              <mat-radio-button [value]="option">
+                <strong>{{ option }}</strong>
+              </mat-radio-button>
+            </mat-card>
+          }
+        </div>
+      </mat-radio-group>
+
+      <a matButton="filled" class="proceed-btn" [routerLink]="redirectLink()">Proceed</a>
+    </mat-card-content>
+  </mat-card>
+</div>

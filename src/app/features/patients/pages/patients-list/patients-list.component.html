@@ -1,4 +1,7 @@
-<h1>Patients</h1>
+<header class="page-header">
+  <h1 class="title-lg">Patients</h1>
+  <p>{{ isDoctor ? 'Patients who have booked with you' : 'All registered patients' }}</p>
+</header>
 
 @if (isDoctor) {
   <app-grid [data]="doctorPatients()" [columns]="doctorPatientColumns" />

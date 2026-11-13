@@ -7,6 +7,7 @@ import { UserRole } from '../../../../core/models/user-role.enum';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 interface InputData {
   id: number;
@@ -16,7 +17,13 @@ interface InputData {
 
 @Component({
   selector: 'app-appointments-notes-form',
-  imports: [MatDialogModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
+  imports: [
+    MatDialogModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
   templateUrl: './appointments-notes-form.component.html',
   styleUrl: './appointments-notes-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

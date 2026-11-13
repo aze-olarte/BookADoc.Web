@@ -1,9 +1,18 @@
-<h2 mat-dialog-title>Update Notes</h2>
-<mat-dialog-content>
-  <form [formGroup]="fg" class="form">
-    <mat-form-field appearance="outline">
+<h2 mat-dialog-title class="title">Update Notes</h2>
+
+<mat-dialog-content class="content">
+  <p class="hint">Add or edit the doctor's notes for this appointment.</p>
+
+  <form [formGroup]="fg" class="form" (ngSubmit)="save()">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Notes</mat-label>
-      <textarea matInput formControlName="notes" rows="5"></textarea>
+      <textarea
+        matInput
+        formControlName="notes"
+        rows="6"
+        placeholder="Diagnosis, recommendations, follow-up..."
+      ></textarea>
+
       @if (f.notes.hasError('required') && (f.notes.dirty || f.notes.touched)) {
         <mat-error>Notes is required.</mat-error>
       }
@@ -17,7 +26,8 @@
     </mat-form-field>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button (click)="save()">Save</button>
+
+<mat-dialog-actions align="end" class="actions">
+  <button mat-button mat-dialog-close type="button">Cancel</button>
+  <button mat-flat-button type="button" (click)="save()">Save</button>
 </mat-dialog-actions>

@@ -7,10 +7,12 @@ import { SlotService } from '../../services/slot.service';
 import { columns } from './slot-list-columns';
 import { Action } from '../../../../core/models/action';
 import { isBefore, startOfDay } from 'date-fns';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-slot-list',
-  imports: [GridComponent],
+  imports: [GridComponent, MatButtonModule, MatIconModule],
   templateUrl: './slot-list.component.html',
   styleUrl: './slot-list.component.scss',
 })

@@ -1,0 +1,138 @@
+.slot-calendar {
+  overflow-x: auto;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+
+  .fc {
+    --fc-page-bg-color: var(--app-surface);
+    --fc-border-color: var(--app-border);
+    --fc-neutral-bg-color: var(--app-bg);
+    --fc-today-bg-color: transparent;
+    --fc-now-indicator-color: #d44b4b;
+
+    --fc-button-bg-color: var(--app-surface);
+    --fc-button-border-color: var(--app-border-strong);
+    --fc-button-text-color: var(--app-text);
+    --fc-button-hover-bg-color: var(--app-hover);
+    --fc-button-hover-border-color: var(--app-border-strong);
+    --fc-button-active-bg-color: var(--app-selected);
+    --fc-button-active-border-color: var(--app-border-strong);
+
+    min-width: 640px;
+    padding: 20px;
+    font-size: 13px;
+  }
+
+  // Toolbar
+  .fc-toolbar {
+    margin-bottom: 20px !important;
+  }
+
+  .fc-toolbar-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .fc .fc-button {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: var(--app-radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: capitalize;
+    box-shadow: none;
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--app-border-strong);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+
+  .fc .fc-button-group > .fc-button:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .fc .fc-button-group > .fc-button:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // Grid
+  .fc-scrollgrid {
+    border-radius: var(--app-radius-sm);
+    overflow: hidden;
+  }
+
+  // Day headers
+  .fc-col-header-cell-cushion {
+    padding: 10px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+    text-decoration: none;
+  }
+
+  .fc-day-today .fc-col-header-cell-cushion {
+    color: var(--app-text);
+    font-weight: 600;
+  }
+
+  // Time axis
+  .fc-timegrid-axis-cushion,
+  .fc-timegrid-slot-label-cushion {
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--app-text-muted);
+    white-space: nowrap;
+  }
+
+  .fc-timegrid-slot {
+    height: 40px;
+  }
+
+  .fc-timegrid-slot-minor {
+    border-top-style: dotted;
+  }
+
+  // Slots
+  .fc-timegrid-event {
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: none;
+  }
+
+  .fc-event-main {
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .fc-event:hover {
+    filter: brightness(0.96);
+  }
+
+  .fc-event.slot-available {
+    --fc-event-bg-color: var(--app-success-bg);
+    --fc-event-border-color: var(--app-success);
+    --fc-event-text-color: var(--app-success);
+    border-left-width: 3px;
+  }
+
+  .fc-event.slot-booked {
+    --fc-event-bg-color: var(--app-info-bg);
+    --fc-event-border-color: var(--app-info);
+    --fc-event-text-color: var(--app-info);
+    border-left-width: 3px;
+  }
+
+  .fc-timegrid-col:not(.fc-day-past) .fc-timegrid-slot-lane:hover {
+    background: var(--app-hover);
+    cursor: pointer;
+  }
+}

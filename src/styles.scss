@@ -1,8 +1,3 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
@@ -10,70 +5,444 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$cyan-palette,
+        tertiary: mat.$azure-palette,
       ),
-      typography: Roboto,
-      density: 0,
+      typography: (
+        plain-family: (
+          'Inter Variable',
+          Roboto,
+          sans-serif,
+        ),
+        brand-family: (
+          'Inter Variable',
+          Roboto,
+          sans-serif,
+        ),
+        bold-weight: 600,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: -1,
     )
   );
+
+  // Neutral palette: the only color on screen is the theme accent
+  --app-bg: #fafafa;
+  --app-surface: #ffffff;
+  --app-border: #e8e8e8;
+  --app-border-strong: #d4d4d4;
+  --app-text: #171717;
+  --app-text-muted: #6b6b6b;
+  --app-hover: #f4f4f4;
+  --app-selected: #f0f0f0;
+
+  --app-radius: 12px;
+  --app-radius-sm: 8px;
+  --app-sidenav-width: 248px;
+
+  // Status colors (text on a very light tint)
+  --app-success: #0f6e56;
+  --app-success-bg: #eaf6f1;
+  --app-error: #a32d2d;
+  --app-error-bg: #fbeeee;
+  --app-info: #185fa5;
+  --app-info-bg: #eaf2fa;
+  --app-warning: #854f0b;
+  --app-warning-bg: #fbf3e4;
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-small);
-
-  // Reset the user agent margin.
+  background: var(--app-bg);
+  color: var(--app-text);
+  font: var(--mat-sys-body-medium);
+  letter-spacing: -0.005em;
   margin: 0;
   height: 100%;
+  -webkit-font-smoothing: antialiased;
 }
-/* You can add global styles to this file, and also import other style files */
 
-// TOAST
+// ---------------------------------------------------------------
+// Typography utilities
+// ---------------------------------------------------------------
+.title-lg {
+  margin: 0 0 4px;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.title-md {
+  margin: 0 0 6px;
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.title-sm {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.text-muted {
+  color: var(--app-text-muted);
+}
 
-.toast-base .mdc-snackbar__surface {
+// ---------------------------------------------------------------
+// Material overrides: flat, thin, quiet
+// ---------------------------------------------------------------
+mat-card.mat-mdc-card {
+  --mat-card-elevated-container-shape: var(--app-radius);
+  --mat-card-elevated-container-color: var(--app-surface);
+  --mat-card-elevated-container-elevation: none;
+  --mat-card-outlined-container-shape: var(--app-radius);
+  --mat-card-outlined-container-color: var(--app-surface);
+  --mat-card-outlined-outline-color: var(--app-border);
+  --mat-card-outlined-outline-width: 1px;
+  --mat-card-title-text-size: 20px;
+  --mat-card-title-text-weight: 600;
+  --mat-card-subtitle-text-color: var(--app-text-muted);
+  --mat-card-subtitle-text-size: 14px;
+}
+
+.mat-mdc-form-field {
+  --mat-form-field-outlined-container-shape: var(--app-radius-sm);
+  --mat-form-field-outlined-outline-color: var(--app-border-strong);
+  --mat-form-field-outlined-hover-outline-color: var(--app-text-muted);
+  --mat-form-field-outlined-label-text-color: var(--app-text-muted);
+}
+
+// Buttons keep the theme colors; only shape and weight are adjusted
+.mat-mdc-button-base {
+  --mat-button-filled-container-shape: var(--app-radius-sm);
+  --mat-button-outlined-container-shape: var(--app-radius-sm);
+  --mat-button-text-container-shape: var(--app-radius-sm);
+  --mat-button-outlined-outline-color: var(--app-border-strong);
+  --mat-button-filled-label-text-weight: 500;
+  --mat-button-outlined-label-text-weight: 500;
+  --mat-button-text-label-text-weight: 500;
+}
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+  --mat-icon-button-icon-color: var(--app-text-muted);
+  --mat-icon-button-state-layer-color: var(--app-text);
+}
+
+// Dialog size (the overlay pane controls width)
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  width: 560px;
+  max-width: calc(100vw - 32px) !important;
+}
+
+.mat-mdc-dialog-container {
+  --mat-dialog-container-shape: var(--app-radius);
+  --mat-dialog-container-color: var(--app-surface);
+  --mat-dialog-container-min-width: 0;
+  --mat-dialog-container-max-width: 100%;
+  --mat-dialog-container-small-max-width: 100%;
+
+  .mdc-dialog__surface {
+    border: 1px solid var(--app-border);
+    box-shadow: 0 16px 48px rgb(0 0 0 / 0.12);
+  }
+
+  // Title
+  .mat-mdc-dialog-title {
+    padding: 36px 40px 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.01em;
+    color: var(--app-text);
+
+    &::before {
+      display: none; // Material's baseline spacer adds extra, uneven height
+    }
+  }
+
+  // Body
+  .mat-mdc-dialog-content {
+    padding: 24px 40px 8px;
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--app-text);
+  }
+
+  // Buttons
+  .mat-mdc-dialog-actions {
+    padding: 24px 40px 32px;
+    gap: 8px;
+    min-height: 0;
+  }
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgb(0 0 0 / 0.32);
+}
+
+// Row action menu
+.mat-mdc-menu-panel {
+  --mat-menu-container-color: var(--app-surface);
+  --mat-menu-container-shape: var(--app-radius-sm);
+  --mat-menu-item-label-text-color: var(--app-text);
+  --mat-menu-item-icon-color: var(--app-text-muted);
+  --mat-menu-item-hover-state-layer-color: var(--app-text);
+  --mat-menu-item-focus-state-layer-color: var(--app-text);
+  --mat-menu-item-label-text-size: 13px;
+  --mat-menu-divider-color: var(--app-border);
+
+  min-width: 160px !important;
+  max-width: 260px !important;
+  min-height: 0 !important;
+  background-color: var(--app-surface) !important;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm) !important;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.08) !important;
+
+  .mat-mdc-menu-content {
+    padding: 4px !important;
+    background-color: var(--app-surface);
+  }
+
+  .mat-mdc-menu-item {
+    min-height: 32px !important;
+    height: 32px;
+    padding: 0 8px !important;
+    border-radius: 6px;
+    font-size: 13px !important;
+    line-height: 20px !important;
+    gap: 8px;
+    color: var(--app-text) !important;
+    background: transparent;
+
+    .mdc-list-item__primary-text {
+      color: var(--app-text);
+    }
+
+    // Neutral hover and focus fill, instead of Material's tinted state layer
+    &:hover:not([disabled]),
+    &.cdk-program-focused,
+    &.cdk-keyboard-focused {
+      background-color: var(--app-hover) !important;
+    }
+
+    .mat-icon {
+      width: 16px;
+      height: 16px;
+      margin: 0 !important;
+      font-size: 16px;
+      color: var(--app-text-muted);
+    }
+  }
+
+  // Remove the tinted ripple and state layers; the hover fill above replaces them
+  .mat-mdc-menu-item .mat-mdc-menu-ripple,
+  .mat-mdc-menu-item::before {
+    display: none;
+  }
+}
+
+// Datepicker and timepicker popups (rendered in the CDK overlay)
+.mat-datepicker-content {
+  --mat-datepicker-calendar-container-shape: var(--app-radius);
+  --mat-datepicker-calendar-container-background-color: var(--app-surface);
+  --mat-datepicker-calendar-container-elevation-shadow: none;
+  --mat-datepicker-calendar-date-text-color: var(--app-text);
+  --mat-datepicker-calendar-header-text-color: var(--app-text-muted);
+  --mat-datepicker-calendar-period-button-text-color: var(--app-text);
+  --mat-datepicker-calendar-navigation-button-icon-color: var(--app-text-muted);
+  --mat-datepicker-calendar-date-outline-color: var(--app-border-strong);
+
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+}
+
+.mat-timepicker-panel {
+  --mat-timepicker-container-shape: var(--app-radius-sm);
+  --mat-timepicker-container-background-color: var(--app-surface);
+  --mat-timepicker-container-elevation-shadow: none;
+
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+}
+
+// ---------------------------------------------------------------
+// Building blocks
+// ---------------------------------------------------------------
+.page-header {
+  margin-bottom: 32px;
+
+  p {
+    margin: 0;
+    color: var(--app-text-muted);
+  }
+}
+
+// Page header with a primary action on the right (e.g. an "Add" button)
+.page-header--with-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  button {
+    flex-shrink: 0;
+  }
+}
+
+.surface-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  padding: 24px;
+}
+
+// Status badges: tinted text on a light background
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+
+  &.confirmed {
+    background: var(--app-success-bg);
+    color: var(--app-success);
+  }
+  &.pending {
+    background: var(--app-warning-bg);
+    color: var(--app-warning);
+  }
+  &.cancelled {
+    background: var(--app-error-bg);
+    color: var(--app-error);
+  }
+  &.completed {
+    background: var(--app-info-bg);
+    color: var(--app-info);
+  }
+}
+
+// ---------------------------------------------------------------
+// Public pages and auth pages (login, register, role selection)
+// ---------------------------------------------------------------
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px);
+}
+
+.auth-page {
+  box-sizing: border-box;
+  min-height: calc(100dvh - 60px - 2 * clamp(20px, 4vw, 48px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0;
+  background: transparent;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 16px 12px 12px;
+
+  &.wide {
+    max-width: 680px;
+  }
+}
+
+// Text links only; Material buttons rendered as <a> keep their own styling
+.auth-page a:not(.mat-mdc-button-base) {
+  color: var(--app-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--app-border-strong);
+  text-underline-offset: 3px;
+
+  &:hover {
+    text-decoration-color: var(--app-text);
+  }
+}
+
+// ---------------------------------------------------------------
+// Toasts: tinted by type
+// Use with panelClass: ['toast-base', 'toast-success']
+// ---------------------------------------------------------------
+.toast-base {
+  --mat-snack-bar-container-shape: var(--app-radius-sm);
+  --mat-snack-bar-supporting-text-size: 14px;
+
   min-width: 300px;
   max-width: 480px;
-  border-radius: 8px !important;
-}
 
-.toast-success .mdc-snackbar__surface {
-  background-color: #0f6e56 !important;
-  color: #e1f5ee !important;
-  .mdc-button__label {
-    color: #9fe1cb !important;
+  .mdc-snackbar__surface {
+    border: 1px solid transparent;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.08) !important;
   }
 }
 
-.toast-error .mdc-snackbar__surface {
-  background-color: #a32d2d !important;
-  color: #fcebeb !important;
-  .mdc-button__label {
-    color: #f7c1c1 !important;
+.toast-success {
+  --mat-snack-bar-container-color: var(--app-success-bg);
+  --mat-snack-bar-supporting-text-color: var(--app-success);
+  --mat-snack-bar-button-color: var(--app-success);
+
+  .mdc-snackbar__surface {
+    background-color: var(--app-success-bg) !important;
+    border-color: color-mix(in srgb, var(--app-success) 25%, transparent);
+  }
+  .mdc-snackbar__label {
+    color: var(--app-success) !important;
   }
 }
 
-.toast-info .mdc-snackbar__surface {
-  background-color: #185fa5 !important;
-  color: #e6f1fb !important;
-  .mdc-button__label {
-    color: #b5d4f4 !important;
+.toast-error {
+  --mat-snack-bar-container-color: var(--app-error-bg);
+  --mat-snack-bar-supporting-text-color: var(--app-error);
+  --mat-snack-bar-button-color: var(--app-error);
+
+  .mdc-snackbar__surface {
+    background-color: var(--app-error-bg) !important;
+    border-color: color-mix(in srgb, var(--app-error) 25%, transparent);
+  }
+  .mdc-snackbar__label {
+    color: var(--app-error) !important;
   }
 }
 
-.toast-warning .mdc-snackbar__surface {
-  background-color: #854f0b !important;
-  color: #faeeda !important;
-  .mdc-button__label {
-    color: #fac775 !important;
+.toast-info {
+  --mat-snack-bar-container-color: var(--app-info-bg);
+  --mat-snack-bar-supporting-text-color: var(--app-info);
+  --mat-snack-bar-button-color: var(--app-info);
+
+  .mdc-snackbar__surface {
+    background-color: var(--app-info-bg) !important;
+    border-color: color-mix(in srgb, var(--app-info) 25%, transparent);
+  }
+  .mdc-snackbar__label {
+    color: var(--app-info) !important;
+  }
+}
+
+.toast-warning {
+  --mat-snack-bar-container-color: var(--app-warning-bg);
+  --mat-snack-bar-supporting-text-color: var(--app-warning);
+  --mat-snack-bar-button-color: var(--app-warning);
+
+  .mdc-snackbar__surface {
+    background-color: var(--app-warning-bg) !important;
+    border-color: color-mix(in srgb, var(--app-warning) 25%, transparent);
+  }
+  .mdc-snackbar__label {
+    color: var(--app-warning) !important;
   }
 }

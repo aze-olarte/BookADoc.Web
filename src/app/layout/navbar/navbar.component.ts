@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../features/auth/services/auth.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../features/auth/services/auth.service';
 import { MatAnchor } from '@angular/material/button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [MatListModule, RouterLink, MatAnchor],
+  imports: [MatListModule, RouterLink, MatAnchor, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })

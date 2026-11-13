@@ -1,0 +1,93 @@
+:host {
+  display: block;
+}
+
+.table-wrapper {
+  overflow: hidden;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  --mat-table-background-color: var(--app-surface);
+  --mat-table-header-container-height: 44px;
+  --mat-table-row-item-container-height: 56px;
+  --mat-table-header-headline-color: var(--app-text-muted);
+  --mat-table-header-headline-size: 12px;
+  --mat-table-header-headline-weight: 500;
+  --mat-table-row-item-label-text-size: 14px;
+  --mat-table-row-item-label-text-color: var(--app-text);
+  --mat-table-row-item-outline-color: var(--app-border);
+  --mat-table-footer-container-height: 44px;
+  width: 100%;
+  min-width: 560px;
+
+  th.mat-mdc-header-cell {
+    background: var(--app-bg);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  th.mat-mdc-header-cell,
+  td.mat-mdc-cell {
+    padding: 0 20px;
+  }
+
+  tr.mat-mdc-row {
+    transition: background-color 120ms ease;
+
+    &:hover {
+      background: var(--app-hover);
+    }
+
+    &:last-child td {
+      border-bottom: 0;
+    }
+  }
+}
+
+.actions-cell {
+  width: 56px;
+  text-align: right;
+}
+
+mat-paginator {
+  --mat-paginator-container-background-color: var(--app-surface);
+  --mat-paginator-container-text-size: 13px;
+  --mat-paginator-container-text-color: var(--app-text-muted);
+  border-top: 1px solid var(--app-border);
+}
+
+.actions-cell button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface);
+  color: var(--app-text-muted);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    color 120ms ease;
+  cursor: pointer;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    margin: auto;
+  }
+
+  &:hover,
+  &[aria-expanded='true'] {
+    border-color: var(--app-border-strong);
+    background: var(--app-hover);
+    color: var(--app-text);
+  }
+}

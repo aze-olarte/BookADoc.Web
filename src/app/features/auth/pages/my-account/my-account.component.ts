@@ -1,10 +1,11 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-my-account',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.scss',
 })

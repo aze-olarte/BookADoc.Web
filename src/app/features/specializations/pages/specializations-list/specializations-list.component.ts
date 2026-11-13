@@ -19,10 +19,12 @@ import { SpecializationService } from '../../services/specialization.service';
 import { SpecializationsFormComponent } from '../../components/specializations-form/specializations-form.component';
 import { columns } from './specializations-list-columns';
 import { Column } from '../../../../core/models/columns';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-specializations-list',
-  imports: [GridComponent],
+  imports: [GridComponent, MatIconModule, MatButtonModule],
   templateUrl: './specializations-list.component.html',
   styleUrl: './specializations-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

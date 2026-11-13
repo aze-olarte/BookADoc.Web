@@ -1,0 +1,159 @@
+:host {
+  display: block;
+}
+
+.back {
+  margin-left: -12px;
+  margin-bottom: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  font-size: 1rem;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+}
+
+.status {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #eceff1;
+  color: #455a64;
+
+  &.status--pending {
+    background: #fff3e0;
+    color: #e65100;
+  }
+  &.status--confirmed,
+  &.status--booked {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+  &.status--completed {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  &.status--cancelled,
+  &.status--canceled {
+    background: #ffebee;
+    color: #c62828;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.notes-card {
+  grid-column: 1 / -1;
+}
+
+mat-card-header {
+  padding: 32px 32px 0;
+}
+
+mat-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+mat-card-content {
+  padding: 24px 32px 32px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 24px 24px;
+  margin: 0;
+
+  dt {
+    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+    line-height: 1.5;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
+
+.sub {
+  display: block;
+  margin-top: 4px;
+  font-weight: 400;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+}
+
+.notes {
+  margin: 0;
+  line-height: 1.75;
+  white-space: pre-wrap;
+
+  &--empty {
+    font-style: italic;
+    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.5));
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 96px 0;
+}
+
+@media (max-width: 800px) {
+  .page {
+    padding: 24px 20px 40px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  mat-card-header {
+    padding: 24px 24px 0;
+  }
+
+  mat-card-content {
+    padding: 20px 24px 24px;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+    gap: 4px;
+
+    dd {
+      margin-bottom: 16px;
+    }
+  }
+}

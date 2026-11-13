@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  min-width: min(520px, 100%);
+}
+
+.title {
+  padding: 24px 32px 0;
+  font-weight: 600;
+}
+
+.content {
+  padding: 8px 32px 0 !important;
+}
+
+.hint {
+  margin: 0 0 24px;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.actions {
+  padding: 16px 32px 24px;
+  gap: 8px;
+}

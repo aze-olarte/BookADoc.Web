@@ -1,17 +1,30 @@
-<mat-card>
-  <mat-card-content>
-    @if (doctor(); as doctor) {
-      <h1>{{ doctor.name }}</h1>
-      <b>Specialization</b>
-      <p>{{ doctor.specialization.name }}</p>
+@if (doctor(); as d) {
+  <article class="profile">
+    <header class="profile-head">
+      <div>
+        <h1 class="title-lg">{{ d.name }}</h1>
+        <p class="specialty">{{ d.specialization.name }}</p>
+      </div>
+    </header>
 
-      <b>Consultation Fee</b>
-      <p>{{ doctor.consultationFee }}</p>
+    <dl class="facts">
+      <div>
+        <dt>Specialization</dt>
+        <dd>{{ d.specialization.name }}</dd>
+      </div>
+      <div>
+        <dt>Consultation fee</dt>
+        <dd>{{ d.consultationFee | currency: 'PHP' }}</dd>
+      </div>
+    </dl>
 
-      <b>Bio</b>
-      <p>{{ doctor.bio }}</p>
-    } @else {
-      <mat-progress-spinner />
-    }
-  </mat-card-content>
-</mat-card>
+    <section class="about">
+      <h2 class="title-sm">About</h2>
+      <p class="bio">{{ d.bio || 'No bio provided.' }}</p>
+    </section>
+  </article>
+} @else {
+  <div class="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="32" />
+  </div>
+}

@@ -4,10 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { switchMap } from 'rxjs';
 import { DoctorService } from '../../services/doctor.service';
+import { CurrencyPipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-doctors-profile',
-  imports: [MatCardModule, MatProgressSpinner],
+  imports: [MatCardModule, MatProgressSpinner, CurrencyPipe, MatIconModule],
   templateUrl: './doctors-profile.component.html',
   styleUrl: './doctors-profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

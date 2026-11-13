@@ -1,14 +1,21 @@
-<h1>Slots</h1>
+<header class="page-header page-header--with-action">
+  <div>
+    <h1 class="title-lg">Slots</h1>
+    <p>Manage the time slots available for booking</p>
+  </div>
 
-<mat-button-toggle-group
-  name="viewType"
-  aria-label="View Type"
-  [value]="currentView()"
-  (change)="onViewChange($event)"
->
-  <mat-button-toggle value="list">List</mat-button-toggle>
-  <mat-button-toggle value="calendar">Calendar</mat-button-toggle>
-</mat-button-toggle-group>
+  <mat-button-toggle-group
+    class="view-toggle"
+    name="viewType"
+    aria-label="View type"
+    hideSingleSelectionIndicator
+    [value]="currentView()"
+    (change)="onViewChange($event)"
+  >
+    <mat-button-toggle value="list">List</mat-button-toggle>
+    <mat-button-toggle value="calendar">Calendar</mat-button-toggle>
+  </mat-button-toggle-group>
+</header>
 
 @if (currentView() === 'list') {
   <app-slot-list

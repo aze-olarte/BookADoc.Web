@@ -1,0 +1,22 @@
+<div class="nav-wrapper">
+  <div class="brand">MediBook</div>
+
+  <mat-nav-list class="nav-list">
+    @for (item of navItemsByRole(); track item.url) {
+      <a
+        mat-list-item
+        class="nav-link"
+        [routerLink]="item.url"
+        routerLinkActive
+        ariaCurrentWhenActive="page"
+        #rla="routerLinkActive"
+        [activated]="rla.isActive"
+        >{{ item.name }}</a
+      >
+    }
+  </mat-nav-list>
+
+  <div class="nav-footer">
+    <button matButton type="button" (click)="logout()">Logout</button>
+  </div>
+</div>

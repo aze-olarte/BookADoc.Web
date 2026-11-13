@@ -1,9 +1,32 @@
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px;
-}
-
 .sidenav-container {
   height: 100%;
+  background: var(--app-bg);
+}
+
+mat-sidenav {
+  --mat-sidenav-container-width: var(--app-sidenav-width);
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-background-color: var(--app-surface);
+  --mat-sidenav-container-divider-color: var(--app-border);
+  max-width: 85vw;
+}
+
+.main-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px);
+}
+
+.mobile-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  gap: 8px;
+  background: var(--app-surface);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.mobile-title {
+  font-size: 15px;
+  font-weight: 600;
 }

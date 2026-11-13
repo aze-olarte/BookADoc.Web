@@ -1,21 +1,74 @@
-<h1>Appointment Details</h1>
+<a mat-button class="back" routerLink="/portal/appointments">
+  <mat-icon>arrow_back</mat-icon>
+  Back to appointments
+</a>
 
-@if (appointment(); as appointment) {
-  <p>Status: {{ appointment.status }}</p>
-  <p>Date: {{ appointment.date | date: 'EEEE, MMMM d, y' }}</p>
-  <p>Slot: {{ appointment.startTime }} - {{ appointment.endTime }}</p>
-  <p>Booked On: {{ appointment.bookedAt | date: 'EEEE,MMMM d, y' }}</p>
+@if (appointment(); as appt) {
+  <header class="header">
+    <div>
+      <h1 class="title">Appointment Details</h1>
+      <p class="subtitle">
+        {{ appt.date | date: 'EEEE, MMMM d, y' }} · {{ appt.startTime }} - {{ appt.endTime }}
+      </p>
+    </div>
+    <span class="status" [class]="'status--' + appt.status.toLowerCase()">
+      {{ appt.status }}
+    </span>
+  </header>
 
-  <hr />
-  <p>Doctor: {{ appointment.doctorName }} - {{ appointment.specialization }}</p>
-  <p>Patient: {{ appointment.patientName }}</p>
+  <div class="grid">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Appointment</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <dl class="details">
+          <dt>Date</dt>
+          <dd>{{ appt.date | date: 'EEEE, MMMM d, y' }}</dd>
 
-  <p>Reason: {{ appointment.reason }}</p>
+          <dt>Slot</dt>
+          <dd>{{ appt.startTime }} - {{ appt.endTime }}</dd>
 
-  <hr />
+          <dt>Booked on</dt>
+          <dd>{{ appt.bookedAt | date: 'EEEE, MMMM d, y' }}</dd>
 
-  <h3>Doctor's Notes</h3>
-  <p>{{ appointment.notes || 'N/A' }}</p>
+          <dt>Reason</dt>
+          <dd>{{ appt.reason }}</dd>
+        </dl>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>People</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <dl class="details">
+          <dt>Doctor</dt>
+          <dd>
+            {{ appt.doctorName }}
+            <span class="sub">{{ appt.specialization }}</span>
+          </dd>
+
+          <dt>Patient</dt>
+          <dd>{{ appt.patientName }}</dd>
+        </dl>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="notes-card">
+      <mat-card-header>
+        <mat-card-title>Doctor's Notes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="notes" [class.notes--empty]="!appt.notes">
+          {{ appt.notes || 'No notes yet.' }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 } @else {
-  <mat-progress-spinner />
+  <div class="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="48" />
+  </div>
 }

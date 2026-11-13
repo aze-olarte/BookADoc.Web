@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 24px;
+}
+
+.submit-btn {
+  --mat-button-filled-container-height: 44px;
+  margin-top: 8px;
+}

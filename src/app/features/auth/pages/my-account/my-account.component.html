@@ -1,12 +1,47 @@
-<h1>My Account</h1>
+<header class="page-header">
+  <h1 class="title-lg">My Account</h1>
+  <p>Your profile and account details</p>
+</header>
 
-<p>{{ user()?.name }}</p>
-<p>{{ user()?.email }}</p>
-<p>{{ user()?.role }}</p>
+@if (user(); as u) {
+  <section class="surface-card">
+    <div class="profile-head">
+      <div>
+        <h2 class="title-md">{{ u.name }}</h2>
+        <span class="role-badge">{{ u.role }}</span>
+      </div>
+    </div>
 
-<br />
+    <dl class="details">
+      <div>
+        <dt>Email</dt>
+        <dd>{{ u.email }}</dd>
+      </div>
+    </dl>
+  </section>
 
-<p>{{ user()?.licenseNumber }}</p>
-<p>{{ user()?.specialization?.name }}</p>
-<p>{{ user()?.consultationFee }}</p>
-<p>{{ user()?.bio }}</p>
+  @if (u.licenseNumber) {
+    <section class="surface-card">
+      <h2 class="title-sm">Professional details</h2>
+
+      <dl class="details">
+        <div>
+          <dt>Specialization</dt>
+          <dd>{{ u.specialization?.name || '—' }}</dd>
+        </div>
+        <div>
+          <dt>License number</dt>
+          <dd>{{ u.licenseNumber }}</dd>
+        </div>
+        <div>
+          <dt>Consultation fee</dt>
+          <dd>{{ u.consultationFee | currency: 'PHP' }}</dd>
+        </div>
+        <div class="full">
+          <dt>Bio</dt>
+          <dd>{{ u.bio || '—' }}</dd>
+        </div>
+      </dl>
+    </section>
+  }
+}

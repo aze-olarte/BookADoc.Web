@@ -15,6 +15,7 @@ import { toDateOnly, toDateTime } from '../../../../shared/utils/date-time.utils
 import { toTimeOnly } from '../../../../shared/utils/date-time.utils';
 import { SlotResponse } from '../../../../core/models/slot-response.model';
 import { addMinutes } from 'date-fns';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-slot-form',
@@ -25,6 +26,7 @@ import { addMinutes } from 'date-fns';
     MatInputModule,
     MatDatepickerModule,
     MatTimepickerModule,
+    MatButtonModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './slot-form.component.html',

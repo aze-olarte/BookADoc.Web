@@ -1,22 +1,9 @@
-import { Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, ViewEncapsulation } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import {
-  CalendarOptions,
-  DatesSetArg,
-  EventClickArg,
-  EventInput,
-} from '@fullcalendar/core/index.js';
+import { CalendarOptions, DatesSetArg, EventInput } from '@fullcalendar/core/index.js';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {
-  addMinutes,
-  endOfWeek,
-  format,
-  isBefore,
-  parseISO,
-  startOfDay,
-  startOfWeek,
-} from 'date-fns';
+import { addMinutes, endOfWeek, format, parseISO, startOfWeek } from 'date-fns';
 import { SlotResponse } from '../../../../core/models/slot-response.model';
 import { ToastService } from '../../../../core/services/toast.service';
 import { SlotService } from '../../services/slot.service';
@@ -26,6 +13,7 @@ import { SlotService } from '../../services/slot.service';
   imports: [FullCalendarModule],
   templateUrl: './slot-calendar.component.html',
   styleUrl: './slot-calendar.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class SlotCalendarComponent implements OnInit {
   private slotService = inject(SlotService);
@@ -41,7 +29,7 @@ export class SlotCalendarComponent implements OnInit {
     initialView: 'timeGridWeek',
     allDaySlot: false,
     headerToolbar: {
-      left: 'prev, next, today',
+      left: 'prev,next today',
       center: 'title',
       right: '',
     },
@@ -49,6 +37,12 @@ export class SlotCalendarComponent implements OnInit {
     editable: false,
     slotMinTime: '07:00:00',
     slotMaxTime: '23:00:00',
+    slotDuration: '00:30:00',
+    slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
+    displayEventTime: false,
+    height: 'auto',
+    nowIndicator: true,
+    dayHeaderFormat: { weekday: 'short', day: 'numeric' },
 
     dateClick: (arg: DateClickArg) => {
       const start = parseISO(arg.dateStr);
@@ -80,16 +74,15 @@ export class SlotCalendarComponent implements OnInit {
   loadData(startDate: Date = this.startDate, endDate: Date = this.endDate): void {
     this.slotService.getSlots(this.id(), startDate, endDate).subscribe({
       next: (data) => {
-        const eventData = data.map((item) => {
-          return {
-            id: String(item.id),
-            start: `${item.date}T${item.startTime}`,
-            end: `${item.date}T${item.endTime}`,
-            allDay: false,
-            title: item.isBooked ? 'Booked' : 'Not Booked',
-            data: item,
-          };
-        });
+        const eventData = data.map((item) => ({
+          id: String(item.id),
+          start: `${item.date}T${item.startTime}`,
+          end: `${item.date}T${item.endTime}`,
+          allDay: false,
+          title: item.isBooked ? 'Booked' : 'Available',
+          classNames: [item.isBooked ? 'slot-booked' : 'slot-available'],
+          data: item,
+        }));
         this.events.set(eventData);
       },
       error: () => {},

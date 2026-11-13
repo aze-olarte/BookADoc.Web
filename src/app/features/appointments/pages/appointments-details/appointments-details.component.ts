@@ -5,10 +5,21 @@ import { switchMap } from 'rxjs';
 import { AppointmentResponse } from '../../../../core/models/appointment-response.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-appointments-details.component',
-  imports: [MatProgressSpinnerModule, DatePipe],
+  imports: [
+    DatePipe,
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './appointments-details.component.html',
   styleUrl: './appointments-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

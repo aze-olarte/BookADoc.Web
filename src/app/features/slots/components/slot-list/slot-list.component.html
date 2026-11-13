@@ -1,8 +1,13 @@
+<div class="toolbar">
+  <button matButton="filled" type="button" (click)="update()">
+    <mat-icon matButtonIcon>add</mat-icon>
+    Add slot
+  </button>
+</div>
+
 <app-grid
   [data]="data()"
   [columns]="columnDefs"
   [actions]="actions"
   (actionTriggered)="onActionTriggered($event)"
->
-  <button matButton="outline" (click)="update()">Add</button>
-</app-grid>
+/>

@@ -1,0 +1,82 @@
+:host {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 24px;
+  color: var(--app-text-muted);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 120ms ease;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+
+  &:hover {
+    color: var(--app-text);
+  }
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--app-border);
+
+  h1 {
+    margin-bottom: 2px;
+  }
+}
+
+.specialty {
+  margin: 0;
+  color: var(--app-text-muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--app-border);
+
+  dt {
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 15px;
+  }
+}
+
+.about {
+  padding-top: 28px;
+}
+
+.bio {
+  margin: 0;
+  max-width: 62ch;
+  line-height: 1.7;
+  white-space: pre-line; // keeps paragraph breaks from the bio text
+  color: var(--app-text);
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  padding: 96px 0;
+}

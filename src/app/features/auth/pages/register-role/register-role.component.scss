@@ -1,21 +1,52 @@
+:host {
+  display: block;
+}
+
+.role-group {
+  display: block;
+  margin-top: 24px;
+}
+
 .card-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
 
 .role-card {
+  --mat-card-outlined-container-shape: var(--app-radius-sm);
   cursor: pointer;
-  padding: 12px;
-  border: 2px solid transparent;
-  transition: 0.2s ease;
+  padding: 16px;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+
+  &:hover {
+    --mat-card-outlined-outline-color: var(--app-border-strong);
+    background: var(--app-hover);
+  }
+
+  &.selected {
+    --mat-card-outlined-outline-color: var(--app-text);
+    background: var(--app-surface);
+    box-shadow: 0 0 0 1px var(--app-text);
+  }
+
+  &:has(:focus-visible) {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+
+  mat-radio-button {
+    display: block;
+  }
 }
 
-.role-card:hover {
-  border-color: #c5c5c5;
-}
-
-.role-card.selected {
-  border-color: #3f51b5; // Angular Material primary color
-  background: rgba(63, 81, 181, 0.08);
-  transform: scale(1.02);
+.proceed-btn {
+  --mat-button-filled-container-height: 44px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+  text-decoration: none;
 }

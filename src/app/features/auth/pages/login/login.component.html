@@ -1,38 +1,47 @@
-<mat-card>
-  <mat-card-header> Login </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="fg" (ngSubmit)="submit()" class="form">
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" type="email" required />
-        @if (f.email.hasError('required') && (f.email.dirty || f.email.touched)) {
-          <mat-error>Email is required.</mat-error>
-        }
-        @if (f.email.hasError('email') && (f.email.dirty || f.email.touched)) {
-          <mat-error>Invalid email format.</mat-error>
-        }
+<div class="auth-page">
+  <mat-card appearance="outlined" class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Welcome back</mat-card-title>
+      <mat-card-subtitle>Log in to manage your appointments</mat-card-subtitle>
+    </mat-card-header>
 
-        @if (f.email.hasError('serverError')) {
-          <mat-error>{{ f.email.errors?.['serverError'] }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput formControlName="password" type="password" required />
-        @if (f.password.hasError('required') && (f.password.dirty || f.password.touched)) {
-          <mat-error>Password is required.</mat-error>
-        }
+    <mat-card-content>
+      <form [formGroup]="fg" (ngSubmit)="submit()" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" autocomplete="email" required />
+          @if (f.email.hasError('required') && (f.email.dirty || f.email.touched)) {
+            <mat-error>Email is required.</mat-error>
+          }
+          @if (f.email.hasError('email') && (f.email.dirty || f.email.touched)) {
+            <mat-error>Invalid email format.</mat-error>
+          }
+          @if (f.email.hasError('serverError')) {
+            <mat-error>{{ f.email.errors?.['serverError'] }}</mat-error>
+          }
+        </mat-form-field>
 
-        @if (f.password.hasError('serverError')) {
-          <mat-error>{{ f.password.errors?.['serverError'] }}</mat-error>
-        }
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          @if (f.password.hasError('required') && (f.password.dirty || f.password.touched)) {
+            <mat-error>Password is required.</mat-error>
+          }
+          @if (f.password.hasError('serverError')) {
+            <mat-error>{{ f.password.errors?.['serverError'] }}</mat-error>
+          }
+        </mat-form-field>
 
-      <button matButton="filled" type="submit">Login</button>
-    </form>
+        <button matButton="filled" type="submit" class="submit-btn">Login</button>
+      </form>
 
-    <p>Don't have an account yet? <a routerLink="/register">Sign Up</a></p>
-  </mat-card-content>
-</mat-card>
-
-<a routerLink="/doctors">View Our Doctors</a>
+      <p class="switch-text">Don't have an account yet? <a routerLink="/register">Sign up</a></p>
+    </mat-card-content>
+  </mat-card>
+</div>

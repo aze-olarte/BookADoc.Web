@@ -6,10 +6,17 @@ import { SpecializationRequest } from '../../../../core/models/specialization-re
 import { ToastService } from '../../../../core/services/toast.service';
 import { SpecializationService } from '../../services/specialization.service';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-specializations-form',
-  imports: [MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
   templateUrl: './specializations-form.component.html',
   styleUrl: './specializations-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

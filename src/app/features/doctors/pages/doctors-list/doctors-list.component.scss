@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.filters {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.filter-field {
+  width: 240px;
+  max-width: 100%;
+}

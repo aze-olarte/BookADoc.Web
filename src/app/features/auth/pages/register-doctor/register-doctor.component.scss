@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.section-title {
+  margin: 28px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-text-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  &:first-of-type {
+    margin-top: 20px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  column-gap: 16px;
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.submit-btn {
+  --mat-button-filled-container-height: 44px;
+  margin-top: 16px;
+}

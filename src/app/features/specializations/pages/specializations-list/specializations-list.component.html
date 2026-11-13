@@ -1,10 +1,17 @@
-<h1>Specializations</h1>
+<header class="page-header page-header--with-action">
+  <div>
+    <h1 class="title-lg">Specializations</h1>
+    <p>Manage the specializations doctors can register under</p>
+  </div>
+  <button matButton="filled" type="button" (click)="onAdd()">
+    <mat-icon matButtonIcon>add</mat-icon>
+    Add specialization
+  </button>
+</header>
 
 <app-grid
   [data]="data()"
   [columns]="columnDefs"
   [actions]="actions"
   (actionTriggered)="onActionTriggered($event)"
->
-  <button matButton="outline" (click)="onAdd()">Add</button>
-</app-grid>
+/>
