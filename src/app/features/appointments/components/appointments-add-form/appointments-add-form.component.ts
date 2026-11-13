@@ -16,6 +16,7 @@ import { AppointmentService } from '../../services/appointment.service';
 import { MatListModule } from '@angular/material/list';
 import { SlotService } from '../../../slots/services/slot.service';
 import { minDateValidator } from '../../../../shared/validators/mindate.validator';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-appointments-add-form.component',
@@ -27,6 +28,7 @@ import { minDateValidator } from '../../../../shared/validators/mindate.validato
     MatSelectModule,
     MatDatepickerModule,
     MatListModule,
+    MatButtonModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './appointments-add-form.component.html',

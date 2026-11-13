@@ -1,0 +1,72 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0 8px; // same as the other dialog forms: room for floating labels and errors
+}
+
+.slot-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--app-text-muted);
+}
+
+// Time chips: as many columns as fit, wrapping on narrow screens
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 8px;
+  padding: 0;
+}
+
+.slot-option {
+  height: 40px;
+  border: 1px solid var(--app-border-strong);
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface);
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+
+  &:hover:not([aria-disabled='true']) {
+    background: var(--app-hover);
+  }
+
+  &[aria-selected='true'] {
+    border-color: var(--app-text);
+    background: var(--app-selected);
+    font-weight: 600;
+    box-shadow: 0 0 0 1px var(--app-text);
+  }
+
+  // Booked slots
+  &[aria-disabled='true'] {
+    border-style: dashed;
+    border-color: var(--app-border);
+    background: var(--app-bg);
+    color: var(--app-text-muted);
+    opacity: 0.6;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+}
+
+.slot-empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: var(--app-radius-sm);
+  font-size: 14px;
+  text-align: center;
+  color: var(--app-text-muted);
+}
