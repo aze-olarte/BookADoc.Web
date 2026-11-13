@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--app-text);
+  text-decoration: none;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+
+  &:hover {
+    border-color: var(--app-border-strong);
+    background: var(--app-hover);
+  }
+
+  mat-icon {
+    flex-shrink: 0;
+    color: var(--app-text-muted);
+  }
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.card-text {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--app-text-muted);
+}
