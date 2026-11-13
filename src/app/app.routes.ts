@@ -10,6 +10,11 @@ export const routes: Routes = [
     component: PublicLayoutComponent,
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'login',
+      },
+      {
         path: 'login',
         loadComponent: () =>
           import('./features/auth/pages/login/login.component').then((m) => m.LoginComponent),
