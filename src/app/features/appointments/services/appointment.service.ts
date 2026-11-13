@@ -12,6 +12,7 @@ import { AppointmentRequest } from '../../../core/models/appointment-request.mod
 export class AppointmentService {
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/appointment`;
+  private readonly reportApiUrl = `${environment.apiUrl}/report`;
 
   getAll(): Observable<AppointmentResponse[]> {
     return this.http.get<AppointmentResponse[]>(`${this.apiUrl}`);
@@ -69,5 +70,11 @@ export class AppointmentService {
       return ['Completed', 'Cancelled'];
     }
     return [];
+  }
+
+  getAppointmentReport(): Observable<Blob> {
+    return this.http.get(`${this.reportApiUrl}/appointments/pdf`, {
+      responseType: 'blob',
+    });
   }
 }

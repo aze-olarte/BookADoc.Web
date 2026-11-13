@@ -1,4 +1,17 @@
-<h1>Appointments</h1>
+<header class="page-header page-header--with-action">
+  <div>
+    <h1 class="title-lg">Appointments</h1>
+  </div>
+  @if (role === 'Admin') {
+    <button matButton="filled" type="button" (click)="onGenerateReport()">
+      <mat-icon matButtonIcon>add</mat-icon>
+      Generate Report
+    </button>
+  }
+  @if (role === 'Patient') {
+    <button matButton="filled" (click)="onAddAppointment()">Book an Appointment</button>
+  }
+</header>
 
 <app-grid
   [data]="data()"
@@ -6,7 +19,4 @@
   [actions]="actions"
   (actionTriggered)="onActionTriggered($event)"
 >
-  @if (role === 'Patient') {
-    <button matButton="outline" (click)="onAddAppointment()">Book an Appointment</button>
-  }
 </app-grid>

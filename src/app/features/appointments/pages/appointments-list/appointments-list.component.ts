@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Action } from '../../../../core/models/action';
 import { AppointmentResponse } from '../../../../core/models/appointment-response.model';
 import { Column } from '../../../../core/models/columns';
-import { ToastService } from '../../../../core/services/toast.service';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { AuthService } from '../../../auth/services/auth.service';
-import { AppointmentService } from '../../services/appointment.service';
+import { AppointmentsAddFormComponent } from '../../components/appointments-add-form/appointments-add-form.component';
 import { AppointmentsNotesFormComponent } from '../../components/appointments-notes-form/appointments-notes-form.component';
 import { AppointmentsStatusFormComponent } from '../../components/appointments-status-form/appointments-status-form.component';
+import { AppointmentService } from '../../services/appointment.service';
 import { columns } from './appointments-list-columns';
-import { AppointmentsAddFormComponent } from '../../components/appointments-add-form/appointments-add-form.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-appointments-list',
-  imports: [GridComponent],
+  imports: [GridComponent, MatButtonModule, MatIconModule],
   templateUrl: './appointments-list.component.html',
   styleUrl: './appointments-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,7 +24,6 @@ import { AppointmentsAddFormComponent } from '../../components/appointments-add-
 export class AppointmentsListComponent {
   private appointmentService = inject(AppointmentService);
   private authService = inject(AuthService);
-  private toastService = inject(ToastService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
   data = signal<AppointmentResponse[]>([]);
@@ -133,6 +133,20 @@ export class AppointmentsListComponent {
       if (confirmed) {
         this.loadData();
       }
+    });
+  }
+
+  onGenerateReport() {
+    this.appointmentService.getAppointmentReport().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `appointment-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {},
     });
   }
 
