@@ -13,6 +13,7 @@ interface InputData {
   id: number;
   status: AppointmentStatus;
   role: UserRole;
+  notes: string;
 }
 
 @Component({
@@ -39,7 +40,10 @@ export class AppointmentsNotesFormComponent {
   }
 
   fg = new FormGroup({
-    notes: new FormControl<string>('', { validators: [Validators.required], nonNullable: true }),
+    notes: new FormControl<string>(this.inputData.notes, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
   });
 
   save() {

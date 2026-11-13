@@ -70,10 +70,10 @@ export class AppointmentsListComponent {
       visible: (item) => this.isChangeStatusVisible(item),
     },
     {
-      type: 'addNotes',
-      label: 'Add Notes',
+      type: 'updateNotes',
+      label: 'Update Notes',
       icon: 'edit',
-      visible: (item) => this.isAddNotesVisible(item),
+      visible: (item) => this.isUpdateNotesVisible(item),
     },
   ];
 
@@ -82,8 +82,8 @@ export class AppointmentsListComponent {
       this.onView(row.id);
     } else if (action === 'changeStatus') {
       this.onChangeStatus(row);
-    } else if (action === 'addNotes') {
-      this.onAddNotes(row);
+    } else if (action === 'updateNotes') {
+      this.onUpdateNotes(row);
     }
   }
 
@@ -108,11 +108,12 @@ export class AppointmentsListComponent {
     });
   }
 
-  onAddNotes(data: AppointmentResponse) {
+  onUpdateNotes(data: AppointmentResponse) {
     const dialogRef = this.dialog.open(AppointmentsNotesFormComponent, {
       disableClose: true,
       data: {
         id: data.id,
+        notes: data.notes,
       },
     });
 
@@ -149,7 +150,7 @@ export class AppointmentsListComponent {
     }
   }
 
-  private isAddNotesVisible(data: AppointmentResponse): boolean {
+  private isUpdateNotesVisible(data: AppointmentResponse): boolean {
     if (this.role === 'Doctor' && data.status === 'Completed') {
       return true;
     }
