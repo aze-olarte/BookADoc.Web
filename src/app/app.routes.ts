@@ -156,9 +156,28 @@ export const routes: Routes = [
   },
 
   //
-
+  {
+    path: 'forbidden',
+    loadComponent: () =>
+      import('./shared/components/error-page/error-page.component').then(
+        (m) => m.ErrorPageComponent,
+      ),
+    data: {
+      code: '403',
+      title: 'Access denied',
+      message: "You don't have permission to view this page.",
+    },
+  },
   {
     path: '**',
-    redirectTo: 'login',
+    loadComponent: () =>
+      import('./shared/components/error-page/error-page.component').then(
+        (m) => m.ErrorPageComponent,
+      ),
+    data: {
+      code: '404',
+      title: 'Page not found',
+      message: "The page you're looking for doesn't exist or has been moved.",
+    },
   },
 ];

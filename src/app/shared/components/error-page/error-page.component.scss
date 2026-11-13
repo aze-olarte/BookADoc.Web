@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.error-page {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  text-align: center;
+  background: var(--app-bg);
+}
+
+.code {
+  margin-bottom: 16px;
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--app-border-strong);
+}
+
+.message {
+  max-width: 380px;
+  margin: 4px 0 0;
+  color: var(--app-text-muted);
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
