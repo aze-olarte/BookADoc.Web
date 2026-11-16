@@ -1,13 +1,9 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { Action } from '../../../../core/models/action';
+import { Column } from '../../../../core/models/columns';
 import { SpecializationResponse } from '../../../../core/models/specialization-response.model';
 import { ToastService } from '../../../../core/services/toast.service';
 import {
@@ -15,12 +11,9 @@ import {
   ConfirmDialogData,
 } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
-import { SpecializationService } from '../../services/specialization.service';
 import { SpecializationsFormComponent } from '../../components/specializations-form/specializations-form.component';
+import { SpecializationService } from '../../services/specialization.service';
 import { columns } from './specializations-list-columns';
-import { Column } from '../../../../core/models/columns';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-specializations-list',
@@ -37,12 +30,10 @@ export class SpecializationsListComponent implements OnInit {
   data = signal<SpecializationResponse[]>([]);
   readonly columnDefs: Column<SpecializationResponse>[] = columns;
 
-  // Define actions
   actions: Action<SpecializationResponse>[] = [
     { type: 'delete', label: 'Delete', icon: 'delete_outline' },
   ];
 
-  // Handle the output
   onActionTriggered({ action, row }: { action: string; row: SpecializationResponse }) {
     console.log(action);
     if (action === 'delete') {

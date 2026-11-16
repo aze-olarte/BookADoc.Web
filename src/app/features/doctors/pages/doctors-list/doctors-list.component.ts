@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatSelectModule } from '@angular/material/select';
-import { switchMap } from 'rxjs';
-import { SpecializationService } from '../../../specializations/services/specialization.service';
-import { DoctorService } from '../../services/doctor.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { GridComponent } from '../../../../shared/components/grid/grid.component';
+import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { Action } from '../../../../core/models/action';
 import { Column } from '../../../../core/models/columns';
 import { DoctorSummaryResponse } from '../../../../core/models/doctor-summary-response.model';
-import { columns } from './doctors-list-columns';
-import { Action } from '../../../../core/models/action';
-import { Router } from '@angular/router';
+import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { AuthService } from '../../../auth/services/auth.service';
+import { SpecializationService } from '../../../specializations/services/specialization.service';
+import { DoctorService } from '../../services/doctor.service';
+import { columns } from './doctors-list-columns';
 
 @Component({
   selector: 'app-doctors-list',

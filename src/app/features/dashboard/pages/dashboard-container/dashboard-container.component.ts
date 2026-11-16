@@ -1,8 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
-import { UserRole } from '../../../../core/models/user-role.enum';
 
 type Role = 'admin' | 'doctor' | 'patient';
 

@@ -5,7 +5,6 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { addMinutes, endOfWeek, format, parseISO, startOfWeek } from 'date-fns';
 import { SlotResponse } from '../../../../core/models/slot-response.model';
-import { ToastService } from '../../../../core/services/toast.service';
 import { SlotService } from '../../services/slot.service';
 
 @Component({
@@ -17,7 +16,6 @@ import { SlotService } from '../../services/slot.service';
 })
 export class SlotCalendarComponent implements OnInit {
   private slotService = inject(SlotService);
-  private toastService = inject(ToastService);
   events = signal<EventInput[]>([]);
   id = input.required<number>();
   emitClick = output<SlotResponse>();

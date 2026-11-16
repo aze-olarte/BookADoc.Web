@@ -96,7 +96,6 @@ export class SlotFormComponent implements OnInit {
 
     const { date, startTime, endTime } = this.fg.getRawValue();
 
-    // This guards runtime values and narrows the types for TypeScript.
     if (!startTime || !endTime) {
       return;
     }

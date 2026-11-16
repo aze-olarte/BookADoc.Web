@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarComponent } from '../navbar/navbar.component';
 
-// Single source of truth for the mobile breakpoint
 const MOBILE_QUERY = '(max-width: 900px)';
 
 @Component({
@@ -36,7 +35,6 @@ export class LayoutComponent {
   });
 
   constructor() {
-    // Close the drawer after navigating, only when it's an overlay
     this.router.events
       .pipe(
         filter((e) => e instanceof NavigationEnd),

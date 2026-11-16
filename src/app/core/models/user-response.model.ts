@@ -1,4 +1,3 @@
-import { DoctorResponse } from './doctor-response.model';
 import { SpecializationResponse } from './specialization-response.model';
 import { UserRole } from './user-role.enum';
 

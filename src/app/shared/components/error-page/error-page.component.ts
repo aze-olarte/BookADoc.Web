@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +11,6 @@ import { AuthService } from '../../../features/auth/services/auth.service';
 })
 export class ErrorPageComponent {
   private route = inject(ActivatedRoute);
-  private location = inject(Location);
   private authService = inject(AuthService);
   private router = inject(Router);
 

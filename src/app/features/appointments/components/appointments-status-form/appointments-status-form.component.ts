@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ToastService } from '../../../../core/services/toast.service';
-import { AppointmentService } from '../../services/appointment.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AppointmentStatus } from '../../../../core/models/appointment-status.enum';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserRole } from '../../../../core/models/user-role.enum';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { AppointmentStatus } from '../../../../core/models/appointment-status.enum';
+import { UserRole } from '../../../../core/models/user-role.enum';
+import { ToastService } from '../../../../core/services/toast.service';
+import { AppointmentService } from '../../services/appointment.service';
 
 interface InputData {
   id: number;
