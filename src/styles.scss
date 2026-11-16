@@ -374,6 +374,18 @@ mat-card.mat-mdc-card {
   }
 }
 
+.back-link {
+  margin-left: -12px; // offsets mat-button's built-in padding so the arrow aligns with the page edge
+  margin-bottom: 24px;
+
+  // Material 3 token (v19+). On older versions use --mdc-text-button-label-text-color
+  --mat-button-text-label-text-color: var(--app-text-muted);
+
+  &:hover {
+    --mat-button-text-label-text-color: var(--app-text);
+  }
+}
+
 // ---------------------------------------------------------------
 // Toasts: tinted by type
 // Use with panelClass: ['toast-base', 'toast-success']

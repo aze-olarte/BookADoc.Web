@@ -4,27 +4,6 @@
   margin: 0 auto;
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 24px;
-  color: var(--app-text-muted);
-  font-size: 14px;
-  text-decoration: none;
-  transition: color 120ms ease;
-
-  mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-  }
-
-  &:hover {
-    color: var(--app-text);
-  }
-}
-
 .profile-head {
   display: flex;
   align-items: center;
