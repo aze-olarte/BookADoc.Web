@@ -330,6 +330,13 @@ mat-card.mat-mdc-card {
   }
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0 8px;
+}
+
 // ---------------------------------------------------------------
 // Public pages and auth pages (login, register, role selection)
 // ---------------------------------------------------------------
@@ -375,10 +382,8 @@ mat-card.mat-mdc-card {
 }
 
 .back-link {
-  margin-left: -12px; // offsets mat-button's built-in padding so the arrow aligns with the page edge
+  margin-left: -12px;
   margin-bottom: 24px;
-
-  // Material 3 token (v19+). On older versions use --mdc-text-button-label-text-color
   --mat-button-text-label-text-color: var(--app-text-muted);
 
   &:hover {
