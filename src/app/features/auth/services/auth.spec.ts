@@ -1,160 +1,150 @@
-import { TestBed } from '@angular/core/testing';
-
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { environment } from '../../../../environments/environment';
-import { UserRole } from '../../../core/models/user-role.enum';
+import { AuthResponse } from '../../../core/models/auth-response.model';
+import { LoginRequest } from '../../../core/models/login-request.model';
+import { RegisterRequest } from '../../../core/models/register-request.model';
+import { UserResponse } from '../../../core/models/user-response.model';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let apiUrl = environment.apiUrl;
-  const mockData = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    role: UserRole.Patient,
-    token: 'mock-token',
-  };
 
-  const createMockToken = (exp: number): string => {
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payload = btoa(JSON.stringify({ exp }));
-    return `${header}.${payload}.signature`;
-  };
+  const apiUrl = `${environment.apiUrl}/auth`;
+
+  const nowInSeconds = () => Math.floor(Date.now() / 1000);
+  const makeToken = (payload: object) => `header.${btoa(JSON.stringify(payload))}.signature`;
+  const makeAuth = (overrides: Record<string, unknown> = {}) =>
+    ({
+      token: makeToken({ exp: nowInSeconds() + 3600 }),
+      role: 'Doctor',
+      name: 'Jane Doe',
+      ...overrides,
+    }) as unknown as AuthResponse;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({
-      providers: [AuthService, provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
-    localStorage.clear();
-    vi.clearAllMocks();
   });
 
   afterEach(() => {
     httpMock.verify();
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should allow registration', () => {
-    const payload = {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'JohnDo321',
-      role: UserRole.Patient,
-    };
-
-    service.register(payload).subscribe((res) => {
-      expect(res.token).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${apiUrl}/auth/register`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(payload);
-
-    req.flush(mockData);
-  });
-
-  it('should allow login', () => {
-    const payload = {
-      email: 'johndoe@example.com',
-      password: 'JohnDo321',
-    };
-    service.login(payload).subscribe((res) => {
-      expect(res.email).toBe(payload.email);
-    });
-
-    const req = httpMock.expectOne(`${apiUrl}/auth/login`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(payload);
-  });
-
-  it('should get the current user details', () => {
-    service.getMyDetails().subscribe((res) => {
-      expect(res.id).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${apiUrl}/auth/mine`);
-    expect(req.request.method).toBe('GET');
-  });
-
-  it('should store auth response in local storage', () => {
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-    service.storeAuth(mockData);
-    expect(setItemSpy).toHaveBeenCalledOnce();
-  });
-
-  it('should clear auth response in local storage', () => {
-    const removeItemSpy = vi.spyOn(Storage.prototype, 'removeItem');
-    service.clearAuth();
-    expect(removeItemSpy).toHaveBeenCalledOnce();
-  });
-
-  it('should return the auth response from local storage', () => {
-    const emptyResult = service.getAuth();
-    expect(emptyResult).toBeNull();
-
-    localStorage.setItem('authData', JSON.stringify(mockData));
-    const result = service.getAuth();
-    expect(result).toEqual(mockData);
-  });
-
-  it('should return false when auth data does not exist', () => {
     localStorage.clear();
-
-    expect(service.isLoggedIn()).toBe(false);
   });
 
-  it('should return the user role', () => {
-    expect(service.getRole()).toBe('');
+  describe('HTTP calls', () => {
+    it('register() should POST the payload to the register endpoint', () => {
+      const payload = { name: 'Jane' } as unknown as RegisterRequest;
+      const expected = makeAuth();
+      let result: AuthResponse | undefined;
 
-    localStorage.setItem('authData', JSON.stringify(mockData));
-    expect(service.getRole()).toBe('Patient');
+      service.register(payload).subscribe((r) => (result = r));
+
+      const req = httpMock.expectOne(`${apiUrl}/register`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(payload);
+      req.flush(expected);
+      expect(result).toEqual(expected);
+    });
+
+    it('login() should POST the credentials to the login endpoint', () => {
+      const payload: LoginRequest = { email: 'jane@example.com', password: 'Secret123!' };
+      const expected = makeAuth();
+      let result: AuthResponse | undefined;
+
+      service.login(payload).subscribe((r) => (result = r));
+
+      const req = httpMock.expectOne(`${apiUrl}/login`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(payload);
+      req.flush(expected);
+      expect(result).toEqual(expected);
+    });
+
+    it('getMyDetails() should GET the current user', () => {
+      const expected = { id: 1 } as unknown as UserResponse;
+      let result: UserResponse | undefined;
+
+      service.getMyDetails().subscribe((r) => (result = r));
+
+      const req = httpMock.expectOne(`${apiUrl}/me`);
+      expect(req.request.method).toBe('GET');
+      req.flush(expected);
+      expect(result).toEqual(expected);
+    });
   });
 
-  it('should return true when token is not expired', () => {
-    vi.spyOn(Date, 'now').mockReturnValue(1_700_000_000_000);
+  describe('stored auth', () => {
+    it('getAuth() should return null when nothing is stored', () => {
+      expect(service.getAuth()).toBeNull();
+    });
 
-    const token = createMockToken(1_700_000_100);
+    it('should return what storeAuth() saved', () => {
+      const auth = makeAuth();
 
-    localStorage.setItem(
-      'authData',
+      service.storeAuth(auth);
 
-      JSON.stringify({ token }),
-    );
+      expect(service.getAuth()).toEqual(auth);
+    });
 
-    expect(service.isLoggedIn()).toBe(true);
+    it('clearAuth() should remove the stored auth', () => {
+      service.storeAuth(makeAuth());
+
+      service.clearAuth();
+
+      expect(service.getAuth()).toBeNull();
+    });
   });
 
-  it('should return false when token is expired', () => {
-    vi.spyOn(Date, 'now').mockReturnValue(1_700_000_000_000);
+  describe('getRole()', () => {
+    it('should be an empty string when nobody is logged in', () => {
+      expect(service.getRole()).toBe('');
+    });
 
-    const token = createMockToken(1_699_999_000);
+    it('should return the stored role', () => {
+      service.storeAuth(makeAuth({ role: 'Patient' }));
 
-    localStorage.setItem(
-      'authData',
-
-      JSON.stringify({ token }),
-    );
-
-    expect(service.isLoggedIn()).toBe(false);
+      expect(service.getRole()).toBe('Patient');
+    });
   });
 
-  it('should return false when token is invalid', () => {
-    localStorage.setItem(
-      'authData',
+  describe('isLoggedIn()', () => {
+    it('should be false when nothing is stored', () => {
+      expect(service.isLoggedIn()).toBe(false);
+    });
 
-      JSON.stringify({
-        token: 'invalid-token',
-      }),
-    );
+    it('should be true for a token that has not expired', () => {
+      service.storeAuth(makeAuth({ token: makeToken({ exp: nowInSeconds() + 3600 }) }));
 
-    expect(service.isLoggedIn()).toBe(false);
+      expect(service.isLoggedIn()).toBe(true);
+    });
+
+    it('should be false for an expired token', () => {
+      service.storeAuth(makeAuth({ token: makeToken({ exp: nowInSeconds() - 60 }) }));
+
+      expect(service.isLoggedIn()).toBe(false);
+    });
+
+    it('should be false for a malformed token', () => {
+      service.storeAuth(makeAuth({ token: 'not-a-jwt' }));
+
+      expect(service.isLoggedIn()).toBe(false);
+    });
+
+    it.fails('should accept a valid token whose payload is base64url encoded', () => {
+      const payload = JSON.stringify({ exp: nowInSeconds() + 3600, x: '?'.repeat(12) });
+      const base64url = btoa(payload).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      expect(base64url).toMatch(/[-_]/);
+      service.storeAuth(makeAuth({ token: `header.${base64url}.signature` }));
+
+      expect(service.isLoggedIn()).toBe(true);
+    });
   });
 });

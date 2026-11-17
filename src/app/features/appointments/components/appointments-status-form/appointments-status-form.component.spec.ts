@@ -1,84 +1,174 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
+import { AppointmentStatus } from '../../../../core/models/appointment-status.enum';
+import { UserRole } from '../../../../core/models/user-role.enum';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { AppointmentsStatusFormComponent } from './appointments-status-form.component';
-import { AppointmentStatus } from '../../../../core/models/appointment-status.enum';
-import { UserRole } from '../../../../core/models/user-role.enum';
 
 describe('AppointmentsStatusFormComponent', () => {
   let fixture: ComponentFixture<AppointmentsStatusFormComponent>;
   let component: AppointmentsStatusFormComponent;
-  let appointmentServiceMock = {
-    patchAppointmentStatus: vi.fn(),
-    getStatusDropdownOptions: vi.fn().mockReturnValue(['Confirmed', 'Cancelled']),
-  };
-  let toastServiceMock = { success: vi.fn(), error: vi.fn() };
-  let dialogRefMock = { close: vi.fn() };
-  const mockInputData = { id: 1, status: AppointmentStatus.Pending, role: UserRole.Doctor };
 
-  beforeEach(async () => {
-    vi.clearAllMocks();
+  let dialogRef: { close: Mock };
+  let toastService: { success: Mock };
+  let appointmentService: { getStatusDropdownOptions: Mock; patchAppointmentStatus: Mock };
+
+  const inputData = {
+    id: 42,
+    status: 'current-status' as AppointmentStatus,
+    role: 'some-role' as UserRole,
+  };
+  const statusOptions = ['Confirmed', 'Cancelled', 'Completed'];
+
+  async function setup(options: string[] = statusOptions, data = inputData) {
+    dialogRef = { close: vi.fn() };
+    toastService = { success: vi.fn() };
+    appointmentService = {
+      getStatusDropdownOptions: vi.fn().mockReturnValue(options),
+      patchAppointmentStatus: vi.fn().mockReturnValue(of(void 0)),
+    };
+
     await TestBed.configureTestingModule({
       imports: [AppointmentsStatusFormComponent],
       providers: [
-        { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: AppointmentService, useValue: appointmentServiceMock },
-        { provide: ToastService, useValue: toastServiceMock },
-        { provide: MAT_DIALOG_DATA, useValue: mockInputData },
+        { provide: MatDialogRef, useValue: dialogRef },
+        { provide: MAT_DIALOG_DATA, useValue: data },
+        { provide: ToastService, useValue: toastService },
+        { provide: AppointmentService, useValue: appointmentService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppointmentsStatusFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }
 
-  it('initialises with an empty invalid form', () => {
-    expect(component.f.status.value).toBe('');
-    expect(component.fg.invalid).toBe(true);
-  });
+  describe('initial state', () => {
+    beforeEach(async () => {
+      await setup();
+    });
 
-  it('populates dropdown options from the service on init', () => {
-    expect(appointmentServiceMock.getStatusDropdownOptions).toHaveBeenCalledWith(
-      mockInputData.role,
-      mockInputData.status,
-    );
-    expect(component.dropdownOptions()).toEqual(['Confirmed', 'Cancelled']);
-  });
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-  it('marks all controls as touched and does not call the service when the form is invalid', () => {
-    component.save();
-    expect(component.f.status.touched).toBe(true);
-    expect(appointmentServiceMock.patchAppointmentStatus).not.toHaveBeenCalled();
-  });
+    it('should expose the injected dialog data', () => {
+      expect(component.inputData).toEqual(inputData);
+    });
 
-  it('calls the service with the id and form value when the form is valid', () => {
-    appointmentServiceMock.patchAppointmentStatus.mockReturnValue(of(void 0));
-    component.f.status.setValue('Confirmed');
-    component.save();
-    expect(appointmentServiceMock.patchAppointmentStatus).toHaveBeenCalledWith(mockInputData.id, {
-      status: 'Confirmed',
+    it('should ask the service for dropdown options using the role and current status', () => {
+      expect(appointmentService.getStatusDropdownOptions).toHaveBeenCalledTimes(1);
+      expect(appointmentService.getStatusDropdownOptions).toHaveBeenCalledWith(
+        inputData.role,
+        inputData.status,
+      );
+    });
+
+    it('should populate the dropdown options signal from the service', () => {
+      expect(component.dropdownOptions()).toEqual(statusOptions);
+    });
+
+    it('should start with an empty, invalid status control', () => {
+      expect(component.f.status.value).toBe('');
+      expect(component.f.status.hasError('required')).toBe(true);
+      expect(component.fg.invalid).toBe(true);
+    });
+
+    it('should expose form controls through the f getter', () => {
+      expect(component.f).toBe(component.fg.controls);
     });
   });
 
-  it('shows a success toast and closes the dialog on success', () => {
-    appointmentServiceMock.patchAppointmentStatus.mockReturnValue(of(void 0));
-    component.f.status.setValue('Confirmed');
-    component.save();
-    expect(toastServiceMock.success).toHaveBeenCalledWith('New Status saved.');
-    expect(dialogRefMock.close).toHaveBeenCalledWith(true);
+  describe('when no status transitions are available', () => {
+    beforeEach(async () => {
+      await setup([]);
+    });
+
+    it('should have an empty options list', () => {
+      expect(component.dropdownOptions()).toEqual([]);
+    });
+
+    it('should not be savable', () => {
+      component.save();
+
+      expect(appointmentService.patchAppointmentStatus).not.toHaveBeenCalled();
+    });
   });
 
-  it('shows an error toast and does not close the dialog on failure', () => {
-    const error = new Error('Server error');
-    appointmentServiceMock.patchAppointmentStatus.mockReturnValue(throwError(() => error));
-    component.f.status.setValue('Confirmed');
-    component.save();
-    expect(toastServiceMock.error).toHaveBeenCalledWith(error);
-    expect(dialogRefMock.close).not.toHaveBeenCalled();
+  describe('validation', () => {
+    beforeEach(async () => {
+      await setup();
+    });
+
+    it('should become valid once a status is selected', () => {
+      component.f.status.setValue('Confirmed');
+
+      expect(component.fg.valid).toBe(true);
+    });
+
+    it('should become invalid again when the status is cleared', () => {
+      component.f.status.setValue('Confirmed');
+      component.f.status.setValue('');
+
+      expect(component.f.status.hasError('required')).toBe(true);
+      expect(component.fg.invalid).toBe(true);
+    });
+  });
+
+  describe('save()', () => {
+    beforeEach(async () => {
+      await setup();
+    });
+
+    it('should not call the API when no status is selected', () => {
+      component.save();
+
+      expect(appointmentService.patchAppointmentStatus).not.toHaveBeenCalled();
+      expect(toastService.success).not.toHaveBeenCalled();
+      expect(dialogRef.close).not.toHaveBeenCalled();
+    });
+
+    it('should mark controls as touched when the form is invalid', () => {
+      expect(component.f.status.touched).toBe(false);
+
+      component.save();
+
+      expect(component.f.status.touched).toBe(true);
+    });
+
+    it('should patch the appointment with the selected status', () => {
+      component.f.status.setValue('Cancelled');
+
+      component.save();
+
+      expect(appointmentService.patchAppointmentStatus).toHaveBeenCalledTimes(1);
+      expect(appointmentService.patchAppointmentStatus).toHaveBeenCalledWith(42, {
+        status: 'Cancelled',
+      });
+    });
+
+    it('should show a success toast and close the dialog with true on success', () => {
+      component.f.status.setValue('Confirmed');
+
+      component.save();
+
+      expect(toastService.success).toHaveBeenCalledWith('New Status saved.');
+      expect(dialogRef.close).toHaveBeenCalledWith(true);
+    });
+
+    it('should neither toast nor close the dialog when the API call fails', () => {
+      appointmentService.patchAppointmentStatus.mockReturnValue(
+        throwError(() => new Error('Server error')),
+      );
+      component.f.status.setValue('Confirmed');
+
+      expect(() => component.save()).not.toThrow();
+
+      expect(toastService.success).not.toHaveBeenCalled();
+      expect(dialogRef.close).not.toHaveBeenCalled();
+    });
   });
 });

@@ -1,21 +1,20 @@
-import { Component, DestroyRef, Inject, inject, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { SlotRequest } from '../../../../core/models/slot-request.model';
-import { ToastService } from '../../../../core/services/toast.service';
-import { SlotService } from '../../services/slot.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTimepickerModule } from '@angular/material/timepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { minDateValidator } from '../../../../shared/validators/mindate.validator';
+import { Component, DestroyRef, Inject, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { toDateOnly, toDateTime } from '../../../../shared/utils/date-time.utils';
-import { toTimeOnly } from '../../../../shared/utils/date-time.utils';
-import { SlotResponse } from '../../../../core/models/slot-response.model';
-import { addMinutes } from 'date-fns';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { addMinutes } from 'date-fns';
+import { SlotRequest } from '../../../../core/models/slot-request.model';
+import { SlotResponse } from '../../../../core/models/slot-response.model';
+import { ToastService } from '../../../../core/services/toast.service';
+import { toDateOnly, toDateTime, toTimeOnly } from '../../../../shared/utils/date-time.utils';
+import { minDateValidator } from '../../../../shared/validators/mindate.validator';
+import { SlotService } from '../../services/slot.service';
 
 @Component({
   selector: 'app-slot-form',
@@ -96,6 +95,7 @@ export class SlotFormComponent implements OnInit {
 
     const { date, startTime, endTime } = this.fg.getRawValue();
 
+    // This guards runtime values and narrows the types for TypeScript.
     if (!startTime || !endTime) {
       return;
     }

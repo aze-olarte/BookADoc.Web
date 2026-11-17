@@ -35,7 +35,6 @@ export class SpecializationsListComponent implements OnInit {
   ];
 
   onActionTriggered({ action, row }: { action: string; row: SpecializationResponse }) {
-    console.log(action);
     if (action === 'delete') {
       this.onDelete(row);
     }

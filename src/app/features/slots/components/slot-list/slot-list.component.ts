@@ -1,14 +1,13 @@
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { isBefore, startOfDay } from 'date-fns';
+import { Action } from '../../../../core/models/action';
 import { Column } from '../../../../core/models/columns';
 import { SlotResponse } from '../../../../core/models/slot-response.model';
-import { ToastService } from '../../../../core/services/toast.service';
 import { GridComponent } from '../../../../shared/components/grid/grid.component';
 import { SlotService } from '../../services/slot.service';
 import { columns } from './slot-list-columns';
-import { Action } from '../../../../core/models/action';
-import { isBefore, startOfDay } from 'date-fns';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-slot-list',
@@ -18,7 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SlotListComponent implements OnInit {
   private slotService = inject(SlotService);
-  private toastService = inject(ToastService);
   readonly columnDefs: Column<SlotResponse>[] = columns;
   data = signal<SlotResponse[]>([]);
   id = input.required<number>();

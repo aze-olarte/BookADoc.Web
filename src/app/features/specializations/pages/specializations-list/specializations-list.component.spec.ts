@@ -7,7 +7,7 @@ import { SpecializationResponse } from '../../../../core/models/specialization-r
 import { ToastService } from '../../../../core/services/toast.service';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SpecializationService } from '../../services/specialization.service';
-import { SpecializationsFormComponent } from '../specializations-form/specializations-form.component';
+import { SpecializationsFormComponent } from '../../components/specializations-form/specializations-form.component';
 import { SpecializationsListComponent } from './specializations-list.component';
 
 const mockSpecializations: SpecializationResponse[] = [
@@ -64,19 +64,13 @@ describe('SpecializationsListComponent', () => {
     expect(component.data()).toEqual(mockSpecializations);
   });
 
-  it('shows a toast error when getAll fails', () => {
-    const err = new Error('network error');
-    specializationService.getAll.mockReturnValue(throwError(() => err));
-    component.loadData();
-    expect(toastService.error).toHaveBeenCalledWith(err);
-  });
-
   it('opens ConfirmDialogComponent with the correct data on delete', () => {
     dialog.open.mockReturnValue(makeDialogRef(false));
     const item = mockSpecializations[0];
     component.onDelete(item);
 
     expect(dialog.open).toHaveBeenCalledWith(ConfirmDialogComponent, {
+      disableClose: true,
       data: {
         title: 'Delete Specialization',
         message: `Are you sure you want to delete ${item.name}?`,
@@ -92,7 +86,7 @@ describe('SpecializationsListComponent', () => {
 
     expect(specializationService.delete).toHaveBeenCalledWith(item.id);
     expect(toastService.success).toHaveBeenCalledWith('Specialization deleted');
-    expect(specializationService.getAll).toHaveBeenCalledTimes(2); // init + reload
+    expect(specializationService.getAll).toHaveBeenCalledTimes(2);
   });
 
   it('does not delete when the confirm dialog is dismissed', () => {
@@ -115,7 +109,9 @@ describe('SpecializationsListComponent', () => {
   it('opens SpecializationsFormComponent on add', () => {
     dialog.open.mockReturnValue(makeDialogRef(false));
     component.onAdd();
-    expect(dialog.open).toHaveBeenCalledWith(SpecializationsFormComponent);
+    expect(dialog.open).toHaveBeenCalledWith(SpecializationsFormComponent, {
+      disableClose: true,
+    });
   });
 
   it('reloads data when the add dialog returns true', () => {

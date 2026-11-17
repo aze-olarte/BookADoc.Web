@@ -107,6 +107,7 @@ export class AppointmentsAddFormComponent {
         if (data) {
           this.fg.controls.date.enable();
           this.fg.controls.date.setValidators(Validators.required);
+          this.fg.controls.date.setValidators(minDateValidator(new Date()));
           this.fg.controls.date.updateValueAndValidity();
         } else {
           this.fg.controls.date.disable();
