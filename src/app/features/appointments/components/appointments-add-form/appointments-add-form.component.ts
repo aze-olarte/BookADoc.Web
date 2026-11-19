@@ -62,7 +62,7 @@ export class AppointmentsAddFormComponent {
       nonNullable: true,
     }),
     slotId: new FormControl<number[]>([], { validators: [Validators.required], nonNullable: true }),
-    reason: new FormControl<string>('', { nonNullable: true }),
+    reason: new FormControl<string>('', { validators: Validators.required, nonNullable: true }),
   });
 
   specializationOptions = toSignal(this.specializationService.getAll(), { initialValue: [] });
