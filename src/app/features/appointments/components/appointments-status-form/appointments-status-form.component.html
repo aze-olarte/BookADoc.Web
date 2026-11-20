@@ -1,11 +1,12 @@
-<h2 mat-dialog-title>Change Status</h2>
+<h2 mat-dialog-title>Change status</h2>
+
 <mat-dialog-content>
-  <form [formGroup]="fg" class="form">
+  <form [formGroup]="fg" (ngSubmit)="save()" class="form" id="status-form">
     <mat-form-field appearance="outline">
-      <mat-label>New Status</mat-label>
+      <mat-label>New status</mat-label>
       <mat-select formControlName="status" name="status">
         @for (option of dropdownOptions(); track option) {
-          <mat-option [value]="option">{{ option }}</mat-option>
+          <mat-option [value]="option">{{ option | titlecase }}</mat-option>
         }
       </mat-select>
       @if (f.status.hasError('required') && (f.status.dirty || f.status.touched)) {
@@ -21,7 +22,8 @@
     </mat-form-field>
   </form>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button (click)="save()">Save</button>
+  <button mat-button type="button" mat-dialog-close>Cancel</button>
+  <button mat-flat-button type="submit" form="status-form">Save</button>
 </mat-dialog-actions>

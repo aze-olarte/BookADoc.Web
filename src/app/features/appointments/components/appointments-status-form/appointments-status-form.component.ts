@@ -7,6 +7,8 @@ import { AppointmentStatus } from '../../../../core/models/appointment-status.en
 import { UserRole } from '../../../../core/models/user-role.enum';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AppointmentService } from '../../services/appointment.service';
+import { MatButtonModule } from '@angular/material/button';
+import { TitleCasePipe } from '@angular/common';
 
 interface InputData {
   id: number;
@@ -16,7 +18,14 @@ interface InputData {
 
 @Component({
   selector: 'app-appointments-status-form.component',
-  imports: [MatDialogModule, MatFormFieldModule, ReactiveFormsModule, MatSelectModule],
+  imports: [
+    MatDialogModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatButtonModule,
+    TitleCasePipe,
+  ],
   templateUrl: './appointments-status-form.component.html',
   styleUrl: './appointments-status-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
