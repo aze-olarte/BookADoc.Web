@@ -19,8 +19,8 @@ export class SlotCalendarComponent implements OnInit {
   events = signal<EventInput[]>([]);
   id = input.required<number>();
   emitClick = output<SlotResponse>();
-  private readonly startDate = startOfWeek(new Date());
-  private readonly endDate = endOfWeek(new Date());
+  startDate = startOfWeek(new Date());
+  endDate = endOfWeek(new Date());
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, interactionPlugin],
@@ -41,7 +41,7 @@ export class SlotCalendarComponent implements OnInit {
     height: 'auto',
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'short', day: 'numeric' },
-
+    events: this.events(),
     dateClick: (arg: DateClickArg) => {
       const start = parseISO(arg.dateStr);
       const end = addMinutes(start, 30);
@@ -61,6 +61,8 @@ export class SlotCalendarComponent implements OnInit {
     },
 
     datesSet: (arg: DatesSetArg) => {
+      this.startDate = arg.start;
+      this.endDate = arg.end;
       this.loadData(arg.start, arg.end);
     },
   };

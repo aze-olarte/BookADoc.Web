@@ -43,7 +43,7 @@ export class SlotViewsComponent implements OnInit {
     if (this.currentView() === 'list' && this.slotList) {
       this.slotList.loadData();
     } else if (this.currentView() === 'calendar' && this.slotCalendar) {
-      this.slotCalendar.loadData();
+      this.slotCalendar.loadData(this.slotCalendar.startDate, this.slotCalendar.endDate);
     }
   }
 
