@@ -10,12 +10,12 @@ describe('DoctorsProfileComponent', () => {
   let component: DoctorsProfileComponent;
 
   let doctorService: { get: Mock };
-  let authService: { getAuth: Mock };
+  let authService: { getAccessToken: Mock };
 
   const makeDoctor = (id: number) => ({ id, name: `Dr. ${id}` });
 
   async function createWithId(idValue: unknown, loggedIn = true) {
-    authService = { getAuth: vi.fn().mockReturnValue(loggedIn ? { name: 'Jane' } : null) };
+    authService = { getAccessToken: vi.fn().mockReturnValue(loggedIn ? 'ey1234' : null) };
 
     TestBed.overrideComponent(DoctorsProfileComponent, {
       set: { template: '', imports: [] },
@@ -158,7 +158,7 @@ describe('DoctorsProfileComponent', () => {
 
     it('should be decided once at creation, not on every change', async () => {
       await createWithId(5, true);
-      authService.getAuth.mockReturnValue(null);
+      authService.getAccessToken.mockReturnValue(null);
 
       await changeId(6);
 

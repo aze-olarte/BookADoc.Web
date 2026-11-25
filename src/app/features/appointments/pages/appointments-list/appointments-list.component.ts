@@ -28,7 +28,7 @@ export class AppointmentsListComponent {
   private router = inject(Router);
   data = signal<AppointmentResponse[]>([]);
   columnDefs: Column<AppointmentResponse>[] = columns;
-  role: string = this.authService.getRole();
+  role: string = this.authService.user()?.role ?? '';
 
   ngOnInit() {
     this.setColumns();

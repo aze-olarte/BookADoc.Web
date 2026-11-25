@@ -49,8 +49,7 @@ export class LoginComponent {
 
     const payload: LoginRequest = this.fg.getRawValue();
     this.authService.login(payload).subscribe({
-      next: (response) => {
-        this.authService.storeAuth(response);
+      next: () => {
         this.router.navigate(['/portal/dashboard']);
       },
       error: (apiError: ErrorResponse) => {

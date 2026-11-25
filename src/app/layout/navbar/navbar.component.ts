@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../features/auth/services/auth.service';
 import { MatAnchor } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../features/auth/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +12,7 @@ import { MatAnchor } from '@angular/material/button';
 })
 export class NavbarComponent {
   private authService = inject(AuthService);
-  private router = inject(Router);
-  role = signal<string>(this.authService.getRole());
+  role = computed(() => this.authService.user()?.role ?? '');
   activeLink = signal<string | null>(null);
   navItems = [
     {
@@ -58,7 +57,6 @@ export class NavbarComponent {
   );
 
   logout(): void {
-    this.authService.clearAuth();
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

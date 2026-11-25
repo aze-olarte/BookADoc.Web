@@ -91,8 +91,8 @@ const CONTENT: Record<string, DashboardContent> = {
 })
 export class DashboardContainerComponent {
   private authService = inject(AuthService);
-  role = signal<string>(this.authService.getRole());
-  name = signal<string>(this.authService.getAuth()!.name);
+  role = computed(() => this.authService.user()?.role ?? '');
+  name = computed(() => this.authService.user()?.name ?? '');
 
   content = computed(() => CONTENT[this.role()]);
 }

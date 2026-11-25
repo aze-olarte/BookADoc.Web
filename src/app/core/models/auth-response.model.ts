@@ -6,5 +6,6 @@ export interface AuthResponse {
   name: string;
   email: string;
   role: UserRole;
-  doctorProfileId: number;
+  doctorProfileId?: number;
+  patientProfileId?: number;
 }

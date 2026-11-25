@@ -31,8 +31,8 @@ export class SlotViewsComponent implements OnInit {
   }
 
   getDoctorId(): void {
-    const user = this.authService.getAuth() as AuthResponse;
-    this.doctorId.set(user.doctorProfileId);
+    const user = this.authService.user() as AuthResponse;
+    this.doctorId.set(user.doctorProfileId!);
   }
 
   onViewChange(event: MatButtonToggleChange) {

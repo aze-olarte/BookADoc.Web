@@ -1,6 +1,7 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
-import { afterEach, describe, expect, it, vi, type Mock } from 'vitest';
+import { Observable, of, throwError } from 'rxjs';
+import { describe, expect, it, vi, type Mock } from 'vitest';
 import { DoctorPatientResponse } from '../../../../core/models/doctor-patient-response.model';
 import { PatientResponse } from '../../../../core/models/patient-response.model';
 import { AuthService } from '../../../auth/services/auth.service';
@@ -8,30 +9,27 @@ import { PatientService } from '../../services/patient.service';
 import { PatientsListComponent } from './patients-list.component';
 import { doctorPatientColumns, patientColumns } from './patient-list-columns';
 
+type TestUser = { role: string; doctorProfileId?: number } | null;
+
 describe('PatientsListComponent', () => {
   let component: PatientsListComponent;
-
   let patientService: { getAll: Mock; getPatientsByDoctor: Mock };
-  let authService: { getRole: Mock; getAuth: Mock };
 
-  const allPatients = [{ id: 1 }, { id: 2 }] as PatientResponse[];
-  const doctorPatients = [{ patientProfileId: 3 }] as DoctorPatientResponse[];
+  const allPatients = [{ id: 1 }, { id: 2 }] as unknown as PatientResponse[];
+  const doctorPatients = [{ id: 10 }, { id: 11 }] as unknown as DoctorPatientResponse[];
 
   async function setup(
-    role: string,
-    auth: { doctorProfileId?: number } | null = { doctorProfileId: 12 },
-    failing: 'getAll' | 'getPatientsByDoctor' | null = null,
+    user: TestUser,
+    results: {
+      getAll?: Observable<PatientResponse[]>;
+      getPatientsByDoctor?: Observable<DoctorPatientResponse[]>;
+    } = {},
   ) {
-    const failure = () => throwError(() => new Error('boom'));
     patientService = {
-      getAll: vi.fn().mockReturnValue(failing === 'getAll' ? failure() : of(allPatients)),
+      getAll: vi.fn().mockReturnValue(results.getAll ?? of(allPatients)),
       getPatientsByDoctor: vi
         .fn()
-        .mockReturnValue(failing === 'getPatientsByDoctor' ? failure() : of(doctorPatients)),
-    };
-    authService = {
-      getRole: vi.fn().mockReturnValue(role),
-      getAuth: vi.fn().mockReturnValue(auth),
+        .mockReturnValue(results.getPatientsByDoctor ?? of(doctorPatients)),
     };
 
     TestBed.overrideComponent(PatientsListComponent, {
@@ -42,7 +40,7 @@ describe('PatientsListComponent', () => {
       imports: [PatientsListComponent],
       providers: [
         { provide: PatientService, useValue: patientService },
-        { provide: AuthService, useValue: authService },
+        { provide: AuthService, useValue: { user: signal<TestUser>(user) } },
       ],
     }).compileComponents();
 
@@ -51,101 +49,99 @@ describe('PatientsListComponent', () => {
     fixture.detectChanges();
   }
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe('as a Doctor', () => {
-    it('should create and flag itself as a doctor view', async () => {
-      await setup('Doctor');
+    const doctor = { role: 'Doctor', doctorProfileId: 7 };
+
+    it('should create', async () => {
+      await setup(doctor);
 
       expect(component).toBeTruthy();
+    });
+
+    it('should be flagged as a doctor', async () => {
+      await setup(doctor);
+
       expect(component.isDoctor).toBe(true);
     });
 
-    it("should load only the doctor's own patients using the doctor profile id", async () => {
-      await setup('Doctor', { doctorProfileId: 12 });
+    it("should load the doctor's patients using the doctor profile id", async () => {
+      await setup(doctor);
 
-      expect(authService.getAuth).toHaveBeenCalled();
       expect(patientService.getPatientsByDoctor).toHaveBeenCalledTimes(1);
-      expect(patientService.getPatientsByDoctor).toHaveBeenCalledWith(12);
+      expect(patientService.getPatientsByDoctor).toHaveBeenCalledWith(7);
+    });
+
+    it('should not load all patients', async () => {
+      await setup(doctor);
+
       expect(patientService.getAll).not.toHaveBeenCalled();
     });
 
-    it('should populate doctorPatients and leave patients empty', async () => {
-      await setup('Doctor');
+    it('should store the response in doctorPatients only', async () => {
+      await setup(doctor);
 
       expect(component.doctorPatients()).toEqual(doctorPatients);
       expect(component.patients()).toEqual([]);
     });
 
-    it('should call the service with undefined when there is no auth profile', async () => {
-      await setup('Doctor', null);
+    it('should leave doctorPatients empty when the request fails', async () => {
+      await setup(doctor, { getPatientsByDoctor: throwError(() => new Error('boom')) });
 
-      expect(patientService.getPatientsByDoctor).toHaveBeenCalledWith(undefined);
+      expect(component.doctorPatients()).toEqual([]);
+      expect(component.patients()).toEqual([]);
     });
   });
 
-  describe('as an Admin', () => {
-    it('should not flag itself as a doctor view', async () => {
-      await setup('Admin');
+  describe.each(['Admin', 'Patient'])('as a %s', (role) => {
+    it('should not be flagged as a doctor', async () => {
+      await setup({ role });
 
       expect(component.isDoctor).toBe(false);
     });
 
     it('should load all patients', async () => {
-      await setup('Admin');
+      await setup({ role });
 
       expect(patientService.getAll).toHaveBeenCalledTimes(1);
       expect(patientService.getPatientsByDoctor).not.toHaveBeenCalled();
-      expect(authService.getAuth).not.toHaveBeenCalled();
     });
 
-    it('should populate patients and leave doctorPatients empty', async () => {
-      await setup('Admin');
+    it('should store the response in patients only', async () => {
+      await setup({ role });
 
       expect(component.patients()).toEqual(allPatients);
       expect(component.doctorPatients()).toEqual([]);
     });
-  });
 
-  describe('as any other role', () => {
-    it.each(['Patient', ''])(
-      'should fall back to loading all patients for role "%s"',
-      async (role) => {
-        await setup(role);
+    it('should leave patients empty when the request fails', async () => {
+      await setup({ role }, { getAll: throwError(() => new Error('boom')) });
 
-        expect(component.isDoctor).toBe(false);
-        expect(patientService.getAll).toHaveBeenCalledTimes(1);
-        expect(patientService.getPatientsByDoctor).not.toHaveBeenCalled();
-        expect(component.patients()).toEqual(allPatients);
-      },
-    );
-  });
-
-  describe('error handling', () => {
-    it('should keep patients empty when loading all patients fails', async () => {
-      await expect(setup('Admin', null, 'getAll')).resolves.toBeUndefined();
-
-      expect(patientService.getAll).toHaveBeenCalledTimes(1);
       expect(component.patients()).toEqual([]);
-    });
-
-    it('should keep doctorPatients empty when loading the doctor patients fails', async () => {
-      await expect(
-        setup('Doctor', { doctorProfileId: 12 }, 'getPatientsByDoctor'),
-      ).resolves.toBeUndefined();
-
-      expect(patientService.getPatientsByDoctor).toHaveBeenCalledTimes(1);
       expect(component.doctorPatients()).toEqual([]);
     });
   });
 
+  describe('with no signed-in user', () => {
+    it('should not be flagged as a doctor and should load all patients', async () => {
+      await setup(null);
+
+      expect(component.isDoctor).toBe(false);
+      expect(patientService.getAll).toHaveBeenCalledTimes(1);
+      expect(patientService.getPatientsByDoctor).not.toHaveBeenCalled();
+      expect(component.patients()).toEqual(allPatients);
+    });
+  });
+
   describe('columns', () => {
-    it('should expose the column definitions used by the grid', async () => {
-      await setup('Admin');
+    it('should expose the patient columns', async () => {
+      await setup({ role: 'Admin' });
 
       expect(component.patientColumns).toBe(patientColumns);
+    });
+
+    it('should expose the doctor-patient columns', async () => {
+      await setup({ role: 'Doctor', doctorProfileId: 7 });
+
       expect(component.doctorPatientColumns).toBe(doctorPatientColumns);
     });
   });

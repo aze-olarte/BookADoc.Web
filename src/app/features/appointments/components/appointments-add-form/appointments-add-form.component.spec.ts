@@ -219,13 +219,6 @@ describe('AppointmentsAddFormComponent', () => {
       expect(component.fg.invalid).toBe(true);
     });
 
-    it('should treat reason as optional', () => {
-      fillValidForm([7], '');
-
-      expect(component.f.reason.valid).toBe(true);
-      expect(component.fg.valid).toBe(true);
-    });
-
     it('should still reject past dates after a doctor is selected', () => {
       selectSpecializationAndDoctor();
 

@@ -247,24 +247,10 @@ describe('RegisterDoctorComponent', () => {
       expect(toastService.success).toHaveBeenCalledWith('You have successfully registered!');
     });
 
-    it('should store the auth response on success', () => {
-      component.submit();
-
-      expect(authService.storeAuth).toHaveBeenCalledWith(authResponse);
-    });
-
     it('should navigate to the dashboard on success', () => {
       component.submit();
 
       expect(router.navigate).toHaveBeenCalledWith(['/portal/dashboard']);
-    });
-
-    it('should store the auth before navigating', () => {
-      component.submit();
-
-      const storeOrder = authService.storeAuth.mock.invocationCallOrder[0];
-      const navigateOrder = router.navigate.mock.invocationCallOrder[0];
-      expect(storeOrder).toBeLessThan(navigateOrder);
     });
 
     it('should not apply form errors on success', () => {

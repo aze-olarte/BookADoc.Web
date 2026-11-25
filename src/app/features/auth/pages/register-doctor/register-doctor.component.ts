@@ -88,9 +88,8 @@ export class RegisterDoctorComponent {
       specializationId: formValues.specializationId as number,
     };
     this.authService.register(payload).subscribe({
-      next: (response) => {
+      next: () => {
         this.toastService.success('You have successfully registered!');
-        this.authService.storeAuth(response);
         this.router.navigate(['/portal/dashboard']);
       },
       error: (apiError: ErrorResponse) => {

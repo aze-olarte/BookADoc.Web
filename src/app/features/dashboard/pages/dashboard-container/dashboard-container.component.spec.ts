@@ -1,16 +1,17 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { AuthService } from '../../../auth/services/auth.service';
 import { DashboardContainerComponent } from './dashboard-container.component';
 
+type TestUser = { name: string; role: string } | null;
+
 describe('DashboardContainerComponent', () => {
   let component: DashboardContainerComponent;
+  let user: ReturnType<typeof signal<TestUser>>;
 
-  async function setup(role: string, auth: { name: string } | null = { name: 'Jane Doe' }) {
-    const authService = {
-      getRole: vi.fn().mockReturnValue(role),
-      getAuth: vi.fn().mockReturnValue(auth),
-    };
+  async function setup(role: string, profile: { name: string } | null = { name: 'Jane Doe' }) {
+    user = signal<TestUser>(profile === null ? null : { ...profile, role });
 
     TestBed.overrideComponent(DashboardContainerComponent, {
       set: { template: '', imports: [] },
@@ -18,7 +19,7 @@ describe('DashboardContainerComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [DashboardContainerComponent],
-      providers: [{ provide: AuthService, useValue: authService }],
+      providers: [{ provide: AuthService, useValue: { user } }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(DashboardContainerComponent);
@@ -33,20 +34,24 @@ describe('DashboardContainerComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should expose the role from the auth service', async () => {
+    it('should expose the role from the signed-in user', async () => {
       await setup('Doctor');
 
       expect(component.role()).toBe('Doctor');
     });
 
-    it('should expose the name from the auth profile', async () => {
+    it('should expose the name from the signed-in user', async () => {
       await setup('Patient', { name: 'John Smith' });
 
       expect(component.name()).toBe('John Smith');
     });
 
-    it('should throw on creation when there is no auth profile', async () => {
-      await expect(setup('Admin', null)).rejects.toThrow();
+    it('should fall back to an empty role and name when there is no signed-in user', async () => {
+      await setup('Admin', null);
+
+      expect(component.role()).toBe('');
+      expect(component.name()).toBe('');
+      expect(component.content()).toBeUndefined();
     });
   });
 
@@ -128,11 +133,12 @@ describe('DashboardContainerComponent', () => {
   });
 
   describe('content()', () => {
-    it('should update when the role signal changes', async () => {
+    it('should update when the signed-in user changes', async () => {
       await setup('Admin');
 
-      component.role.set('Patient');
+      user.set({ name: 'Jane Doe', role: 'Patient' });
 
+      expect(component.role()).toBe('Patient');
       expect(component.content().intro).toBe('Find a doctor and book your next appointment.');
     });
 

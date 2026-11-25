@@ -19,7 +19,7 @@ export class ErrorPageComponent {
   message: string = this.route.snapshot.data['message'];
 
   goBack(): void {
-    const isLoggedIn = !!this.authService.getAuth();
+    const isLoggedIn = !!this.authService.getAccessToken();
     if (isLoggedIn) {
       this.router.navigate(['/portal/dashboard']);
     } else {

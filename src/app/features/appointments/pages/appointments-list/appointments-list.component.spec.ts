@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -12,6 +13,8 @@ import { AppointmentService } from '../../services/appointment.service';
 import { AppointmentsListComponent } from './appointments-list.component';
 import { columns } from './appointments-list-columns';
 
+type TestUser = { role: string } | null;
+
 describe('AppointmentsListComponent', () => {
   let component: AppointmentsListComponent;
 
@@ -20,7 +23,7 @@ describe('AppointmentsListComponent', () => {
     getUserAppointments: Mock;
     getAppointmentReport: Mock;
   };
-  let authService: { getRole: Mock };
+  let authService: { user: ReturnType<typeof signal<TestUser>> };
   let dialog: { open: Mock };
   let router: { navigate: Mock };
 
@@ -35,13 +38,13 @@ describe('AppointmentsListComponent', () => {
   const allAppointments = [makeRow({ id: 1 }), makeRow({ id: 2 })];
   const userAppointments = [makeRow({ id: 3 })];
 
-  async function setup(role: string) {
+  async function setup(role: string | null) {
     appointmentService = {
       getAll: vi.fn().mockReturnValue(of(allAppointments)),
       getUserAppointments: vi.fn().mockReturnValue(of(userAppointments)),
       getAppointmentReport: vi.fn(),
     };
-    authService = { getRole: vi.fn().mockReturnValue(role) };
+    authService = { user: signal<TestUser>(role === null ? null : { role }) };
     dialog = { open: vi.fn().mockReturnValue({ afterClosed: () => of(false) }) };
     router = { navigate: vi.fn() };
 
@@ -86,7 +89,7 @@ describe('AppointmentsListComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should read the role from the auth service', () => {
+    it('should read the role from the signed-in user', () => {
       expect(component.role).toBe('Patient');
     });
 
@@ -122,6 +125,12 @@ describe('AppointmentsListComponent', () => {
       expect(component.columnDefs).toEqual(columns.filter((c) => c.columnDef !== 'doctorName'));
     });
 
+    it('should keep the patientName column', () => {
+      expect(component.columnDefs.some((c) => c.columnDef === 'patientName')).toBe(
+        columns.some((c) => c.columnDef === 'patientName'),
+      );
+    });
+
     it("should load the user's own appointments", () => {
       expect(appointmentService.getUserAppointments).toHaveBeenCalledTimes(1);
       expect(appointmentService.getAll).not.toHaveBeenCalled();
@@ -145,9 +154,17 @@ describe('AppointmentsListComponent', () => {
     });
   });
 
-  describe('with an unrecognised role', () => {
+  describe.each([
+    ['an unrecognised role', 'Receptionist'],
+    ['an empty role', ''],
+    ['no signed-in user', null],
+  ])('with %s', (_label, role) => {
     beforeEach(async () => {
-      await setup('');
+      await setup(role);
+    });
+
+    it('should use an empty role when there is no user', () => {
+      expect(component.role).toBe(role ?? '');
     });
 
     it('should show all columns', () => {
@@ -178,6 +195,17 @@ describe('AppointmentsListComponent', () => {
 
       component.loadData();
 
+      expect(component.data()).toEqual(fresh);
+    });
+
+    it('should use getAll again for an Admin', async () => {
+      await setup('Admin');
+      const fresh = [makeRow({ id: 77 })];
+      appointmentService.getAll.mockReturnValue(of(fresh));
+
+      component.loadData();
+
+      expect(appointmentService.getAll).toHaveBeenCalledTimes(2);
       expect(component.data()).toEqual(fresh);
     });
   });

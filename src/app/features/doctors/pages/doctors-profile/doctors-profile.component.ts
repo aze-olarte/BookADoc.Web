@@ -27,7 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
 export class DoctorsProfileComponent {
   private doctorService = inject(DoctorService);
   private authService = inject(AuthService);
-  readonly route = this.authService.getAuth() ? '/portal/doctors' : '';
+  readonly route = this.authService.getAccessToken() !== null ? '/portal/doctors' : '';
+
   id = input.required({ transform: numberAttribute });
   doctor = toSignal(toObservable(this.id).pipe(switchMap((id) => this.doctorService.get(id))), {
     initialValue: null,

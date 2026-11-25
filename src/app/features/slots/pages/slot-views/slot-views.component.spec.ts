@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,11 +14,13 @@ import { SlotListComponent } from '../../components/slot-list/slot-list.componen
 import { SlotService } from '../../services/slot.service';
 import { SlotViewsComponent } from './slot-views.component';
 
+type TestUser = { doctorProfileId: number } | null;
+
 describe('SlotViewsComponent', () => {
   let component: SlotViewsComponent;
 
   let dialog: { open: Mock };
-  let authService: { getAuth: Mock };
+  let authService: { user: ReturnType<typeof signal<TestUser>> };
   let slotService: { deleteSlot: Mock };
   let toastService: { success: Mock };
 
@@ -32,9 +35,9 @@ describe('SlotViewsComponent', () => {
     doctorProfileId: doctorId,
   };
 
-  async function setup(auth: { doctorProfileId: number } | null = { doctorProfileId: doctorId }) {
+  async function setup(user: TestUser = { doctorProfileId: doctorId }) {
     dialog = { open: vi.fn().mockReturnValue({ afterClosed: () => of(false) }) };
-    authService = { getAuth: vi.fn().mockReturnValue(auth) };
+    authService = { user: signal<TestUser>(user) };
     slotService = { deleteSlot: vi.fn().mockReturnValue(of(void 0)) };
     toastService = { success: vi.fn() };
 
@@ -63,7 +66,11 @@ describe('SlotViewsComponent', () => {
 
   function attachChildren() {
     const slotList = { loadData: vi.fn() };
-    const slotCalendar = { loadData: vi.fn() };
+    const slotCalendar = {
+      loadData: vi.fn(),
+      startDate: new Date('2026-11-01'),
+      endDate: new Date('2026-11-30'),
+    };
     component.slotList = slotList as unknown as SlotListComponent;
     component.slotCalendar = slotCalendar as unknown as SlotCalendarComponent;
     return { slotList, slotCalendar };
@@ -86,14 +93,13 @@ describe('SlotViewsComponent', () => {
       expect(component.currentView()).toBe('list');
     });
 
-    it('should take the doctor id from the auth profile on init', () => {
-      expect(authService.getAuth).toHaveBeenCalled();
+    it('should take the doctor id from the signed-in user on init', () => {
       expect(component.doctorId()).toBe(doctorId);
     });
   });
 
-  describe('without an auth profile', () => {
-    it('should throw on init because the profile is read without a null check', async () => {
+  describe('without a signed-in user', () => {
+    it('should throw on init because the user is read without a null check', async () => {
       await expect(setup(null)).rejects.toThrow();
     });
   });
@@ -131,13 +137,17 @@ describe('SlotViewsComponent', () => {
       expect(slotCalendar.loadData).not.toHaveBeenCalled();
     });
 
-    it('should reload the calendar when the calendar view is active', () => {
+    it('should reload the calendar with its current date range when the calendar view is active', () => {
       const { slotList, slotCalendar } = attachChildren();
       component.currentView.set('calendar');
 
       component.reloadData();
 
       expect(slotCalendar.loadData).toHaveBeenCalledTimes(1);
+      expect(slotCalendar.loadData).toHaveBeenCalledWith(
+        slotCalendar.startDate,
+        slotCalendar.endDate,
+      );
       expect(slotList.loadData).not.toHaveBeenCalled();
     });
 

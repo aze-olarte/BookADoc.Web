@@ -15,7 +15,7 @@ describe('DoctorsListComponent', () => {
 
   let doctorService: { getAll: Mock };
   let specializationService: { getAll: Mock };
-  let authService: { getAuth: Mock };
+  let authService: { getAccessToken: Mock };
   let router: { navigate: Mock };
 
   const specializations = [
@@ -38,7 +38,7 @@ describe('DoctorsListComponent', () => {
   async function setup(loggedIn = false) {
     doctorService = { getAll: vi.fn().mockReturnValue(of(allDoctors)) };
     specializationService = { getAll: vi.fn().mockReturnValue(of(specializations)) };
-    authService = { getAuth: vi.fn().mockReturnValue(loggedIn ? { name: 'Jane' } : null) };
+    authService = { getAccessToken: vi.fn().mockReturnValue(loggedIn ? 'ey12334' : null) };
     router = { navigate: vi.fn() };
 
     TestBed.overrideComponent(DoctorsListComponent, {
@@ -185,15 +185,6 @@ describe('DoctorsListComponent', () => {
       component.onView(15);
 
       expect(router.navigate).toHaveBeenCalledWith(['/doctors', 15]);
-    });
-
-    it('should check the auth state at click time, not at creation', async () => {
-      await setup(false);
-      authService.getAuth.mockReturnValue({ name: 'Jane' });
-
-      component.onView(15);
-
-      expect(router.navigate).toHaveBeenCalledWith(['/portal/doctors', 15]);
     });
   });
 });

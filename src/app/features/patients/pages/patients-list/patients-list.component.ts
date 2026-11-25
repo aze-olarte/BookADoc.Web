@@ -16,7 +16,7 @@ export class PatientsListComponent implements OnInit {
   private patientService = inject(PatientService);
   private authService = inject(AuthService);
 
-  readonly isDoctor = this.authService.getRole() === 'Doctor';
+  readonly isDoctor = this.authService.user()?.role === 'Doctor';
 
   patients = signal<PatientResponse[]>([]);
   doctorPatients = signal<DoctorPatientResponse[]>([]);
@@ -26,7 +26,7 @@ export class PatientsListComponent implements OnInit {
 
   ngOnInit() {
     if (this.isDoctor) {
-      const doctorProfileId = this.authService.getAuth()?.doctorProfileId!;
+      const doctorProfileId = this.authService.user()?.doctorProfileId!;
       this.patientService.getPatientsByDoctor(doctorProfileId).subscribe({
         next: (data) => {
           this.doctorPatients.set(data);

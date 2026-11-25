@@ -47,7 +47,7 @@ export class DoctorsListComponent {
   }
 
   onView(id: number) {
-    if (!!this.authService.getAuth()) {
+    if (!!this.authService.getAccessToken()) {
       this.router.navigate(['/portal/doctors', id]);
     } else {
       this.router.navigate(['/doctors', id]);
