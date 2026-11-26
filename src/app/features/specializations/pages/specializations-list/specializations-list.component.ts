@@ -70,9 +70,7 @@ export class SpecializationsListComponent implements OnInit {
             this.toastService.success('Specialization deleted');
             this.loadData();
           },
-          error: (error) => {
-            this.toastService.error(error);
-          },
+          error: () => {},
         });
       }
     });
