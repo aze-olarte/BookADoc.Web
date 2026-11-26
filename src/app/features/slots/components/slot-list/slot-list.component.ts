@@ -20,16 +20,10 @@ export class SlotListComponent implements OnInit {
   readonly columnDefs: Column<SlotResponse>[] = columns;
   data = signal<SlotResponse[]>([]);
   id = input.required<number>();
-  emitUpdate = output<SlotResponse | undefined>();
+  emitAdd = output<SlotResponse | undefined>();
   emitDelete = output<SlotResponse>();
 
   actions: Action<SlotResponse>[] = [
-    {
-      type: 'update',
-      label: 'Edit',
-      icon: 'edit_outline',
-      visible: (item) => this.isEditVisible(item),
-    },
     {
       type: 'delete',
       label: 'Delete',
@@ -51,8 +45,8 @@ export class SlotListComponent implements OnInit {
     });
   }
 
-  update(data?: SlotResponse): void {
-    this.emitUpdate.emit(data);
+  add(data?: SlotResponse): void {
+    this.emitAdd.emit(data);
   }
 
   delete(data: SlotResponse): void {
@@ -62,16 +56,10 @@ export class SlotListComponent implements OnInit {
   onActionTriggered({ action, row }: { action: string; row: SlotResponse }) {
     if (action === 'delete') {
       this.delete(row);
-    } else if (action === 'update') {
-      this.update(row);
     }
   }
 
   private isDeleteVisible(data: SlotResponse): boolean {
     return !data.isBooked;
-  }
-
-  private isEditVisible(data: SlotResponse): boolean {
-    return !data.isBooked && !isBefore(data.date, startOfDay(new Date()));
   }
 }

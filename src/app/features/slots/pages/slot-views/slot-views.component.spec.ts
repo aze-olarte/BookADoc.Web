@@ -162,22 +162,12 @@ describe('SlotViewsComponent', () => {
     });
   });
 
-  describe('onUpdate()', () => {
+  describe('onAdd()', () => {
     beforeEach(async () => {
       await setup();
     });
-
-    it('should open the slot form with the doctor id and the slot to edit', () => {
-      component.onUpdate(slot);
-
-      expect(dialog.open).toHaveBeenCalledWith(SlotFormComponent, {
-        disableClose: true,
-        data: { doctorId, event: slot },
-      });
-    });
-
     it('should open the slot form without an event when creating a new slot', () => {
-      component.onUpdate();
+      component.onAdd();
 
       expect(dialog.open).toHaveBeenCalledWith(SlotFormComponent, {
         disableClose: true,
@@ -189,7 +179,7 @@ describe('SlotViewsComponent', () => {
       closeDialogWith(true);
       const reload = vi.spyOn(component, 'reloadData').mockImplementation(() => {});
 
-      component.onUpdate(slot);
+      component.onAdd(slot);
 
       expect(reload).toHaveBeenCalledTimes(1);
     });
@@ -200,7 +190,7 @@ describe('SlotViewsComponent', () => {
         closeDialogWith(result);
         const reload = vi.spyOn(component, 'reloadData').mockImplementation(() => {});
 
-        component.onUpdate(slot);
+        component.onAdd(slot);
 
         expect(reload).not.toHaveBeenCalled();
       },

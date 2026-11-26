@@ -78,10 +78,10 @@ describe('SlotListComponent', () => {
       expect(component.columnDefs).toBe(columns);
     });
 
-    it('should define update and delete actions', async () => {
+    it('should define delete actions', async () => {
       await setup();
 
-      expect(component.actions.map((a) => a.type)).toEqual(['update', 'delete']);
+      expect(component.actions.map((a) => a.type)).toEqual(['delete']);
     });
   });
 
@@ -113,27 +113,6 @@ describe('SlotListComponent', () => {
   });
 
   describe('outputs', () => {
-    it('update(row) should emit the row to edit', async () => {
-      await setup();
-      const emitted: (SlotResponse | undefined)[] = [];
-      component.emitUpdate.subscribe((v) => emitted.push(v));
-      const row = makeSlot({ id: 5 });
-
-      component.update(row);
-
-      expect(emitted).toEqual([row]);
-    });
-
-    it('update() without a row should emit undefined (create a new slot)', async () => {
-      await setup();
-      const emitted: (SlotResponse | undefined)[] = [];
-      component.emitUpdate.subscribe((v) => emitted.push(v));
-
-      component.update();
-
-      expect(emitted).toEqual([undefined]);
-    });
-
     it('delete(row) should emit the row to delete', async () => {
       await setup();
       const emitted: SlotResponse[] = [];
@@ -147,16 +126,6 @@ describe('SlotListComponent', () => {
   });
 
   describe('onActionTriggered()', () => {
-    it('should route "update" to update with the row', async () => {
-      await setup();
-      const spy = vi.spyOn(component, 'update').mockImplementation(() => {});
-      const row = makeSlot({ id: 5 });
-
-      component.onActionTriggered({ action: 'update', row });
-
-      expect(spy).toHaveBeenCalledWith(row);
-    });
-
     it('should route "delete" to delete with the row', async () => {
       await setup();
       const spy = vi.spyOn(component, 'delete').mockImplementation(() => {});
@@ -169,12 +138,10 @@ describe('SlotListComponent', () => {
 
     it('should do nothing for an unknown action', async () => {
       await setup();
-      const update = vi.spyOn(component, 'update').mockImplementation(() => {});
       const del = vi.spyOn(component, 'delete').mockImplementation(() => {});
 
       component.onActionTriggered({ action: 'view', row: makeSlot() });
 
-      expect(update).not.toHaveBeenCalled();
       expect(del).not.toHaveBeenCalled();
     });
   });
@@ -199,56 +166,6 @@ describe('SlotListComponent', () => {
       expect(
         findAction('delete')?.visible?.(makeSlot({ isBooked: false, date: '2026-01-05' })),
       ).toBe(true);
-    });
-  });
-
-  describe('edit action visibility', () => {
-    it('should be shown for an unbooked slot in the future', async () => {
-      await setup();
-      pinToday();
-
-      expect(
-        findAction('update')?.visible?.(makeSlot({ isBooked: false, date: '2026-11-25' })),
-      ).toBe(true);
-    });
-
-    it.skipIf(new Date(2026, 10, 18).getTimezoneOffset() > 0)(
-      'should be shown for an unbooked slot today',
-      async () => {
-        await setup();
-        pinToday();
-
-        expect(
-          findAction('update')?.visible?.(makeSlot({ isBooked: false, date: '2026-11-18' })),
-        ).toBe(true);
-      },
-    );
-
-    it('should be hidden for an unbooked slot in the past', async () => {
-      await setup();
-      pinToday();
-
-      expect(
-        findAction('update')?.visible?.(makeSlot({ isBooked: false, date: '2026-11-10' })),
-      ).toBe(false);
-    });
-
-    it('should be hidden for a booked slot, even in the future', async () => {
-      await setup();
-      pinToday();
-
-      expect(
-        findAction('update')?.visible?.(makeSlot({ isBooked: true, date: '2026-11-25' })),
-      ).toBe(false);
-    });
-
-    it('should be hidden for a booked slot in the past', async () => {
-      await setup();
-      pinToday();
-
-      expect(
-        findAction('update')?.visible?.(makeSlot({ isBooked: true, date: '2026-11-10' })),
-      ).toBe(false);
     });
   });
 });

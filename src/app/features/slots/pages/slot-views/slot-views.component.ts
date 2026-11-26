@@ -47,7 +47,7 @@ export class SlotViewsComponent implements OnInit {
     }
   }
 
-  onUpdate(data?: SlotResponse) {
+  onAdd(data?: SlotResponse) {
     const dialogRef = this.dialog.open(SlotFormComponent, {
       disableClose: true,
       data: {
