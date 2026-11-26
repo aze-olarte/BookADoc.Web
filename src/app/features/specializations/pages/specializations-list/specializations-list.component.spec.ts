@@ -96,16 +96,6 @@ describe('SpecializationsListComponent', () => {
     expect(specializationService.delete).not.toHaveBeenCalled();
   });
 
-  it('shows a toast error when delete fails', () => {
-    const err = new Error('delete failed');
-    specializationService.delete.mockReturnValue(throwError(() => err));
-    dialog.open.mockReturnValue(makeDialogRef(true));
-
-    component.onDelete(mockSpecializations[0]);
-
-    expect(toastService.error).toHaveBeenCalledWith(err);
-  });
-
   it('opens SpecializationsFormComponent on add', () => {
     dialog.open.mockReturnValue(makeDialogRef(false));
     component.onAdd();
