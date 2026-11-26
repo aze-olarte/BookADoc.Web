@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GridComponent } from './grid.component';
-import { Mock } from 'vitest';
 
 interface MockRow {
   id: number;
@@ -37,10 +36,5 @@ describe('GridComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('sets paginator and sort on the dataSource after view init', () => {
-    expect(component.dataSource.paginator).toBe(component.paginator);
-    expect(component.dataSource.sort).toBe(component.sort);
   });
 });

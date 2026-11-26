@@ -5,7 +5,7 @@ import {
   effect,
   input,
   output,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -38,14 +38,20 @@ export class GridComponent<T> {
     effect(() => {
       this.dataSource.data = this.data();
     });
+    effect(() => {
+      this.dataSource.paginator = this.paginator() ?? null;
+    });
+    effect(() => {
+      this.dataSource.sort = this.sort() ?? null;
+    });
   }
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  paginator = viewChild(MatPaginator);
+  sort = viewChild(MatSort);
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
 
   onActionClick(action: string, row: unknown) {
